@@ -1,6 +1,6 @@
 export type UserInfoType = {
   email: string,
-  password: string,
+  password?: string,
 };
 
 export type CocktailType = {

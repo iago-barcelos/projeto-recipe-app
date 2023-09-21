@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserInfoType } from '../types';
-import useLocalStorage from '../hooks/useLocalStorage';
+import { saveLocalStorage } from '../utils/functions';
 
 function Login() {
   const initialUserInfo = {
@@ -9,10 +9,6 @@ function Login() {
     password: '',
   };
   const [userInfo, setUserInfo] = useState<UserInfoType>(initialUserInfo);
-  const [localStorageInfo, setLocalStorageInfo] = useLocalStorage(
-    'user',
-    initialUserInfo,
-  );
   const navigate = useNavigate(); // Importe useNavigate do React Router
 
   const isEmailValid = () => {
@@ -21,7 +17,9 @@ function Login() {
   };
 
   const isPasswordValid = () => {
-    return userInfo.password.length > 6;
+    if (userInfo.password) {
+      return userInfo.password.length > 6;
+    }
   };
 
   const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +28,7 @@ function Login() {
       ...userInfo,
       [name]: value,
     });
-    setLocalStorageInfo({ ...localStorageInfo, [name]: value });
+    saveLocalStorage('user', { email: userInfo.email });
   };
 
   const handleLoginSubmit = () => {
@@ -66,7 +64,6 @@ function Login() {
         <button
           data-testid="login-submit-btn"
           disabled={ !isEmailValid() || !isPasswordValid() }
-
         >
           Entrar
         </button>
