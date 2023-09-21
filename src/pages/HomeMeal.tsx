@@ -1,6 +1,8 @@
 import React from 'react';
 
-function homeMeal() {
+function HomeMeal() {
+  const local = JSON.parse(localStorage.getItem('user') as string);
+  console.log(local);
   return (
     <div>
       <header>
@@ -10,4 +12,4 @@ function homeMeal() {
   );
 }
 
-export default homeMeal;
+export default HomeMeal;
