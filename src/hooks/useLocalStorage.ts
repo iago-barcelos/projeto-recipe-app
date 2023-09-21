@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { UserInfoType, CocktailType, MealType } from '../types';
 
-// mudar tipo de initialValue para o tipo de elemento que vai entrar através do envio do form
+// mudar tipo de initialValue para o tipo de elemento que vai entrar através do envio do form ou retorno da API
 
 const useLocalStorage = (
   key: string,
