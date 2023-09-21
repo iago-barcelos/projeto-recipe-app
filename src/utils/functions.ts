@@ -8,7 +8,7 @@ export const saveLocalStorage = (
   return saveItens;
 };
 
-export const getLocalStorage = (key: string) => {
-  const loadItens = JSON.parse(localStorage.getItem(key) as string);
-  return loadItens;
-};
+// export const getLocalStorage = (key: string) => {
+//   const loadItens = JSON.parse(localStorage.getItem(key) as string);
+//   return loadItens;
+// };
