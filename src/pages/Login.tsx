@@ -1,28 +1,34 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UserInfoType } from '../types';
+import { saveLocalStorage } from '../utils/functions';
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const initialUserInfo = {
+    email: '',
+    password: '',
+  };
+  const [userInfo, setUserInfo] = useState<UserInfoType>(initialUserInfo);
   const navigate = useNavigate(); // Importe useNavigate do React Router
 
   const isEmailValid = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    return emailRegex.test(userInfo.email);
   };
 
   const isPasswordValid = () => {
-    return password.length > 6;
+    if (userInfo.password) {
+      return userInfo.password.length > 6;
+    }
   };
 
-  const handleEmailChange = (e : React.ChangeEvent<HTMLInputElement>) => {
-    const newEmail = e.target.value;
-    setEmail(newEmail);
-  };
-
-  const handlePasswordChange = (e : React.ChangeEvent<HTMLInputElement>) => {
-    const newPassword = e.target.value;
-    setPassword(newPassword);
+  const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = target;
+    setUserInfo({
+      ...userInfo,
+      [name]: value,
+    });
+    saveLocalStorage('user', { email: userInfo.email });
   };
 
   const handleLoginSubmit = () => {
@@ -36,15 +42,15 @@ function Login() {
       <header>
         <h1>Login</h1>
       </header>
-      <form>
+      <form onSubmit={ handleLoginSubmit }>
         <label htmlFor="email">E-mail</label>
         <input
           data-testid="email-input"
           type="email"
           name="email"
           id="email"
-          value={ email }
-          onChange={ handleEmailChange }
+          value={ userInfo.email }
+          onChange={ handleChange }
         />
         <label htmlFor="password">Senha</label>
         <input
@@ -52,13 +58,12 @@ function Login() {
           type="password"
           name="password"
           id="password"
-          value={ password }
-          onChange={ handlePasswordChange }
+          value={ userInfo.password }
+          onChange={ handleChange }
         />
         <button
           data-testid="login-submit-btn"
           disabled={ !isEmailValid() || !isPasswordValid() }
-          onClick={ handleLoginSubmit }
         >
           Entrar
         </button>

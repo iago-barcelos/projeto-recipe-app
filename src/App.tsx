@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Login from './pages/Login';
-import HomeMeal from './pages/homeMeal';
+import HomeMeal from './pages/HomeMeal';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Drinks from './pages/Drinks';
 import Profile from './pages/Profile';

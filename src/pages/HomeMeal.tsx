@@ -1,7 +1,9 @@
 import React from 'react';
 import Header from '../components/Header';
 
-function homeMeal() {
+function HomeMeal() {
+  const local = JSON.parse(localStorage.getItem('user') as string);
+  console.log(local);
   return (
     <div>
       <Header pageTitle="Meals" showSearchIcon />
@@ -9,4 +11,4 @@ function homeMeal() {
   );
 }
 
-export default homeMeal;
+export default HomeMeal;
