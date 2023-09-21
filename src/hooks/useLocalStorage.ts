@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-// mudar initial value para o tipo de elemento que vai entrar através do envio do form
+// mudar tipo de initialValue para o tipo de elemento que vai entrar através do envio do form
 
 const useLocalStorage = (key: string, initialValue: string) => {
   const [localStorageInfo, setLocalStorageInfo] = useState(() => {
