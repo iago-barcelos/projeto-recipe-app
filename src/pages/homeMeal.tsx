@@ -1,11 +1,10 @@
 import React from 'react';
+import Header from '../components/Header';
 
 function homeMeal() {
   return (
     <div>
-      <header>
-        <h1>Tela de Receitas de Comidas</h1>
-      </header>
+      <Header pageTitle="Meals" showSearchIcon />
     </div>
   );
 }
