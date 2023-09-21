@@ -1,13 +1,16 @@
 import React from 'react';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import rockGlass from './images/rockGlass.svg';
+import Login from './pages/Login';
+import HomeMeal from './pages/homeMeal';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
-    <div>
-      <h1>App de receitas</h1>
-    </div>
+    <Routes>
+      <Route path="/" element={ <Login /> } />
+      <Route path="/meals" element={ <HomeMeal /> } />
+    </Routes>
   );
 }
 
