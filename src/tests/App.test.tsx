@@ -122,7 +122,7 @@ test('Navega para homeMeal', async () => {
   await userEvent.type(passwordInput, 'senha123');
   await userEvent.click(submitButton);
 
-  const homeMealText = await screen.findByText('Tela de Receitas de Comidas');
+  const homeMealText = await screen.getByRole('heading', { name: /meals/i });
 
   expect(await homeMealText).toBeInTheDocument();
 });
