@@ -322,8 +322,35 @@ describe('Testes do SearchBar', () => {
 
     const searchInput = getByRole('textbox');
     await userEvent.type(searchInput, 'aa');
+
     const searchBTN = getByText(/Search/i);
     await userEvent.click(searchBTN);
+    expect(alertSpy).toHaveBeenCalled();
+  });
+
+  test('Testa se o fetch é feito quando o botão de busca é click*', async () => {
+    const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue({} as Response);
+    const { getByText, getByRole } = renderWithRouter(<HomeMeal />);
+
+    const screenSearchIcon = getByRole('img', { name: /search icon/i });
+    await userEvent.click(screenSearchIcon);
+
+    const searchInput = getByRole('textbox');
+    await userEvent.type(searchInput, 'aa');
+
+    const searchBTN = getByText(/Search/i);
+    await userEvent.click(searchBTN);
+
+    expect(mockFetch).toHaveBeenCalled();
+  });
+
+  test('Testa se aparece um erro ao procurar um ingrediente sem digitar nada*', async () => {
+    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+    const { getByText } = renderWithRouter(<HomeMeal />);
+
+    const searchBTN = getByText(/Search/i);
+    await userEvent.click(searchBTN);
+
     expect(alertSpy).toHaveBeenCalled();
   });
 });
