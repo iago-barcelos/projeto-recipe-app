@@ -14,6 +14,8 @@ const passwordTestId = 'password-input';
 const submitButtonTestId = 'login-submit-btn';
 const pageTitleTestId = 'page-title';
 const profileTopBtnTestId = 'profile-top-btn';
+const searchTopBtnTestId = 'search-top-btn';
+const searchInputTestId = 'search-input';
 const validEmail = 'email@valido.com';
 const profileIcon = 'Profile Icon';
 const searchIcon = 'Search Icon';
@@ -199,6 +201,18 @@ describe('Testando o component Header', () => {
     expect(global.window.location.pathname).toBe('/profile');
     // const pageTitle = getByTestId(pageTitleTestId);
     // expect(pageTitle.innerHTML).toBe("Profile")
+  });
+
+  test('Renderiza o componente SearchBar ao clicar no ícone de pesquisa', async () => {
+    const { queryByTestId, getByTestId } = renderWithRouter(<Header pageTitle="Test Tilte" showSearchIcon />);
+
+    expect(queryByTestId(searchInputTestId)).toBeNull();
+
+    const searchIconElement = getByTestId(searchTopBtnTestId);
+
+    await userEvent.click(searchIconElement);
+
+    expect(queryByTestId(searchInputTestId)).toBeInTheDocument();
   });
 });
 
