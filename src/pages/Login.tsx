@@ -31,7 +31,8 @@ function Login() {
     saveLocalStorage('user', { email: userInfo.email });
   };
 
-  const handleLoginSubmit = () => {
+  const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (isEmailValid() && isPasswordValid()) {
       navigate('/meals');
     }
