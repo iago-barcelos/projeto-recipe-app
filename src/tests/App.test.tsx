@@ -354,3 +354,17 @@ describe('Testes do SearchBar', () => {
     expect(alertSpy).toHaveBeenCalled();
   });
 });
+
+describe('Footer', () => {
+  test('Renderiza corretamente', () => {
+    const { getByTestId } = renderWithRouter(<App />);
+
+    const footerElement = getByTestId('footer');
+    const mealsButton = getByTestId('meals-bottom-btn');
+    const drinksButton = getByTestId('drinks-bottom-btn');
+
+    expect(footerElement).toBeInTheDocument();
+    expect(mealsButton).toBeInTheDocument();
+    expect(drinksButton).toBeInTheDocument();
+  });
+});
