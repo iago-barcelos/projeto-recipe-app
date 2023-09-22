@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 
 type HeaderProps = {
@@ -22,6 +22,8 @@ function Header({ pageTitle }: HeaderProps) {
           alt="Profile Icon"
         />
       </button>
+      <Link to="/meals">Meals</Link>
+      <Link to="/drinks">Drinks</Link>
     </>
   );
 }

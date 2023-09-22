@@ -1,11 +1,16 @@
 import React, { useState, ChangeEvent } from 'react';
 import searchIcon from '../images/searchIcon.svg';
+import { getFetch } from '../utils/functions';
+import { MealType, CocktailType } from '../types';
 
 type SearchType = 'ingredient' | 'name' | 'first-letter';
-
-function SearchBar() {
+type SearchBarProps = {
+  page: string,
+};
+function SearchBar({ page }: SearchBarProps) {
   const [searchType, setSearchType] = useState<SearchType>('ingredient');
   const [searchValue, setSearchValue] = useState<string>('');
+  const [searchResult, setSearchResult] = useState<MealType | CocktailType>();
   const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
 
   const handleSearchTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -18,38 +23,23 @@ function SearchBar() {
 
   const handleSearch = () => {
     if (searchType === 'ingredient') {
-      if (searchValue) {
-        // Busca por ingrediente
-        fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchValue}`)
-          .then((response) => response.json())
-          .then((data) => data)
-          .catch((error) => {
-            console.error('Erro na busca por ingrediente:', error);
-          });
-      } else {
+      if (!searchValue) {
         window.alert('Please, you must submit a valid ingredient.');
       }
+      const endpoint = page === 'Meals' ? 'https://www.themealdb.com/api/json/v1/1/filter.php?i=' : 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=';
+      getFetch(endpoint, searchValue);
     } else if (searchType === 'name') {
-      if (searchValue) {
-        // Busca por nome
-        fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchValue}`)
-          .then((response) => response.json())
-          .then((data) => data)
-          .catch((error) => {
-            console.error('Erro na busca por nome:', error);
-          });
-      } else {
+      if (!searchValue) {
         window.alert('Please, you must submit a valid name.');
       }
+      const endpoint = page === 'Meals' ? 'https://www.themealdb.com/api/json/v1/1/search.php?s=' : 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+      getFetch(endpoint, searchValue);
     } else if (searchType === 'first-letter') {
-      if (searchValue.length === 1) {
-        // Busca por primeira letra
-        fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${searchValue}`)
-          .then((response) => response.json())
-          .then((data) => data);
-      } else {
+      if (searchValue.length !== 1) {
         window.alert('Your search must have only 1 (one) character');
       }
+      const endpoint = page === 'Meals' ? 'https://www.themealdb.com/api/json/v1/1/search.php?f=' : 'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=';
+      getFetch(endpoint, searchValue);
     }
   };
 

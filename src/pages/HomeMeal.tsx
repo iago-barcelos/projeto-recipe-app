@@ -4,12 +4,10 @@ import SearchBar from '../components/SearchBar';
 import Footer from '../components/Footer';
 
 function HomeMeal() {
-  const local = JSON.parse(localStorage.getItem('user') as string);
-  console.log(local);
   return (
     <div>
       <Header pageTitle="Meals" />
-      <SearchBar />
+      <SearchBar page="Meals" />
       <Footer />
     </div>
   );
