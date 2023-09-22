@@ -1,5 +1,6 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 import App from '../App';
 import DoneRecipes from '../pages/DoneRecipes';
 import Drinks from '../pages/Drinks';
@@ -307,5 +308,22 @@ describe('Testes do SearchBar', () => {
 
     const firstLetterRadioButton = getByText(/first letter/i);
     await userEvent.click(firstLetterRadioButton);
+  });
+
+  test('Testa para ver se é possivel clicar nos radio buttons', async () => {
+    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+    const { getByText, getByRole } = renderWithRouter(<HomeMeal />);
+
+    const firstLetterRadioButton = getByText(/first letter/i);
+    await userEvent.click(firstLetterRadioButton);
+
+    const screenSearchIcon = getByRole('img', { name: /search icon/i });
+    await userEvent.click(screenSearchIcon);
+
+    const searchInput = getByRole('textbox');
+    await userEvent.type(searchInput, 'aa');
+    const searchBTN = getByText(/Search/i);
+    await userEvent.click(searchBTN);
+    expect(alertSpy).toHaveBeenCalled();
   });
 });

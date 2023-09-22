@@ -6,7 +6,6 @@ type SearchType = 'ingredient' | 'name' | 'first-letter';
 function SearchBar() {
   const [searchType, setSearchType] = useState<SearchType>('ingredient');
   const [searchValue, setSearchValue] = useState<string>('');
-  const [alertMessage, setAlertMessage] = useState<string>('');
   const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
 
   const handleSearchTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -28,8 +27,7 @@ function SearchBar() {
             console.error('Erro na busca por ingrediente:', error);
           });
       } else {
-        setAlertMessage('Por favor, insira um ingrediente válido.');
-        window.alert(alertMessage);
+        window.alert('Please, you must submit a valid ingredient.');
       }
     } else if (searchType === 'name') {
       if (searchValue) {
@@ -41,8 +39,7 @@ function SearchBar() {
             console.error('Erro na busca por nome:', error);
           });
       } else {
-        setAlertMessage('Por favor, insira um nome válido.');
-        window.alert(alertMessage);
+        window.alert('Please, you must submit a valid name.');
       }
     } else if (searchType === 'first-letter') {
       if (searchValue.length === 1) {
@@ -51,8 +48,7 @@ function SearchBar() {
           .then((response) => response.json())
           .then((data) => data);
       } else {
-        setAlertMessage('Sua busca deve ter apenas 1 caractere.');
-        window.alert(alertMessage);
+        window.alert('Your search must have only 1 (one) character');
       }
     }
   };
