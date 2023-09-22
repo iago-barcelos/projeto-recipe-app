@@ -12,3 +12,12 @@ export const saveLocalStorage = (
 //   const loadItens = JSON.parse(localStorage.getItem(key) as string);
 //   return loadItens;
 // };
+
+export const getFetch = (endpoint: string, searchValue: string) => {
+  fetch(endpoint += searchValue)
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((error) => {
+      console.error(error);
+    });
+};

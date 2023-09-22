@@ -271,7 +271,7 @@ describe('Componente Profile', () => {
 
 describe('Testes do SearchBar', () => {
   test('Renderiza o componente SearchBar com os radio buttons corretos', () => {
-    const { getByTestId } = renderWithRouter(<SearchBar />);
+    const { getByTestId } = renderWithRouter(<HomeMeal />);
     const ingredientRadio = getByTestId('ingredient-search-radio');
     const nameRadio = getByTestId('name-search-radio');
     const firstLetterRadio = getByTestId('first-letter-search-radio');
@@ -282,7 +282,7 @@ describe('Testes do SearchBar', () => {
   });
 
   test('Renderiza o componente SearchBar com o botão de busca', () => {
-    const { getByTestId } = renderWithRouter(<SearchBar />);
+    const { getByTestId } = renderWithRouter(<HomeMeal />);
     const execSearchButton = getByTestId('exec-search-btn');
     expect(execSearchButton).toBeInTheDocument();
   });
