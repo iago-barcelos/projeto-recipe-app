@@ -4,9 +4,21 @@ export type UserInfoType = {
 };
 
 export type CocktailType = {
-  cocktail: []
+  cocktail: [{
+    idDrink: string,
+    strDrink: string,
+    strDrinkAlternate: null,
+    strTags: string,
+    strVideo: string,
+  }]
 };
 
 export type MealType = {
-  meals: []
+  meals: [{
+    idMeal: string,
+    strMeal: string,
+    strDrinkAlternate: null,
+    strCategory: string,
+    strArea: string,
+  }]
 };
