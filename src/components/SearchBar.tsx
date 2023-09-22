@@ -1,4 +1,5 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import searchIcon from '../images/searchIcon.svg';
 import { getFetch } from '../utils/functions';
 import { MealType, CocktailType } from '../types';
@@ -12,6 +13,7 @@ function SearchBar({ page }: SearchBarProps) {
   const [searchValue, setSearchValue] = useState<string>('');
   const [searchResult, setSearchResult] = useState<MealType | CocktailType>();
   const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleSearchTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchType(event.target.value as SearchType);
@@ -21,31 +23,47 @@ function SearchBar({ page }: SearchBarProps) {
     setSearchValue(event.target.value);
   };
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (searchType === 'ingredient') {
       if (!searchValue) {
         window.alert('Please, you must submit a valid ingredient.');
       }
       const endpoint = page === 'Meals' ? 'https://www.themealdb.com/api/json/v1/1/filter.php?i=' : 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=';
-      getFetch(endpoint, searchValue);
+      const result = await getFetch(endpoint, searchValue);
+      setSearchResult(await result);
     } else if (searchType === 'name') {
       if (!searchValue) {
         window.alert('Please, you must submit a valid name.');
       }
       const endpoint = page === 'Meals' ? 'https://www.themealdb.com/api/json/v1/1/search.php?s=' : 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
-      getFetch(endpoint, searchValue);
+      const result = await getFetch(endpoint, searchValue);
+      setSearchResult(await result);
     } else if (searchType === 'first-letter') {
       if (searchValue.length !== 1) {
         window.alert('Your search must have only 1 (one) character');
       }
       const endpoint = page === 'Meals' ? 'https://www.themealdb.com/api/json/v1/1/search.php?f=' : 'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=';
-      getFetch(endpoint, searchValue);
+      const result = await getFetch(endpoint, searchValue);
+      setSearchResult(await result);
     }
   };
 
   const handleSearchIconClick = () => {
     setIsSearchVisible(!isSearchVisible);
   };
+
+  useEffect(() => {
+    if (searchResult) {
+      if ('meals' in searchResult && searchResult.meals.length === 1) {
+        const id = (searchResult as MealType).meals[0].idMeal;
+        navigate(`/meals/${id}`);
+      }
+      if ('drinks' in searchResult && searchResult.drinks.length === 1) {
+        const id = (searchResult as CocktailType).drinks[0].idDrink;
+        navigate(`/drinks/${id}`);
+      }
+    }
+  }, [searchResult]);
 
   return (
     <div>

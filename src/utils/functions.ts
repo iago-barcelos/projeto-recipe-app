@@ -14,10 +14,11 @@ export const saveLocalStorage = (
 // };
 
 export const getFetch = (endpoint: string, searchValue: string) => {
-  fetch(endpoint += searchValue)
+  const fetchResult = fetch(endpoint += searchValue)
     .then((response) => response.json())
-    .then((data) => console.log(data))
+    .then((data) => data)
     .catch((error) => {
       console.error(error);
     });
+  return fetchResult;
 };
