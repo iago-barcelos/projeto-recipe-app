@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import profileIcon from '../images/profileIcon.svg';
-import searchIcon from '../images/searchIcon.svg';
 
 type HeaderProps = {
   pageTitle: string,
@@ -10,8 +9,6 @@ type HeaderProps = {
 
 function Header({ pageTitle, showSearchIcon = false }: HeaderProps) {
   const navigate = useNavigate();
-
-  const [showSearchBar, setShowSearchBar] = useState(false);
 
   return (
     <>
@@ -27,18 +24,6 @@ function Header({ pageTitle, showSearchIcon = false }: HeaderProps) {
           alt="Profile Icon"
         />
       </button>
-      {showSearchIcon
-        && (
-          <button onClick={ () => setShowSearchBar(!showSearchBar) }>
-            <img
-              src={ searchIcon }
-              alt="Search Icon"
-              data-testid="search-top-btn"
-            />
-          </button>
-        )}
-      {showSearchBar
-        && <input data-testid="search-input" />}
     </>
   );
 }
