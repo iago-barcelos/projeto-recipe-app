@@ -4,6 +4,26 @@ import mealIcon from '../images/mealIcon.svg';
 import drinkIcon from '../images/drinkIcon.svg';
 
 function Footer() {
+  const footerStyle: React.CSSProperties = {
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: '50px',
+  };
+
+  const linkStyle: React.CSSProperties = {
+    textDecoration: 'none',
+  };
+
+  const iconStyle: React.CSSProperties = {
+    width: '30px',
+    height: '30px',
+  };
+
   return (
     <footer data-testid="footer" style={ footerStyle }>
       <Link to="/meals" style={ linkStyle }>
@@ -25,26 +45,5 @@ function Footer() {
     </footer>
   );
 }
-
-const footerStyle = {
-  position: 'fixed',
-  bottom: 0,
-  left: 0,
-  right: 0,
-  backgroundColor: '#333',
-  display: 'flex',
-  justifyContent: 'space-around',
-  alignItems: 'center',
-  height: '50px',
-};
-
-const linkStyle = {
-  textDecoration: 'none',
-};
-
-const iconStyle = {
-  width: '30px',
-  height: '30px',
-};
 
 export default Footer;
