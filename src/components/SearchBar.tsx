@@ -23,7 +23,7 @@ function SearchBar() {
         // Busca por ingrediente
         fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchValue}`)
           .then((response) => response.json())
-          .then((data) => {data})
+          .then((data) => data)
           .catch((error) => {
             console.error('Erro na busca por ingrediente:', error);
           });
@@ -36,7 +36,7 @@ function SearchBar() {
         // Busca por nome
         fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchValue}`)
           .then((response) => response.json())
-          .then((data) => {data})
+          .then((data) => data)
           .catch((error) => {
             console.error('Erro na busca por nome:', error);
           });
@@ -49,7 +49,7 @@ function SearchBar() {
         // Busca por primeira letra
         fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${searchValue}`)
           .then((response) => response.json())
-          .then((data) => data)
+          .then((data) => data);
       } else {
         setAlertMessage('Sua busca deve ter apenas 1 caractere.');
         window.alert(alertMessage);

@@ -7,7 +7,7 @@ function HomeMeal() {
   console.log(local);
   return (
     <div>
-      <Header pageTitle="Meals" showSearchIcon />
+      <Header pageTitle="Meals" />
       <SearchBar />
     </div>
   );

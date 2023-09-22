@@ -165,35 +165,35 @@ describe('Testa componente FavoriteRecipes', () => {
 
 describe('Testando o component Header', () => {
   test('Renderiza pageTitle', () => {
-    const { getByTestId } = renderWithRouter(<Header pageTitle="Test Tilte" showSearchIcon />);
+    const { getByTestId } = renderWithRouter(<Header pageTitle="Test Title" />);
 
     const pageTitleElement = getByTestId(pageTitleTestId);
     expect(pageTitleElement).toBeInTheDocument();
   });
 
   test('Renderiza icone de profile', () => {
-    const { getByAltText } = renderWithRouter(<Header pageTitle="Test Tilte" showSearchIcon />);
+    const { getByAltText } = renderWithRouter(<Header pageTitle="Test Title" />);
 
     const profileIconElement = getByAltText(profileIcon);
     expect(profileIconElement).toBeInTheDocument();
   });
 
   test('Renderiza icone de pesquisa se showSearchIcon tiver valor true', () => {
-    const { getByAltText } = renderWithRouter(<Header pageTitle="Test Tilte" showSearchIcon />);
+    const { getByAltText } = renderWithRouter(<HomeMeal />);
 
     const searchIconElement = getByAltText(searchIcon);
     expect(searchIconElement).toBeInTheDocument();
   });
 
   test('Não renderiza icone de pesquisa se showSearchIcon tiver valor false', () => {
-    const { queryByAltText } = renderWithRouter(<Header pageTitle="Test Tilte" />);
+    const { queryByAltText } = renderWithRouter(<Header pageTitle="Test Title" />);
 
     const searchIconElement = queryByAltText(searchIcon);
     expect(searchIconElement).toBeNull();
   });
 
   test('Navega para "/profile" ao clicar no ícone de perfil', async () => {
-    const { getByTestId } = renderWithRouter(<Header pageTitle="Test Tilte" showSearchIcon />);
+    const { getByTestId } = renderWithRouter(<Header pageTitle="Test Title" />);
 
     const profileIconElement = getByTestId(profileTopBtnTestId);
 
@@ -205,7 +205,7 @@ describe('Testando o component Header', () => {
   });
 
   test('Renderiza o componente SearchBar ao clicar no ícone de pesquisa', async () => {
-    const { queryByTestId, getByTestId } = renderWithRouter(<Header pageTitle="Test Tilte" showSearchIcon />);
+    const { queryByTestId, getByTestId } = renderWithRouter(<HomeMeal />);
 
     expect(queryByTestId(searchInputTestId)).toBeNull();
 
@@ -284,5 +284,28 @@ describe('Testes do SearchBar', () => {
     const { getByTestId } = renderWithRouter(<SearchBar />);
     const execSearchButton = getByTestId('exec-search-btn');
     expect(execSearchButton).toBeInTheDocument();
+  });
+
+  test('Testa para ver se é possivel digitar no input de busca', async () => {
+    const { getByRole } = renderWithRouter(<HomeMeal />);
+
+    const screenSearchIcon = getByRole('img', { name: /search icon/i });
+    await userEvent.click(screenSearchIcon);
+
+    const searchInput = getByRole('textbox');
+    await userEvent.type(searchInput, 'apple');
+  });
+
+  test('Testa para ver se é possivel clicar nos radio buttons', async () => {
+    const { getByText } = renderWithRouter(<HomeMeal />);
+
+    const ingredientsRadioButton = getByText(/ingredient/i);
+    await userEvent.click(ingredientsRadioButton);
+
+    const nameRadioButton = getByText(/name/i);
+    await userEvent.click(nameRadioButton);
+
+    const firstLetterRadioButton = getByText(/first letter/i);
+    await userEvent.click(firstLetterRadioButton);
   });
 });

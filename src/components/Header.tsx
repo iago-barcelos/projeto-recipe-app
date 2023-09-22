@@ -4,10 +4,9 @@ import profileIcon from '../images/profileIcon.svg';
 
 type HeaderProps = {
   pageTitle: string,
-  showSearchIcon?: boolean
 };
 
-function Header({ pageTitle, showSearchIcon = false }: HeaderProps) {
+function Header({ pageTitle }: HeaderProps) {
   const navigate = useNavigate();
 
   return (
