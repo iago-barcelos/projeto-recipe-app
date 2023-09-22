@@ -51,18 +51,19 @@ function SearchBar({ page }: SearchBarProps) {
   const handleSearchIconClick = () => {
     setIsSearchVisible(!isSearchVisible);
   };
-  // useEffect(() => {
-  //   if (searchResult) {
-  //     if ((searchResult as MealType).meals.length === 1) {
-  //       const id = (searchResult as MealType).meals[0].idMeal;
-  //       navigate(`/meals/${id}`);
-  //     }
-  //     if ((searchResult as CocktailType).cocktail.length === 1) {
-  //       const id = (searchResult as CocktailType).cocktail[0].idDrink;
-  //       navigate(`/drinks/${id}`);
-  //     }
-  //   }
-  // }, [searchResult]);
+
+  useEffect(() => {
+    if (searchResult) {
+      if ('meals' in searchResult && searchResult.meals.length === 1) {
+        const id = (searchResult as MealType).meals[0].idMeal;
+        navigate(`/meals/${id}`);
+      }
+      if ('drinks' in searchResult && searchResult.drinks.length === 1) {
+        const id = (searchResult as CocktailType).drinks[0].idDrink;
+        navigate(`/drinks/${id}`);
+      }
+    }
+  }, [searchResult]);
 
   return (
     <div>

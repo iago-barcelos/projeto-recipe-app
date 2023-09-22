@@ -4,7 +4,7 @@ export type UserInfoType = {
 };
 
 export type CocktailType = {
-  cocktail: [{
+  drinks: [{
     idDrink: string,
     strDrink: string,
     strDrinkAlternate: null,
