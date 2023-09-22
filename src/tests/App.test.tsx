@@ -7,6 +7,7 @@ import FavoriteRecipes from '../pages/FavoriteRecipes';
 import Header from '../components/Header';
 import HomeMeal from '../pages/HomeMeal';
 import Profile from '../pages/Profile';
+import SearchBar from '../components/SearchBar';
 import { renderWithRouter } from './helpers/renderWIth';
 
 const emailTestId = 'email-input';
@@ -233,6 +234,23 @@ describe('Componente homeMeal', () => {
   });
 });
 
+test('Renderiza a página HomeMeal com os radio buttons corretos', () => {
+  const { getByTestId } = renderWithRouter(<HomeMeal />);
+  const ingredientRadio = getByTestId('ingredient-search-radio');
+  const nameRadio = getByTestId('name-search-radio');
+  const firstLetterRadio = getByTestId('first-letter-search-radio');
+
+  expect(ingredientRadio).toBeInTheDocument();
+  expect(nameRadio).toBeInTheDocument();
+  expect(firstLetterRadio).toBeInTheDocument();
+});
+
+test('Renderiza a página HomeMeal com o botão de busca', () => {
+  const { getByTestId } = renderWithRouter(<HomeMeal />);
+  const execSearchButton = getByTestId('exec-search-btn');
+  expect(execSearchButton).toBeInTheDocument();
+});
+
 describe('Componente Profile', () => {
   test('Renderiza página com título correto', () => {
     const { getByTestId } = renderWithRouter(<Profile />);
@@ -247,5 +265,24 @@ describe('Componente Profile', () => {
 
     const searchIconElement = queryByAltText(searchIcon);
     expect(searchIconElement).toBeNull();
+  });
+});
+
+describe('Testes do SearchBar', () => {
+  test('Renderiza o componente SearchBar com os radio buttons corretos', () => {
+    const { getByTestId } = renderWithRouter(<SearchBar />);
+    const ingredientRadio = getByTestId('ingredient-search-radio');
+    const nameRadio = getByTestId('name-search-radio');
+    const firstLetterRadio = getByTestId('first-letter-search-radio');
+
+    expect(ingredientRadio).toBeInTheDocument();
+    expect(nameRadio).toBeInTheDocument();
+    expect(firstLetterRadio).toBeInTheDocument();
+  });
+
+  test('Renderiza o componente SearchBar com o botão de busca', () => {
+    const { getByTestId } = renderWithRouter(<SearchBar />);
+    const execSearchButton = getByTestId('exec-search-btn');
+    expect(execSearchButton).toBeInTheDocument();
   });
 });
