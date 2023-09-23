@@ -50,7 +50,7 @@ function SearchBar({ page }: SearchBarProps) {
       return;
     }
     const results = await getFetch(endpoint, searchValue);
-    if (results[page] === null) {
+    if (!results || results[page] === null) {
       window.alert("Sorry, we haven't found any recipes for these filters.");
       return;
     }

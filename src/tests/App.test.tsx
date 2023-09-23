@@ -10,6 +10,7 @@ import HomeMeal from '../pages/HomeMeal';
 import Profile from '../pages/Profile';
 import SearchBar from '../components/SearchBar';
 import { renderWithRouter } from './helpers/renderWIth';
+import { mockDrinksData, mockMealsData } from './helpers/mockData';
 
 const emailTestId = 'email-input';
 const passwordTestId = 'password-input';
@@ -23,6 +24,9 @@ const profileIcon = 'Profile Icon';
 const searchIcon = 'Search Icon';
 
 // Mateus Tápias: Criei um renderWithRouter() para facilitar a legibilidade do código
+beforeEach(() => {
+  vi.restoreAllMocks();
+});
 
 test('Verifica se existe uma tela de login', () => {
   const { getByText } = renderWithRouter(<App />);
@@ -272,6 +276,7 @@ describe('Componente Profile', () => {
 describe('Testes do SearchBar', () => {
   test('Renderiza o componente SearchBar com os radio buttons corretos', () => {
     const { getByTestId } = renderWithRouter(<HomeMeal />);
+
     const ingredientRadio = getByTestId('ingredient-search-radio');
     const nameRadio = getByTestId('name-search-radio');
     const firstLetterRadio = getByTestId('first-letter-search-radio');
@@ -283,7 +288,9 @@ describe('Testes do SearchBar', () => {
 
   test('Renderiza o componente SearchBar com o botão de busca', () => {
     const { getByTestId } = renderWithRouter(<HomeMeal />);
+
     const execSearchButton = getByTestId('exec-search-btn');
+
     expect(execSearchButton).toBeInTheDocument();
   });
 
@@ -310,30 +317,15 @@ describe('Testes do SearchBar', () => {
     await userEvent.click(firstLetterRadioButton);
   });
 
-  test('Testa para ver se é possivel clicar nos radio buttons', async () => {
-    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
-    const { getByText, getByRole } = renderWithRouter(<HomeMeal />);
-
-    const firstLetterRadioButton = getByText(/first letter/i);
-    await userEvent.click(firstLetterRadioButton);
-
-    const screenSearchIcon = getByRole('img', { name: /search icon/i });
-    await userEvent.click(screenSearchIcon);
-
-    const searchInput = getByRole('textbox');
-    await userEvent.type(searchInput, 'aa');
-
-    const searchBTN = getByText(/Search/i);
-    await userEvent.click(searchBTN);
-    expect(alertSpy).toHaveBeenCalled();
-  });
-
-  test('Testa se o fetch é feito quando o botão de busca é click*', async () => {
+  test('O radio button "Name" funciona corretamente', async () => {
     const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue({} as Response);
     const { getByText, getByRole } = renderWithRouter(<HomeMeal />);
 
     const screenSearchIcon = getByRole('img', { name: /search icon/i });
     await userEvent.click(screenSearchIcon);
+
+    const nameRadioButton = getByText(/name/i);
+    await userEvent.click(nameRadioButton);
 
     const searchInput = getByRole('textbox');
     await userEvent.type(searchInput, 'aa');
@@ -344,7 +336,7 @@ describe('Testes do SearchBar', () => {
     expect(mockFetch).toHaveBeenCalled();
   });
 
-  test('Testa se aparece um erro ao procurar um ingrediente sem digitar nada*', async () => {
+  test('É exibido um alert ao procurar um ingrediente sem digitar um valor', async () => {
     const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
     const { getByText } = renderWithRouter(<HomeMeal />);
 
@@ -355,6 +347,111 @@ describe('Testes do SearchBar', () => {
   });
 });
 
+test('É exibido um alert caso seja usado mais de uma letra com o searchType "First Letter"', async () => {
+  const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+  const { getByText, getByRole } = renderWithRouter(<HomeMeal />);
+
+  const screenSearchIcon = getByRole('img', { name: /search icon/i });
+  await userEvent.click(screenSearchIcon);
+
+  const firstLetterRadioButton = getByText(/first letter/i);
+  await userEvent.click(firstLetterRadioButton);
+
+  const searchInput = getByRole('textbox');
+  await userEvent.type(searchInput, 'aa');
+
+  const searchBTN = getByText(/Search/i);
+  await userEvent.click(searchBTN);
+
+  expect(alertSpy).toHaveBeenCalled();
+});
+
+test('O fetch é realizado corretamente quando o botão de busca é clicado', async () => {
+  const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue({} as Response);
+  const { getByText, getByRole } = renderWithRouter(<HomeMeal />);
+
+  const screenSearchIcon = getByRole('img', { name: /search icon/i });
+  await userEvent.click(screenSearchIcon);
+
+  const searchInput = getByRole('textbox');
+  await userEvent.type(searchInput, 'aa');
+
+  const searchBTN = getByText(/Search/i);
+  await userEvent.click(searchBTN);
+
+  expect(mockFetch).toHaveBeenCalled();
+});
+
+test('É exibido um alert caso o fetch não retorne uma receita', async () => {
+  const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue({} as Response);
+  const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+
+  const { getByText, getByRole } = renderWithRouter(<HomeMeal />);
+
+  const screenSearchIcon = getByRole('img', { name: /search icon/i });
+  await userEvent.click(screenSearchIcon);
+
+  const searchInput = getByRole('textbox');
+  await userEvent.type(searchInput, 'IMPOSSIBLE_NAME');
+
+  const searchBTN = getByText(/Search/i);
+  await userEvent.click(searchBTN);
+
+  expect(mockFetch).toHaveBeenCalled();
+  expect(alertSpy).toHaveBeenCalled();
+});
+
+test('Os cards de meals são renderizados corretamente', async () => {
+  const MOCK_RESPONSE = {
+    ok: true,
+    status: 200,
+    json: async () => mockMealsData,
+  } as Response;
+  const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
+
+  const { getByText, getByRole, findByText } = renderWithRouter(<HomeMeal />);
+
+  const screenSearchIcon = getByRole('img', { name: /search icon/i });
+  await userEvent.click(screenSearchIcon);
+
+  const nameRadioButton = getByText(/name/i);
+  await userEvent.click(nameRadioButton);
+
+  const searchInput = getByRole('textbox');
+  await userEvent.type(searchInput, 'Co');
+
+  const searchBTN = getByText(/Search/i);
+  await userEvent.click(searchBTN);
+
+  const corba = await findByText(/corba/i);
+  expect(corba).toBeInTheDocument();
+});
+
+test('Os cards de drinks são renderizados corretamente', async () => {
+  const MOCK_RESPONSE = {
+    ok: true,
+    status: 200,
+    json: async () => mockDrinksData,
+  } as Response;
+  const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
+
+  const { getByText, getByRole, findByText } = renderWithRouter(<Drinks />);
+
+  const screenSearchIcon = getByRole('img', { name: /search icon/i });
+  await userEvent.click(screenSearchIcon);
+
+  const nameRadioButton = getByText(/name/i);
+  await userEvent.click(nameRadioButton);
+
+  const searchInput = getByRole('textbox');
+  await userEvent.type(searchInput, 'GG');
+
+  const searchBTN = getByText(/Search/i);
+  await userEvent.click(searchBTN);
+
+  const corba = await findByText(/gg/i);
+  expect(corba).toBeInTheDocument();
+});
 describe('Footer', () => {
   test('Renderiza corretamente', () => {
     const { getByTestId } = renderWithRouter(<App />);
