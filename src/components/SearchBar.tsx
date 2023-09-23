@@ -2,62 +2,79 @@ import React, { useState, ChangeEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import searchIcon from '../images/searchIcon.svg';
 import { getFetch } from '../utils/functions';
-import { MealType, CocktailType } from '../types';
+import { SearchResultsType } from '../types';
 
-type SearchType = 'ingredient' | 'name' | 'first-letter';
-type SearchResultsType = {
-  meals: MealType[],
-  drinks: CocktailType[]
-};
 type SearchBarProps = {
   page: string,
 };
+type FormDataType = {
+  searchValue: string,
+  searchType: string,
+};
+
 function SearchBar({ page }: SearchBarProps) {
-  const [searchType, setSearchType] = useState<SearchType>('ingredient');
-  const [searchValue, setSearchValue] = useState<string>('');
+  const navigate = useNavigate();
+
+  const FORM_INITIAL_STATE = {
+    searchValue: '',
+    searchType: 'ingredient',
+  };
+
+  const [formData, setFormData] = useState<FormDataType>(FORM_INITIAL_STATE);
+  const { searchValue, searchType } = formData;
   const [searchResults, setSearchResult] = useState<SearchResultsType>(
     { meals: [], drinks: [] },
   );
   const { meals, drinks } = searchResults;
   const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
-  const navigate = useNavigate();
 
-  const handleSearchTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchType(event.target.value as SearchType);
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { target: { name, value: targetValue } } = event;
+    setFormData({ ...formData, [name]: targetValue });
   };
 
-  const handleSearchValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value);
-  };
-
-  const checkSearchValue = (errorMessage: string) => {
-    if (!searchValue || searchValue.length > 1) {
+  const isSearchValueValid = (errorMessage: string) => {
+    if (!searchValue) {
       window.alert(errorMessage);
+      return false;
     }
+    if (searchType === 'first-letter' && searchValue.length > 1) {
+      window.alert(errorMessage);
+      return false;
+    }
+    return true;
+  };
+
+  const handleSearchResults = async (endpoint: string, errorMessage: string) => {
+    if (!isSearchValueValid(errorMessage)) {
+      return;
+    }
+    const results = await getFetch(endpoint, searchValue);
+    if (results[page] === null) {
+      window.alert("Sorry, we haven't found any recipes for these filters.");
+      return;
+    }
+    setSearchResult({ ...searchResults, [page]: results[page] });
   };
 
   const handleSearch = async () => {
     const domainURL = page === 'meals' ? 'themealdb' : 'thecocktaildb';
     if (searchType === 'ingredient') {
-      checkSearchValue('Please, you must submit a valid ingredient.');
-      const endpoint = `https://www.${domainURL}.com/api/json/v1/1/filter.php?i=`;
-      const results = await getFetch(endpoint, searchValue);
-      setSearchResult({ ...searchResults, [page]: results[page] });
+      await handleSearchResults(
+        `https://www.${domainURL}.com/api/json/v1/1/filter.php?i=`,
+        'Please, you must submit a valid ingredient.',
+      );
     } else if (searchType === 'name') {
-      checkSearchValue('Please, you must submit a valid name.');
-      const endpoint = `https://www.${domainURL}.com/api/json/v1/1/search.php?s=`;
-      const results = await getFetch(endpoint, searchValue);
-      setSearchResult({ ...searchResults, [page]: results[page] });
+      await handleSearchResults(
+        `https://www.${domainURL}.com/api/json/v1/1/search.php?s=`,
+        'Please, you must submit a valid name.',
+      );
     } else if (searchType === 'first-letter') {
-      checkSearchValue('Your search must have only 1 (one) character');
-      const endpoint = `https://www.${domainURL}.com/api/json/v1/1/search.php?f=`;
-      const results = await getFetch(endpoint, searchValue);
-      setSearchResult({ ...searchResults, [page]: results[page] });
+      await handleSearchResults(
+        `https://www.${domainURL}.com/api/json/v1/1/search.php?f=`,
+        'Your search must have only 1 (one) character',
+      );
     }
-  };
-
-  const handleSearchIconClick = () => {
-    setIsSearchVisible(!isSearchVisible);
   };
 
   const createMealCard = () => {
@@ -105,7 +122,7 @@ function SearchBar({ page }: SearchBarProps) {
     <div>
       <button
         type="button"
-        onClick={ handleSearchIconClick }
+        onClick={ () => setIsSearchVisible(!isSearchVisible) }
       >
         <img
           src={ searchIcon }
@@ -118,40 +135,38 @@ function SearchBar({ page }: SearchBarProps) {
           type="text"
           placeholder="Digite sua busca aqui..."
           data-testid="search-input"
+          name="searchValue"
           value={ searchValue }
-          onChange={ handleSearchValueChange }
+          onChange={ handleChange }
         />
       )}
       <label>
         <input
           type="radio"
-          name="search-type"
+          name="searchType"
           value="ingredient"
           data-testid="ingredient-search-radio"
-          checked={ searchType === 'ingredient' }
-          onChange={ handleSearchTypeChange }
+          onChange={ handleChange }
         />
         Ingredient
       </label>
       <label>
         <input
           type="radio"
-          name="search-type"
+          name="searchType"
           value="name"
           data-testid="name-search-radio"
-          checked={ searchType === 'name' }
-          onChange={ handleSearchTypeChange }
+          onChange={ handleChange }
         />
         Name
       </label>
       <label>
         <input
           type="radio"
-          name="search-type"
+          name="searchType"
           value="first-letter"
           data-testid="first-letter-search-radio"
-          checked={ searchType === 'first-letter' }
-          onChange={ handleSearchTypeChange }
+          onChange={ handleChange }
         />
         First letter
       </label>

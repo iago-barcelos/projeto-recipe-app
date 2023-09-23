@@ -20,3 +20,8 @@ export type MealType = {
   strArea: string,
   strMealThumb: string,
 };
+
+export type SearchResultsType = {
+  meals: MealType[],
+  drinks: CocktailType[]
+};
