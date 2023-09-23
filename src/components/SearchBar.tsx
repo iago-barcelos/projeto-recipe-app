@@ -5,13 +5,20 @@ import { getFetch } from '../utils/functions';
 import { MealType, CocktailType } from '../types';
 
 type SearchType = 'ingredient' | 'name' | 'first-letter';
+type SearchResultsType = {
+  meals: MealType[],
+  drinks: CocktailType[]
+};
 type SearchBarProps = {
   page: string,
 };
 function SearchBar({ page }: SearchBarProps) {
   const [searchType, setSearchType] = useState<SearchType>('ingredient');
   const [searchValue, setSearchValue] = useState<string>('');
-  const [searchResult, setSearchResult] = useState<MealType | CocktailType>();
+  const [searchResults, setSearchResult] = useState<SearchResultsType>(
+    { meals: [], drinks: [] },
+  );
+  const { meals, drinks } = searchResults;
   const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -23,28 +30,29 @@ function SearchBar({ page }: SearchBarProps) {
     setSearchValue(event.target.value);
   };
 
+  const checkSearchValue = (errorMessage: string) => {
+    if (!searchValue || searchValue.length > 1) {
+      window.alert(errorMessage);
+    }
+  };
+
   const handleSearch = async () => {
+    const domainURL = page === 'meals' ? 'themealdb' : 'thecocktaildb';
     if (searchType === 'ingredient') {
-      if (!searchValue) {
-        window.alert('Please, you must submit a valid ingredient.');
-      }
-      const endpoint = page === 'Meals' ? 'https://www.themealdb.com/api/json/v1/1/filter.php?i=' : 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=';
-      const result = await getFetch(endpoint, searchValue);
-      setSearchResult(await result);
+      checkSearchValue('Please, you must submit a valid ingredient.');
+      const endpoint = `https://www.${domainURL}.com/api/json/v1/1/filter.php?i=`;
+      const results = await getFetch(endpoint, searchValue);
+      setSearchResult({ ...searchResults, [page]: results[page] });
     } else if (searchType === 'name') {
-      if (!searchValue) {
-        window.alert('Please, you must submit a valid name.');
-      }
-      const endpoint = page === 'Meals' ? 'https://www.themealdb.com/api/json/v1/1/search.php?s=' : 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
-      const result = await getFetch(endpoint, searchValue);
-      setSearchResult(await result);
+      checkSearchValue('Please, you must submit a valid name.');
+      const endpoint = `https://www.${domainURL}.com/api/json/v1/1/search.php?s=`;
+      const results = await getFetch(endpoint, searchValue);
+      setSearchResult({ ...searchResults, [page]: results[page] });
     } else if (searchType === 'first-letter') {
-      if (searchValue.length !== 1) {
-        window.alert('Your search must have only 1 (one) character');
-      }
-      const endpoint = page === 'Meals' ? 'https://www.themealdb.com/api/json/v1/1/search.php?f=' : 'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=';
-      const result = await getFetch(endpoint, searchValue);
-      setSearchResult(await result);
+      checkSearchValue('Your search must have only 1 (one) character');
+      const endpoint = `https://www.${domainURL}.com/api/json/v1/1/search.php?f=`;
+      const results = await getFetch(endpoint, searchValue);
+      setSearchResult({ ...searchResults, [page]: results[page] });
     }
   };
 
@@ -52,18 +60,46 @@ function SearchBar({ page }: SearchBarProps) {
     setIsSearchVisible(!isSearchVisible);
   };
 
+  const createMealCard = () => {
+    const shownMealsResults = meals.length > 12 ? (
+      meals.slice(0, 12)) : meals;
+    return shownMealsResults.map(({ strMealThumb, strMeal }, index) => (
+      <div data-testid={ `${index}-recipe-card` } key={ index }>
+        <img
+          data-testid={ `${index}-card-img` }
+          src={ strMealThumb }
+          alt={ strMeal }
+        />
+        <span data-testid={ `${index}-card-name` } key={ index }>{strMeal}</span>
+      </div>
+    ));
+  };
+
+  const createDrinkCard = () => {
+    const shownDrinksResults = drinks.length > 12 ? (
+      drinks.slice(0, 12)) : drinks;
+    return shownDrinksResults.map(({ strDrink, strDrinkThumb }, index) => (
+      <div data-testid={ `${index}-recipe-card` } key={ index }>
+        <img
+          data-testid={ `${index}-card-img` }
+          src={ strDrinkThumb }
+          alt={ strDrink }
+        />
+        <span data-testid={ `${index}-card-name` } key={ index }>{strDrink}</span>
+      </div>
+    ));
+  };
+
   useEffect(() => {
-    if (searchResult) {
-      if ('meals' in searchResult && searchResult.meals.length === 1) {
-        const id = (searchResult as MealType).meals[0].idMeal;
-        navigate(`/meals/${id}`);
-      }
-      if ('drinks' in searchResult && searchResult.drinks.length === 1) {
-        const id = (searchResult as CocktailType).drinks[0].idDrink;
-        navigate(`/drinks/${id}`);
-      }
+    if (meals.length === 1) {
+      const id = meals[0].idMeal;
+      navigate(`/meals/${id}`);
     }
-  }, [searchResult]);
+    if (drinks.length === 1) {
+      const id = drinks[0].idDrink;
+      navigate(`/drinks/${id}`);
+    }
+  }, [searchResults]);
 
   return (
     <div>
@@ -126,7 +162,8 @@ function SearchBar({ page }: SearchBarProps) {
       >
         Search
       </button>
-
+      {meals.length > 0 && createMealCard()}
+      {drinks.length > 0 && createDrinkCard()}
     </div>
   );
 }

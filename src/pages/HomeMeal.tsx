@@ -7,7 +7,7 @@ function HomeMeal() {
   return (
     <div>
       <Header pageTitle="Meals" />
-      <SearchBar page="Meals" />
+      <SearchBar page="meals" />
       <Footer />
     </div>
   );
