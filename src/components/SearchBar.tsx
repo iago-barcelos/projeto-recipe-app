@@ -2,74 +2,127 @@ import React, { useState, ChangeEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import searchIcon from '../images/searchIcon.svg';
 import { getFetch } from '../utils/functions';
-import { MealType, CocktailType } from '../types';
+import { SearchResultsType } from '../types';
 
-type SearchType = 'ingredient' | 'name' | 'first-letter';
 type SearchBarProps = {
   page: string,
 };
+type FormDataType = {
+  searchValue: string,
+  searchType: string,
+};
+
 function SearchBar({ page }: SearchBarProps) {
-  const [searchType, setSearchType] = useState<SearchType>('ingredient');
-  const [searchValue, setSearchValue] = useState<string>('');
-  const [searchResult, setSearchResult] = useState<MealType | CocktailType>();
-  const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const handleSearchTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchType(event.target.value as SearchType);
+  const FORM_INITIAL_STATE = {
+    searchValue: '',
+    searchType: 'ingredient',
   };
 
-  const handleSearchValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value);
+  const [formData, setFormData] = useState<FormDataType>(FORM_INITIAL_STATE);
+  const { searchValue, searchType } = formData;
+  const [searchResults, setSearchResult] = useState<SearchResultsType>(
+    { meals: [], drinks: [] },
+  );
+  const { meals, drinks } = searchResults;
+  const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { target: { name, value: targetValue } } = event;
+    setFormData({ ...formData, [name]: targetValue });
+  };
+
+  const isSearchValueValid = (errorMessage: string) => {
+    if (!searchValue) {
+      window.alert(errorMessage);
+      return false;
+    }
+    if (searchType === 'first-letter' && searchValue.length > 1) {
+      window.alert(errorMessage);
+      return false;
+    }
+    return true;
+  };
+
+  const handleSearchResults = async (endpoint: string, errorMessage: string) => {
+    if (!isSearchValueValid(errorMessage)) {
+      return;
+    }
+    const results = await getFetch(endpoint, searchValue);
+    if (!results || results[page] === null) {
+      window.alert("Sorry, we haven't found any recipes for these filters.");
+      return;
+    }
+    setSearchResult({ ...searchResults, [page]: results[page] });
   };
 
   const handleSearch = async () => {
+    const domainURL = page === 'meals' ? 'themealdb' : 'thecocktaildb';
     if (searchType === 'ingredient') {
-      if (!searchValue) {
-        window.alert('Please, you must submit a valid ingredient.');
-      }
-      const endpoint = page === 'Meals' ? 'https://www.themealdb.com/api/json/v1/1/filter.php?i=' : 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=';
-      const result = await getFetch(endpoint, searchValue);
-      setSearchResult(await result);
+      await handleSearchResults(
+        `https://www.${domainURL}.com/api/json/v1/1/filter.php?i=`,
+        'Please, you must submit a valid ingredient.',
+      );
     } else if (searchType === 'name') {
-      if (!searchValue) {
-        window.alert('Please, you must submit a valid name.');
-      }
-      const endpoint = page === 'Meals' ? 'https://www.themealdb.com/api/json/v1/1/search.php?s=' : 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
-      const result = await getFetch(endpoint, searchValue);
-      setSearchResult(await result);
+      await handleSearchResults(
+        `https://www.${domainURL}.com/api/json/v1/1/search.php?s=`,
+        'Please, you must submit a valid name.',
+      );
     } else if (searchType === 'first-letter') {
-      if (searchValue.length !== 1) {
-        window.alert('Your search must have only 1 (one) character');
-      }
-      const endpoint = page === 'Meals' ? 'https://www.themealdb.com/api/json/v1/1/search.php?f=' : 'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=';
-      const result = await getFetch(endpoint, searchValue);
-      setSearchResult(await result);
+      await handleSearchResults(
+        `https://www.${domainURL}.com/api/json/v1/1/search.php?f=`,
+        'Your search must have only 1 (one) character',
+      );
     }
   };
 
-  const handleSearchIconClick = () => {
-    setIsSearchVisible(!isSearchVisible);
+  const createMealCard = () => {
+    const shownMealsResults = meals.length > 12 ? (
+      meals.slice(0, 12)) : meals;
+    return shownMealsResults.map(({ strMealThumb, strMeal }, index) => (
+      <div data-testid={ `${index}-recipe-card` } key={ index }>
+        <img
+          data-testid={ `${index}-card-img` }
+          src={ strMealThumb }
+          alt={ strMeal }
+        />
+        <span data-testid={ `${index}-card-name` } key={ index }>{strMeal}</span>
+      </div>
+    ));
+  };
+
+  const createDrinkCard = () => {
+    const shownDrinksResults = drinks.length > 12 ? (
+      drinks.slice(0, 12)) : drinks;
+    return shownDrinksResults.map(({ strDrink, strDrinkThumb }, index) => (
+      <div data-testid={ `${index}-recipe-card` } key={ index }>
+        <img
+          data-testid={ `${index}-card-img` }
+          src={ strDrinkThumb }
+          alt={ strDrink }
+        />
+        <span data-testid={ `${index}-card-name` } key={ index }>{strDrink}</span>
+      </div>
+    ));
   };
 
   useEffect(() => {
-    if (searchResult) {
-      if ('meals' in searchResult && searchResult.meals.length === 1) {
-        const id = (searchResult as MealType).meals[0].idMeal;
-        navigate(`/meals/${id}`);
-      }
-      if ('drinks' in searchResult && searchResult.drinks.length === 1) {
-        const id = (searchResult as CocktailType).drinks[0].idDrink;
-        navigate(`/drinks/${id}`);
-      }
+    if (meals.length === 1) {
+      const id = meals[0].idMeal;
+      navigate(`/meals/${id}`);
     }
-  }, [searchResult]);
+    if (drinks.length === 1) {
+      const id = drinks[0].idDrink;
+      navigate(`/drinks/${id}`);
+    }
+  }, [searchResults]);
 
   return (
     <div>
       <button
         type="button"
-        onClick={ handleSearchIconClick }
+        onClick={ () => setIsSearchVisible(!isSearchVisible) }
       >
         <img
           src={ searchIcon }
@@ -82,40 +135,38 @@ function SearchBar({ page }: SearchBarProps) {
           type="text"
           placeholder="Digite sua busca aqui..."
           data-testid="search-input"
+          name="searchValue"
           value={ searchValue }
-          onChange={ handleSearchValueChange }
+          onChange={ handleChange }
         />
       )}
       <label>
         <input
           type="radio"
-          name="search-type"
+          name="searchType"
           value="ingredient"
           data-testid="ingredient-search-radio"
-          checked={ searchType === 'ingredient' }
-          onChange={ handleSearchTypeChange }
+          onChange={ handleChange }
         />
         Ingredient
       </label>
       <label>
         <input
           type="radio"
-          name="search-type"
+          name="searchType"
           value="name"
           data-testid="name-search-radio"
-          checked={ searchType === 'name' }
-          onChange={ handleSearchTypeChange }
+          onChange={ handleChange }
         />
         Name
       </label>
       <label>
         <input
           type="radio"
-          name="search-type"
+          name="searchType"
           value="first-letter"
           data-testid="first-letter-search-radio"
-          checked={ searchType === 'first-letter' }
-          onChange={ handleSearchTypeChange }
+          onChange={ handleChange }
         />
         First letter
       </label>
@@ -126,7 +177,8 @@ function SearchBar({ page }: SearchBarProps) {
       >
         Search
       </button>
-
+      {meals.length > 0 && createMealCard()}
+      {drinks.length > 0 && createDrinkCard()}
     </div>
   );
 }

@@ -6,7 +6,7 @@ function Drinks() {
   return (
     <div>
       <Header pageTitle="Drinks" />
-      <SearchBar page="Drinks" />
+      <SearchBar page="drinks" />
       <Footer />
     </div>
   );
