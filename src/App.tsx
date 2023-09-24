@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Login from './pages/Login';
@@ -14,17 +14,31 @@ import RecipeAppContext from './context/RecipeAppContext';
 // ..
 
 function App() {
-  const { searchResults } = useRecipeSearch();
+  const {
+    searchResults,
+    searchValue,
+    handleChange,
+    handleSearch,
+  } = useRecipeSearch();
+  console.log(searchResults);
   return (
-    <RecipeAppContext.Provider value={ { searchResults } }>
+    <RecipeAppContext.Provider
+      value={ { searchResults, searchValue, handleChange, handleSearch } }
+    >
       <Routes>
         <Route path="/" element={ <Login /> } />
         <Route path="/meals" element={ <HomeMeal /> } />
         <Route path="/meals/:id-da-receita" element={ <HomeMeal /> } />
-        <Route path="/meals/:id-da-receita/in-progress" element={ <HomeMeal /> } />
+        <Route
+          path="/meals/:id-da-receita/in-progress"
+          element={ <HomeMeal /> }
+        />
         <Route path="/drinks" element={ <Drinks /> } />
         <Route path="/drinks:id-da-receita" element={ <Drinks /> } />
-        <Route path="/drinks/:id-da-receita/in-progress" element={ <HomeMeal /> } />
+        <Route
+          path="/drinks/:id-da-receita/in-progress"
+          element={ <HomeMeal /> }
+        />
         <Route path="/profile" element={ <Profile /> } />
         <Route path="/done-recipes" element={ <DoneRecipes /> } />
         <Route path="/favorite-recipes" element={ <FavoriteRecipes /> } />
