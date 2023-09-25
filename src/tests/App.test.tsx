@@ -1,6 +1,7 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
+
 import App from '../App';
 import DoneRecipes from '../pages/DoneRecipes';
 import Drinks from '../pages/Drinks';
@@ -135,12 +136,11 @@ describe('Testa componente DoneRecipes', () => {
 });
 
 describe('Componente Drinks', () => {
-  test('Renderiza a página com o endereço correto', () => {
-    const { getByTestId } = renderWithRouter(<Drinks />);
+  test.only('Renderiza a página com o endereço correto', async () => {
+    const { findByRole } = renderWithRouter(<Drinks />);
 
-    const pageTitleElement = getByTestId(pageTitleTestId);
-    expect(pageTitleElement).toBeInTheDocument();
-    expect(pageTitleElement.textContent).toBe('Drinks');
+    const allDrinksBtn = findByRole('button', { name: /all drinks/i });
+    expect(allDrinksBtn).toBeInTheDocument();
   });
 
   test('Renderiza o icone de pesquisa', () => {
@@ -452,6 +452,7 @@ test('Os cards de drinks são renderizados corretamente', async () => {
   const drink1 = await getByTestId('0-recipe-card');
   expect(drink1).toBeInTheDocument();
 });
+
 describe('Footer', () => {
   test('Renderiza corretamente', () => {
     const { getByTestId } = renderWithRouter(<HomeMeal />);

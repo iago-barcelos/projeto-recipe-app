@@ -25,3 +25,16 @@ export type SearchResultsType = {
   meals: MealType[],
   drinks: CocktailType[]
 };
+
+export type FormDataType = {
+  searchValue: string,
+  searchType: string,
+};
+
+export type ByCategoriesType = {
+  byCategories: []
+};
+
+export type DrinksCategories = {
+  drinks: [],
+};
