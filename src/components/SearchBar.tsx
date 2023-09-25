@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import searchIcon from '../images/searchIcon.svg';
 import RecipeAppContext from '../context/RecipeAppContext';
 import FilterBar from './FilterBar';
+import RecipeCard from './RecipeCard';
 
 type SearchBarProps = {
   page: string,
@@ -21,36 +22,6 @@ function SearchBar({ page }: SearchBarProps) {
   const { meals, drinks } = searchResults;
   const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
 
-  const createMealCard = () => {
-    const shownMealsResults = meals.length > 12 ? (
-      meals.slice(0, 12)) : meals;
-    return shownMealsResults.map(({ strMealThumb, strMeal }, index) => (
-      <div data-testid={ `${index}-recipe-card` } key={ index }>
-        <img
-          data-testid={ `${index}-card-img` }
-          src={ strMealThumb }
-          alt={ strMeal }
-        />
-        <span data-testid={ `${index}-card-name` } key={ index }>{strMeal}</span>
-      </div>
-    ));
-  };
-
-  const createDrinkCard = () => {
-    const shownDrinksResults = drinks.length > 12 ? (
-      drinks.slice(0, 12)) : drinks;
-    return shownDrinksResults.map(({ strDrink, strDrinkThumb }, index) => (
-      <div data-testid={ `${index}-recipe-card` } key={ index }>
-        <img
-          data-testid={ `${index}-card-img` }
-          src={ strDrinkThumb }
-          alt={ strDrink }
-        />
-        <span data-testid={ `${index}-card-name` } key={ index }>{strDrink}</span>
-      </div>
-    ));
-  };
-
   useEffect(() => {
     if (meals.length === 1) {
       const id = meals[0].idMeal;
@@ -61,7 +32,7 @@ function SearchBar({ page }: SearchBarProps) {
       navigate(`/drinks/${id}`);
     }
   }, [searchResults]);
-  // console.log(searchResults);
+  console.log(searchResults);
   return (
     <>
       <section>
@@ -124,8 +95,8 @@ function SearchBar({ page }: SearchBarProps) {
         </button>
       </section>
       <FilterBar page={ page } />
-      {meals.length > 0 && createMealCard()}
-      {drinks.length > 0 && createDrinkCard()}
+      {meals.length > 0 && <RecipeCard meals={ meals } />}
+      {drinks.length > 0 && <RecipeCard drinks={ drinks } />}
       <section />
     </>
   );
