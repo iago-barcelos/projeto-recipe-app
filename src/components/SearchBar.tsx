@@ -5,7 +5,8 @@ import RecipeAppContext from '../context/RecipeAppContext';
 import FilterBar from './FilterBar';
 import Recipes from './Recipes';
 import { getFetch } from '../utils/functions';
-import { SearchResultsType } from '../types';
+import { CocktailType, MealType, SearchResultsType } from '../types';
+import useRecipeCategories from '../hooks/useRecipeCategories';
 
 type SearchBarProps = {
   page: string,
@@ -19,6 +20,7 @@ function SearchBar({ page }: SearchBarProps) {
     handleChange,
     handleSearch,
   } = recipeContext;
+  const { byCategories, categories, getByCategories } = useRecipeCategories(page);
   const navigate = useNavigate();
 
   const meals = searchResults?.meals || [];
@@ -48,7 +50,8 @@ function SearchBar({ page }: SearchBarProps) {
     };
     fetchData(page);
   }, [page]);
-  console.log(initialRecipes);
+
+  console.log(byCategories);
   return (
     <>
       <section>
@@ -110,10 +113,26 @@ function SearchBar({ page }: SearchBarProps) {
           Search
         </button>
       </section>
-      <FilterBar page={ page } />
-      {initialRecipes.meals && <Recipes meals={ initialRecipes.meals } /> }
-      {initialRecipes.drinks && <Recipes drinks={ initialRecipes.drinks } />}
-      {meals.length > 0 && <Recipes meals={ meals } />}
+      <FilterBar
+        page={ page }
+        getByCategories={ getByCategories }
+        categories={ categories }
+      />
+      {meals.length === 0 && byCategories.byCategories.length === 0 && (
+        <Recipes meals={ initialRecipes.meals } />
+      )}
+      {drinks.length === 0 && byCategories.byCategories.length === 0 && (
+        <Recipes drinks={ initialRecipes.drinks } />
+      )}
+      {byCategories.byCategories.length > 0 && meals.length === 0 && (
+        <Recipes meals={ byCategories.byCategories as MealType[] } />
+      )}
+      {byCategories.byCategories.length > 0 && meals.length === 0 && (
+        <Recipes drinks={ byCategories.byCategories as CocktailType[] } />
+      )}
+      {meals.length > 0 && (
+        <Recipes meals={ meals } />
+      )}
       {drinks.length > 0 && <Recipes drinks={ drinks } />}
       <section />
     </>

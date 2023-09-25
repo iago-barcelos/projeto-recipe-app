@@ -1,12 +1,14 @@
-import useRecipeCategories from '../hooks/useRecipeCategories';
+// import useRecipeCategories from '../hooks/useRecipeCategories';
 
 type FilterBarProps = {
   page: string;
+  categories: { strCategory: string }[];
+  getByCategories: (toggle: string, category: string) => void;
 };
 
-function FilterBar({ page }: FilterBarProps) {
-  const { getByCategories, categories, byCategories } = useRecipeCategories(page);
-  console.log(byCategories);
+function FilterBar({ page, categories, getByCategories }: FilterBarProps) {
+  // const { getByCategories, categories, byCategories } = useRecipeCategories(page);
+
   return (
     <>
       <button data-testid="All-category-filter">
