@@ -10,6 +10,7 @@ import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
 import useRecipeSearch from './hooks/useRecipeSearch';
 import RecipeAppContext from './context/RecipeAppContext';
+import Recipes from './components/Recipes';
 
 // ..
 
