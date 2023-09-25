@@ -1,3 +1,13 @@
+const mincedBeef = 'Minced Beef';
+const garlicClove = 'Garlic Clove';
+const vegetableOil = 'Vegetable Oil';
+const lemonJuice = 'Lemon Juice';
+const ordinaryDrink = 'Ordinary Drink';
+const cocktailGlass = 'Cocktail glass';
+const grandMarnier = 'Grand Marnier';
+const shotGlass = 'Shot glass';
+const baileysIrishCream = 'Baileys irish cream';
+
 export const mockMealsData = {
   meals: [
     {
@@ -6,7 +16,32 @@ export const mockMealsData = {
       strDrinkAlternate: null,
       strCategory: 'Side',
       strArea: 'Turkish',
-      strInstructions: 'Pick through your lentils for any foreign debris, rinse them 2 or 3 times, drain, and set aside.  Fair warning, this will probably turn your lentils into a solid block that you\u2019ll have to break up later\r\nIn a large pot over medium-high heat, saut\u00E9 the olive oil and the onion with a pinch of salt for about 3 minutes, then add the carrots and cook for another 3 minutes.\r\nAdd the tomato paste and stir it around for around 1 minute. Now add the cumin, paprika, mint, thyme, black pepper, and red pepper as quickly as you can and stir for 10 seconds to bloom the spices. Congratulate yourself on how amazing your house now smells.\r\nImmediately add the lentils, water, broth, and salt. Bring the soup to a (gentle) boil.\r\nAfter it has come to a boil, reduce heat to medium-low, cover the pot halfway, and cook for 15-20 minutes or until the lentils have fallen apart and the carrots are completely cooked.\r\nAfter the soup has cooked and the lentils are tender, blend the soup either in a blender or simply use a hand blender to reach the consistency you desire. Taste for seasoning and add more salt if necessary.\r\nServe with crushed-up crackers, torn up bread, or something else to add some extra thickness.  You could also use a traditional thickener (like cornstarch or flour), but I prefer to add crackers for some texture and saltiness.  Makes great leftovers, stays good in the fridge for about a week.',
+      strInstructions:
+  'Pick through your lentils for any foreign debris, \r\n'
+  + 'rinse them 2 or 3 times, drain, and set aside.\r\n'
+  + 'Fair warning, this will probably turn your lentils into a \r\n'
+  + 'solid block that you’ll have to break up later\r\n'
+  + 'In a large pot over medium-high heat, sauté the olive oil and \r\n'
+  + 'the onion with a pinch of salt for about 3 minutes, then add the \r\n'
+  + 'carrots and cook for another 3 minutes.\r\n'
+  + 'Add the tomato paste and stir it around for around 1 minute.\r\n'
+  + 'Now add the cumin, paprika, mint, thyme, black pepper, and red pepper\r\n'
+  + 'as quickly as you can and stir for 10 seconds to bloom the spices.\r\n'
+  + 'Congratulate yourself on how amazing your house now smells.\r\n'
+  + 'Immediately add the lentils, water, broth, and salt.\r\n'
+  + 'Bring the soup to a (gentle) boil.\r\n'
+  + 'After it has come to a boil, reduce heat to medium-low, cover the pot\r\n'
+  + 'halfway, and cook for 15-20 minutes or until the lentils have fallen apart\r\n'
+  + 'and the carrots are completely cooked.\r\n'
+  + 'After the soup has cooked and the lentils are tender,\r\n'
+  + 'blend the soup either in a blender or simply use a hand blender\r\n'
+  + 'to reach the consistency you desire.\r\n'
+  + 'Taste for seasoning and add more salt if necessary.\r\n'
+  + 'Serve with crushed-up crackers, torn up bread, or something\r\n'
+  + 'else to add some extra thickness.\r\n'
+  + 'You could also use a traditional thickener (like cornstarch or flour),\r\n'
+  + 'but I prefer to add crackers for some texture and saltiness.\r\n'
+  + 'Makes great leftovers, stays good in the fridge for about a week.',
       strMealThumb: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
       strTags: 'Soup',
       strYoutube: 'https://www.youtube.com/watch?v=VVnZd8A84z4',
@@ -61,12 +96,21 @@ export const mockMealsData = {
       strDrinkAlternate: null,
       strCategory: 'Side',
       strArea: 'Croatian',
-      strInstructions: 'Fry the finely chopped onions and minced meat in oil. Add the salt and pepper. Grease a round baking tray and put a layer of pastry in it. Cover with a thin layer of filling and cover this with another layer of filo pastry which must be well coated in oil. Put another layer of filling and cover with pastry. When you have five or six layers, cover with filo pastry, bake at 200\u00BAC/392\u00BAF for half an hour and cut in quarters and serve.',
+      strInstructions: 'Fry the finely chopped onions and minced meat in oil.\r\n'
+      + 'Add the salt and pepper. Grease a round baking \r\n'
+      + 'tray and put a layer of pastry\r\n'
+      + 'in it. Cover with a thin layer of filling and \r\n'
+      + 'cover this with another layer of \r\n'
+      + 'filo pastry which must be well coated in oil. \r\n'
+      + 'Put another layer of filling and cover\r\n'
+      + 'with pastry. When you have five or six layers, \r\n'
+      + 'cover with filo pastry, bake at\r\n'
+      + '200\u00BAC/392\u00BAF for half an hour and cut in quarters and serve.',
       strMealThumb: 'https://www.themealdb.com/images/media/meals/tkxquw1628771028.jpg',
       strTags: 'Streetfood, Onthego',
       strYoutube: 'https://www.youtube.com/watch?v=YsJXZwE5pdY',
       strIngredient1: 'Filo Pastry',
-      strIngredient2: 'Minced Beef',
+      strIngredient2: mincedBeef,
       strIngredient3: 'Onion',
       strIngredient4: 'Oil',
       strIngredient5: 'Salt',
@@ -116,7 +160,42 @@ export const mockMealsData = {
       strDrinkAlternate: null,
       strCategory: 'Seafood',
       strArea: 'Japanese',
-      strInstructions: 'STEP 1\r\nTO MAKE SUSHI ROLLS: Pat out some rice. Lay a nori sheet on the mat, shiny-side down. Dip your hands in the vinegared water, then pat handfuls of rice on top in a 1cm thick layer, leaving the furthest edge from you clear.\r\n\r\nSTEP 2\r\nSpread over some Japanese mayonnaise. Use a spoon to spread out a thin layer of mayonnaise down the middle of the rice.\r\n\r\nSTEP 3\r\nAdd the filling. Get your child to top the mayonnaise with a line of their favourite fillings \u2013 here we\u2019ve used tuna and cucumber.\r\n\r\nSTEP 4\r\nRoll it up. Lift the edge of the mat over the rice, applying a little pressure to keep everything in a tight roll.\r\n\r\nSTEP 5\r\nStick down the sides like a stamp. When you get to the edge without any rice, brush with a little water and continue to roll into a tight roll.\r\n\r\nSTEP 6\r\nWrap in cling film. Remove the mat and roll tightly in cling film before a grown-up cuts the sushi into thick slices, then unravel the cling film.\r\n\r\nSTEP 7\r\nTO MAKE PRESSED SUSHI: Layer over some smoked salmon. Line a loaf tin with cling film, then place a thin layer of smoked salmon inside on top of the cling film.\r\n\r\nSTEP 8\r\nCover with rice and press down. Press about 3cm of rice over the fish, fold the cling film over and press down as much as you can, using another tin if you have one.\r\n\r\nSTEP 9\r\nTip it out like a sandcastle. Turn block of sushi onto a chopping board. Get a grown-up to cut into fingers, then remove the cling film.\r\n\r\nSTEP 10\r\nTO MAKE SUSHI BALLS: Choose your topping. Get a small square of cling film and place a topping, like half a prawn or a small piece of smoked salmon, on it. Use damp hands to roll walnut-sized balls of rice and place on the topping.\r\n\r\nSTEP 11\r\nMake into tight balls. Bring the corners of the cling film together and tighten into balls by twisting it up, then unwrap and serve.',
+      strInstructions: 'STEP 1\r\n'
+      + 'TO MAKE SUSHI ROLLS: Pat out some rice.\r\n'
+      + ' Lay a nori sheet on the mat, shiny-side down.\r\n'
+      + ' Dip your hands in the vinegared water, then pat\r\n'
+      + ' handfuls of rice on top in a 1cm thick layer,\r\n'
+      + ' leaving the furthest edge from you clear.\r\n\r\n'
+      + 'STEP 2\r\nSpread over some Japanese mayonnaise. \r\n'
+      + 'Use a spoon to spread out a thin layer of mayonnaise\r\n'
+      + ' down the middle of the rice.\r\n\r\n'
+      + 'STEP 3\r\nAdd the filling. Get your child to top\r\n'
+      + ' the mayonnaise with a line of their favourite \r\n'
+      + 'fillings \u2013 here we\u2019ve used tuna and cucumber.\r\n\r\n'
+      + 'STEP 4\r\nRoll it up. Lift the edge of the mat over the rice,\r\n'
+      + ' applying a little pressure to keep everything in a tight roll.\r\n\r\n'
+      + 'STEP 5\r\nStick down the sides like a stamp. When you get to the\r\n'
+      + ' edge without any rice, brush with a little water\r\n'
+      + ' and continue to roll into a tight roll.\r\n\r\n'
+      + 'STEP 6\r\nWrap in cling film. Remove the mat and roll\r\n'
+      + ' tightly in cling film before a grown-up cuts the sushi\r\n'
+      + ' into thick slices, then unravel the cling film.\r\n\r\n'
+      + 'STEP 7\r\nTO MAKE PRESSED SUSHI: Layer over some smoked \r\n'
+      + 'salmon. Line a loaf tin with cling film, then place a thin \r\n'
+      + 'layer of smoked salmon inside on top of the cling film.\r\n\r\n'
+      + 'STEP 8\r\nCover with rice and press down. Press about 3cm of \r\n'
+      + 'rice over the fish, fold the cling film over and press down as \r\n'
+      + 'much as you can, using another tin if you have one.\r\n\r\n'
+      + 'STEP 9\r\nTip it out like a sandcastle. Turn block of sushi \r\n'
+      + 'onto a chopping board. Get a grown-up to cut into fingers, then \r\n'
+      + 'remove the cling film.\r\n\r\nSTEP 10\r\nTO MAKE SUSHI BALLS: \r\n'
+      + 'Choose your topping. Get a small square of cling film and place a \r\n'
+      + 'topping, like half a prawn or a small piece of smoked salmon, on it. \r\n'
+      + 'Use damp hands to roll walnut-sized balls \r\n'
+      + 'of rice and place on the topping.\r\n\r\n'
+      + 'STEP 11\r\nMake into tight balls. Bring the corners \r\n'
+      + 'of the cling film together and tighten into balls by \r\n'
+      + 'twisting it up, then unwrap and serve.',
       strMealThumb: 'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg',
       strTags: null,
       strYoutube: 'https://www.youtube.com/watch?v=ub68OxEypaY',
@@ -171,7 +250,17 @@ export const mockMealsData = {
       strDrinkAlternate: null,
       strCategory: 'Side',
       strArea: 'Turkish',
-      strInstructions: 'If you order kumpir in Turkey, the standard filling is first, lots of butter mashed into the potato, followed by cheese. There\u2019s then a row of other toppings that you can just point at to your heart\u2019s content \u2013 sweetcorn, olives, salami, coleslaw, Russian salad, allsorts \u2013 and you walk away with an over-stuffed potato because you got ever-excited by the choices on offer.\r\n\r\nGrate (roughly \u2013 you can use as much as you like) 150g of cheese.\r\nFinely chop one onion and one sweet red pepper.\r\nPut these ingredients into a large bowl with a good sprinkling of salt and pepper, chilli flakes (optional).',
+      strInstructions: 'If you order kumpir in Turkey, the standard \r\n'
+      + 'filling is first, lots of butter mashed into the potato, \r\n'
+      + 'followed by cheese. There\u2019s then a row of other toppings\r\n'
+      + ' that you can just point at to your heart\u2019s content\r\n\r\n'
+      + ' \u2013 sweetcorn, olives, salami, coleslaw, Russian salad,\r\n'
+      + ' allsorts \u2013 and you walk away with an over-stuffed potato \r\n'
+      + 'because you got ever-excited by the choices on offer.\r\n\r\n'
+      + 'Grate (roughly \u2013 you can use as much as you like) 150g \r\n'
+      + 'of cheese.\r\nFinely chop one onion and one sweet red pepper.\r\n'
+      + 'Put these ingredients into a large bowl with a good sprinkling \r\n'
+      + 'of salt and pepper, chilli flakes (optional).',
       strMealThumb: 'https://www.themealdb.com/images/media/meals/mlchx21564916997.jpg',
       strTags: 'SideDish',
       strYoutube: 'https://www.youtube.com/watch?v=IEDEtZ4UVtI',
@@ -226,7 +315,23 @@ export const mockMealsData = {
       strDrinkAlternate: null,
       strCategory: 'Beef',
       strArea: 'Filipino',
-      strInstructions: '0.\tMarinate beef in soy sauce, lemon (or calamansi), and ground black pepper for at least 1 hour. Note: marinate overnight for best result\r\n1.\tHeat the cooking oil in a pan then pan-fry half of the onions until the texture becomes soft. Set aside\r\n2.\tDrain the marinade from the beef. Set it aside. Pan-fry the beef on the same pan where the onions were fried for 1 minute per side. Remove from the pan. Set aside\r\n3.\tAdd more oil if needed. Saute garlic and remaining raw onions until onion softens.\r\n4.\tPour the remaining marinade and water. Bring to a boil.\r\n5.\tAdd beef. Cover the pan and simmer until the meat is tender. Note: Add water as needed.\r\n6.\tSeason with ground black pepper and salt as needed. Top with pan-fried onions.\r\n7.\tTransfer to a serving plate. Serve hot. Share and Enjoy!\r\n',
+      strInstructions: '0.\tMarinate beef in soy sauce,\r\n'
+      + ' lemon (or calamansi), and ground black pepper \r\n'
+      + 'for at least 1 hour. Note: marinate overnight for \r\n'
+      + 'best result\r\n1.\tHeat the cooking oil in a pan \r\n'
+      + 'then pan-fry half of the onions until the texture\r\n'
+      + ' becomes soft. Set aside\r\n2.\tDrain the marinade \r\n'
+      + 'from the beef. Set it aside. Pan-fry the beef on \r\n'
+      + 'the same pan where the onions were fried for 1 \r\n'
+      + 'minute per side. Remove from the pan. Set aside\r\n'
+      + '3.\tAdd more oil if needed. Saute garlic and \r\n'
+      + 'remaining raw onions until onion softens.\r\n'
+      + '4.\tPour the remaining marinade and water. Bring\r\n'
+      + ' to a boil.\r\n5.\tAdd beef. Cover the pan and \r\n'
+      + 'simmer until the meat is tender. Note: Add water \r\n'
+      + 'as needed.\r\n6.\tSeason with ground black pepper \r\n'
+      + 'and salt as needed. Top with pan-fried onions.\r\n'
+      + '7.\tTransfer to a serving plate. Serve hot. Share and Enjoy!\r\n',
       strMealThumb: 'https://www.themealdb.com/images/media/meals/4pqimk1683207418.jpg',
       strTags: null,
       strYoutube: 'https://www.youtube.com/watch?v=xOQON5_S7as',
@@ -281,19 +386,33 @@ export const mockMealsData = {
       strDrinkAlternate: null,
       strCategory: 'Vegetarian',
       strArea: 'Egyptian',
-      strInstructions: 'oak the beans in water to cover overnight.Drain. If skinless beans are unavailable, rub to loosen the skins, then discard the skins. Pat the beans dry with a towel.\r\nGrind the beans in a food mill or meat grinder.If neither appliance is available, process them in a food processor but only until the beans form a paste. (If blended too smoothly, the batter tends to fall apart during cooking.) Add the scallions, garlic, cilantro, cumin, baking powder, cayenne, salt, pepper, and coriander, if using.  Refrigerate for at least 30 minutes.\r\nShape the bean mixture into 1-inch balls.Flatten slightly and coat with flour.\r\nHeat at least 1\u00BD-inches of oil over medium heat to 365 degrees.\r\nFry the patties in batches, turning once, until golden brown on all sides, about 5 minutes.Remove with a wire mesh skimmer or slotted spoon. Serve as part of a meze or in pita bread with tomato-cucumber salad and tahina sauce.',
+      strInstructions: 'oak the beans in water to cover overnight\r\n'
+      + '.Drain. If skinless beans are unavailable, rub to loosen \r\n'
+      + 'the skins, then discard the skins. Pat the beans dry with a towel.\r\n'
+      + 'Grind the beans in a food mill or meat grinder.If neither \r\n'
+      + 'appliance is available, process them in a food processor but only \r\n'
+      + 'until the beans form a paste. (If blended too smoothly, the batter\r\n'
+      + ' tends to fall apart during cooking.) Add the scallions, garlic,\r\n'
+      + ' cilantro, cumin, baking powder, cayenne, salt, pepper, and \r\n'
+      + 'coriander, if using.  Refrigerate for at least 30 minutes.\r\n'
+      + 'Shape the bean mixture into 1-inch balls.Flatten slightly \r\n'
+      + 'and coat with flour.\r\nHeat at least 1\u00BD-inches of oil \r\n'
+      + 'over medium heat to 365 degrees.\r\nFry the patties in batches,\r\n'
+      + ' turning once, until golden brown on all sides, about 5 minutes.\r\n'
+      + 'Remove with a wire mesh skimmer or slotted spoon. Serve as part \r\n'
+      + 'of a meze or in pita bread with tomato-cucumber salad and tahina sauce.',
       strMealThumb: 'https://www.themealdb.com/images/media/meals/n3xxd91598732796.jpg',
       strTags: null,
       strYoutube: 'https://www.youtube.com/watch?v=mulqW-J3Yy4',
       strIngredient1: 'Broad Beans',
       strIngredient2: 'Spring Onions',
-      strIngredient3: 'Garlic Clove',
+      strIngredient3: garlicClove,
       strIngredient4: 'Parsley',
       strIngredient5: 'Cumin',
       strIngredient6: 'Baking Powder',
       strIngredient7: 'Cayenne Pepper',
       strIngredient8: 'Flour',
-      strIngredient9: 'Vegetable Oil',
+      strIngredient9: vegetableOil,
       strIngredient10: '',
       strIngredient11: '',
       strIngredient12: '',
@@ -336,7 +455,27 @@ export const mockMealsData = {
       strDrinkAlternate: null,
       strCategory: 'Vegetarian',
       strArea: 'Tunisian',
-      strInstructions: 'Peel potatoes and cut into 5cm cubes.\r\nPour 1-2 cm of olive oil into a large pan and heat up very hot. Fry potatoes until golden brown for 20 minutes, turning from time to time. Place on kitchen paper to drain.\r\nCut the peppers in half and remove seeds. Rub a little olive oil on them and place the cut side down on a baking tray. Place them under the grill. Grill until the skin is dark and bubbly. While the peppers are still hot, put them into a plastic sandwich bag and seal it. Take them out after 15 minutes and remove skins.\r\nIn the meantime, heat more olive oil another pan. Peel the onions and cut into thin rings. Fry for 15 minutes until golden brown, turning them often. Add the Ras el hanout at the end.\r\nCut the pumpkin into 5cm cubes and fry in the same pan you used for the potatoes for 10-15 minutes until it is soft and slightly browned. Place on kitchen paper.\r\nPour the remaining olive oil out of the pan and put all the cooked vegetables into the pan and mix. Whisk eggs and pour them over the vegetables. Put the lid on the pan so that the eggs cook. Put the contents of the pan onto a large chopping board, add salt and pepper and chopped and mix everything with a big knife.',
+      strInstructions: 'Peel potatoes and cut into 5cm cubes.\r\n'
+      + 'Pour 1-2 cm of olive oil into a large pan and heat up \r\n'
+      + 'very hot. Fry potatoes until golden brown for 20 minutes, \r\n'
+      + 'turning from time to time. Place on kitchen paper to drain.\r\n'
+      + 'Cut the peppers in half and remove seeds. Rub a little olive\r\n'
+      + ' oil on them and place the cut side down on a baking tray. Place\r\n'
+      + ' them under the grill. Grill until the skin is dark and bubbly.\r\n'
+      + ' While the peppers are still hot, put them into a plastic sandwich\r\n'
+      + ' bag and seal it. Take them out after 15 minutes and remove skins.\r\n'
+      + 'In the meantime, heat more olive oil another pan. Peel the onions \r\n'
+      + 'and cut into thin rings. Fry for 15 minutes until golden brown, \r\n'
+      + 'turning them often. Add the Ras el hanout at the end.\r\n'
+      + 'Cut the pumpkin into 5cm cubes and fry in the same pan \r\n'
+      + 'you used for the potatoes for 10-15 minutes until it is soft\r\n'
+      + ' and slightly browned. Place on kitchen paper.\r\n'
+      + 'Pour the remaining olive oil out of the pan and put \r\n'
+      + 'all the cooked vegetables into the pan and mix. Whisk \r\n'
+      + 'eggs and pour them over the vegetables. Put the lid on\r\n'
+      + ' the pan so that the eggs cook. Put the contents of the\r\n'
+      + ' pan onto a large chopping board, add salt and pepper\r\n'
+      + ' and chopped and mix everything with a big knife.',
       strMealThumb: 'https://www.themealdb.com/images/media/meals/1bsv1q1560459826.jpg',
       strTags: null,
       strYoutube: 'https://www.youtube.com/watch?v=-TFf-Zu-xQU',
@@ -391,7 +530,34 @@ export const mockMealsData = {
       strDrinkAlternate: null,
       strCategory: 'Pasta',
       strArea: 'Italian',
-      strInstructions: 'Heat the oil in a large saucepan. Use kitchen scissors to snip the bacon into small pieces, or use a sharp knife to chop it on a chopping board. Add the bacon to the pan and cook for just a few mins until starting to turn golden. Add the onion, celery and carrot, and cook over a medium heat for 5 mins, stirring occasionally, until softened.\r\nAdd the garlic and cook for 1 min, then tip in the mince and cook, stirring and breaking it up with a wooden spoon, for about 6 mins until browned all over.\r\nStir in the tomato pur\u00E9e and cook for 1 min, mixing in well with the beef and vegetables. Tip in the chopped tomatoes. Fill each can half full with water to rinse out any tomatoes left in the can, and add to the pan. Add the honey and season to taste. Simmer for 20 mins.\r\nHeat oven to 200C/180C fan/gas 6. To assemble the lasagne, ladle a little of the ragu sauce into the bottom of the roasting tin or casserole dish, spreading the sauce all over the base. Place 2 sheets of lasagne on top of the sauce overlapping to make it fit, then repeat with more sauce and another layer of pasta. Repeat with a further 2 layers of sauce and pasta, finishing with a layer of pasta.\r\nPut the cr\u00E8me fra\u00EEche in a bowl and mix with 2 tbsp water to loosen it and make a smooth pourable sauce. Pour this over the top of the pasta, then top with the mozzarella. Sprinkle Parmesan over the top and bake for 25\u201330 mins until golden and bubbling. Serve scattered with basil, if you like.',
+      strInstructions: 'Heat the oil in a large saucepan. \r\n'
+      + 'Use kitchen scissors to snip the bacon into small pieces,\r\n'
+      + ' or use a sharp knife to chop it on a chopping board.\r\n'
+      + ' Add the bacon to the pan and cook for just a few mins\r\n'
+      + ' until starting to turn golden. Add the onion, celery \r\n'
+      + 'and carrot, and cook over a medium heat for 5 mins, \r\n'
+      + 'stirring occasionally, until softened.\r\n'
+      + 'Add the garlic and cook for 1 min, then tip in the \r\n'
+      + 'mince and cook, stirring and breaking it up with a wooden \r\n'
+      + 'spoon, for about 6 mins until browned all over.\r\n'
+      + 'Stir in the tomato pur\u00E9e and cook for 1 min, \r\n'
+      + 'mixing in well with the beef and vegetables. Tip in the\r\n'
+      + ' chopped tomatoes. Fill each can half full with water to\r\n'
+      + ' rinse out any tomatoes left in the can, and add to the pan.\r\n'
+      + ' Add the honey and season to taste. Simmer for 20 mins.\r\n'
+      + 'Heat oven to 200C/180C fan/gas 6. To assemble the lasagne,\r\n'
+      + ' ladle a little of the ragu sauce into the bottom of the \r\n'
+      + 'roasting tin or casserole dish, spreading the sauce all over\r\n'
+      + ' the base. Place 2 sheets of lasagne on top of the sauce \r\n'
+      + 'overlapping to make it fit, then repeat with more sauce \r\n'
+      + 'and another layer of pasta. Repeat with a further 2 layers \r\n'
+      + 'of sauce and pasta, finishing with a layer of pasta.\r\n'
+      + 'Put the cr\u00E8me fra\u00EEche in a bowl and mix with \r\n'
+      + '2 tbsp water to loosen it and make a smooth pourable sauce.\r\n'
+      + ' Pour this over the top of the pasta, then top with the \r\n'
+      + 'mozzarella. Sprinkle Parmesan over the top and bake\r\n'
+      + ' for 25\u201330 mins until golden and bubbling. Serve\r\n'
+      + ' scattered with basil, if you like.',
       strMealThumb: 'https://www.themealdb.com/images/media/meals/wtsvxx1511296896.jpg',
       strTags: null,
       strYoutube: 'https://www.youtube.com/watch?v=gfhfsBPt46s',
@@ -401,7 +567,7 @@ export const mockMealsData = {
       strIngredient4: 'Celery',
       strIngredient5: 'Carrots',
       strIngredient6: 'Garlic',
-      strIngredient7: 'Minced Beef',
+      strIngredient7: mincedBeef,
       strIngredient8: 'Tomato Puree',
       strIngredient9: 'Chopped Tomatoes',
       strIngredient10: 'Honey',
@@ -446,7 +612,21 @@ export const mockMealsData = {
       strDrinkAlternate: null,
       strCategory: 'Vegetarian',
       strArea: 'Indian',
-      strInstructions: 'Wash and soak toor dal in approx. 3 cups of water, for at least one hours. Dal will be double in volume after soaking. Drain the water.\r\nCook dal with 2-1/2 cups water and add salt, turmeric, on medium high heat, until soft in texture (approximately 30 mins) it should be like thick soup.\r\nIn a frying pan, heat the ghee. Add cumin seeds, and mustard seeds. After the seeds crack, add bay leaves, green chili, ginger and chili powder. Stir for a few seconds.\r\nAdd tomatoes, salt and sugar stir and cook until tomatoes are tender and mushy.\r\nAdd cilantro and garam masala cook for about one minute.\r\nPour the seasoning over dal mix it well and cook for another minute.\r\nServe with Naan.',
+      strInstructions: 'Wash and soak toor dal in approx.\r\n'
+      + ' 3 cups of water, for at least one hours. Dal \r\n'
+      + 'will be double in volume after soaking. Drain the water.\r\n'
+      + 'Cook dal with 2-1/2 cups water and add salt, \r\n'
+      + 'turmeric, on medium high heat, until soft in \r\n'
+      + 'texture (approximately 30 mins) it should be \r\n'
+      + 'like thick soup.\r\nIn a frying pan, heat the ghee.\r\n'
+      + ' Add cumin seeds, and mustard seeds. After the \r\n'
+      + 'seeds crack, add bay leaves, green chili, ginger and\r\n'
+      + ' chili powder. Stir for a few seconds.\r\n'
+      + 'Add tomatoes, salt and sugar stir and cook until \r\n'
+      + 'tomatoes are tender and mushy.\r\nAdd cilantro and \r\n'
+      + 'garam masala cook for about one minute.\r\n'
+      + 'Pour the seasoning over dal mix it well and \r\n'
+      + 'cook for another minute.\r\nServe with Naan.',
       strMealThumb: 'https://www.themealdb.com/images/media/meals/wuxrtu1483564410.jpg',
       strTags: 'Curry,Vegetarian,Cake',
       strYoutube: 'https://www.youtube.com/watch?v=J4D855Q9-jg',
@@ -501,12 +681,19 @@ export const mockMealsData = {
       strDrinkAlternate: null,
       strCategory: 'Pork',
       strArea: 'Chinese',
-      strInstructions: 'Combine pork, garlic, ginger, soy sauce, sesame oil, and vegetables in a bowl.\r\nSeparate wonton skins.\r\nPlace a heaping teaspoon of filling in the center of the wonton.\r\nBrush water on 2 borders of the skin, covering 1/4 inch from the edge.\r\nFold skin over to form a triangle, sealing edges.\r\nPinch the two long outside points together.\r\nHeat oil to 450 degrees and fry 4 to 5 at a time until golden.\r\nDrain and serve with sauce.',
+      strInstructions: 'Combine pork, garlic, ginger, soy sauce, \r\n'
+      + 'sesame oil, and vegetables in a bowl.\r\nSeparate wonton skins.\r\n'
+      + 'Place a heaping teaspoon of filling in the center of the wonton.\r\n'
+      + 'Brush water on 2 borders of the skin, covering 1/4 inch from the edge.\r\n'
+      + 'Fold skin over to form a triangle, sealing edges.\r\n'
+      + 'Pinch the two long outside points together.\r\n'
+      + 'Heat oil to 450 degrees and fry 4 to 5 at a time until golden.\r\n'
+      + 'Drain and serve with sauce.',
       strMealThumb: 'https://www.themealdb.com/images/media/meals/1525876468.jpg',
       strTags: 'MainMeal',
       strYoutube: 'https://www.youtube.com/watch?v=9h9No18ZyCI',
       strIngredient1: 'Pork',
-      strIngredient2: 'Garlic Clove',
+      strIngredient2: garlicClove,
       strIngredient3: 'Ginger',
       strIngredient4: 'Soy Sauce',
       strIngredient5: 'Sesame Seed Oil',
@@ -556,11 +743,17 @@ export const mockMealsData = {
       strDrinkAlternate: null,
       strCategory: 'Miscellaneous',
       strArea: 'Canadian',
-      strInstructions: 'Heat oil in a deep fryer or deep heavy skillet to 365\u00B0F (185\u00B0C).\r\nWarm gravy in saucepan or microwave.\r\nPlace the fries into the hot oil, and cook until light brown, about 5 minutes.\r\nRemove to a paper towel lined plate to drain.\r\nPlace the fries on a serving platter, and sprinkle the cheese over them.\r\nLadle gravy over the fries and cheese, and serve immediately.',
+      strInstructions: 'Heat oil in a deep fryer or deep heavy \r\n'
+      + 'skillet to 365\u00B0F (185\u00B0C).\r\n'
+      + 'Warm gravy in saucepan or microwave.\r\n'
+      + 'Place the fries into the hot oil, and cook until light brown,\r\n'
+      + ' about 5 minutes.\r\nRemove to a paper towel lined plate to drain.\r\n'
+      + 'Place the fries on a serving platter, and sprinkle the cheese over them.\r\n'
+      + 'Ladle gravy over the fries and cheese, and serve immediately.',
       strMealThumb: 'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg',
       strTags: 'UnHealthy,Speciality,HangoverFood',
       strYoutube: 'https://www.youtube.com/watch?v=UVAMAoA2_WU',
-      strIngredient1: 'Vegetable Oil',
+      strIngredient1: vegetableOil,
       strIngredient2: 'Beef Gravy',
       strIngredient3: 'Potatoes',
       strIngredient4: 'Cheese Curds',
@@ -611,7 +804,12 @@ export const mockMealsData = {
       strDrinkAlternate: null,
       strCategory: 'Dessert',
       strArea: 'Canadian',
-      strInstructions: 'Sift together dry ingredients.\r\nMix together wet ingredients and incorporate into dry. Stir until smooth.\r\nDrop by teaspoonfuls(no bigger) into hot oil (365 degrees, no hotter), turning after a few moments until golden brown on all sides.\r\nRemove and drain.\r\nRoll in cinnamon sugar while still warm and serve.',
+      strInstructions: 'Sift together dry ingredients.\r\n'
+      + 'Mix together wet ingredients and incorporate into dry. Stir until smooth.\r\n'
+      + 'Drop by teaspoonfuls(no bigger) into hot oil \r\n'
+      + '(365 degrees, no hotter), turning after a few moments until\r\n'
+      + ' golden brown on all sides.\r\nRemove and drain.\r\n'
+      + 'Roll in cinnamon sugar while still warm and serve.',
       strMealThumb: 'https://www.themealdb.com/images/media/meals/txsupu1511815755.jpg',
       strTags: 'Snack,Treat',
       strYoutube: 'https://www.youtube.com/watch?v=fFLn1h80AGQ',
@@ -666,7 +864,39 @@ export const mockMealsData = {
       strDrinkAlternate: null,
       strCategory: 'Vegetarian',
       strArea: 'Egyptian',
-      strInstructions: 'Cook the lentils. Bring lentils and 4 cups of water to a boil in a medium pot or saucepan over high heat. Reduce the heat to low and cook until lentils are just tender (15-17 minutes). Drain from water and season with a little salt. (Note: when the lentils are ready, they should not be fully cooked. They should be only par-cooked and still have a bite to them as they need to finish cooking with the rice).\r\nNow, for the rice. Drain the rice from its soaking water. Combine the par-cooked lentils and the rice in the saucepan over medium-high heat with 1 tbsp cooking oil, salt, pepper, and coriander. Cook for 3 minutes, stirring regularly. Add warm water to cover the rice and lentil mixture by about 1 1/2 inches (you\u2019ll probably use about 3 cups of water here). Bring to a boil; the water should reduce a bit. Now cover and cook until all the liquid has been absorbed and both the rice and lentils are well cooked through (about 20 minutes).  Keep covered and undisturbed for 5 minutes or so.\r\nNow make the pasta. While the rice and lentils are cooking, make the pasta according to package instructions by adding the elbow pasta to boiling water with a dash of salt and a little oil. Cook until the pasta is al dente. Drain.\r\nCover the chickpeas and warm in the microwave briefly before serving.\r\n\r\nMake the crispy onion topping. \r\n\r\nSprinkle the onion rings with salt, then toss them in the flour to coat. Shake off excess flour.\r\nIn a large skillet, heat the cooking oil over medium-high heat, cook the onion rings, stirring often, until they turn a nice caramelized brown. Onions must be crispy, but not burned (15-20 minutes).',
+      strInstructions: 'Cook the lentils. Bring lentils\r\n'
+      + ' and 4 cups of water to a boil in a medium pot or \r\n'
+      + 'saucepan over high heat. Reduce the heat to low and \r\n'
+      + 'cook until lentils are just tender (15-17 minutes). \r\n'
+      + 'Drain from water and season with a little salt. \r\n'
+      + '(Note: when the lentils are ready, they should not \r\n'
+      + 'be fully cooked. They should be only par-cooked and \r\n'
+      + 'still have a bite to them as they need to finish \r\n'
+      + 'cooking with the rice).\r\nNow, for the rice. \r\n'
+      + 'Drain the rice from its soaking water. Combine the \r\n'
+      + 'par-cooked lentils and the rice in the saucepan over \r\n'
+      + 'medium-high heat with 1 tbsp cooking oil, salt, \r\n'
+      + 'pepper, and coriander. Cook for 3 minutes, stirring \r\n'
+      + 'regularly. Add warm water to cover the rice and \r\n'
+      + 'lentil mixture by about 1 1/2 inches (you\u2019ll probably \r\n'
+      + 'use about 3 cups of water here). Bring to a boil; \r\n'
+      + 'the water should reduce a bit. Now cover and cook until \r\n'
+      + 'all the liquid has been absorbed and both the rice and \r\n'
+      + 'lentils are well cooked through (about 20 minutes).  \r\n'
+      + 'Keep covered and undisturbed for 5 minutes or so.\r\n'
+      + 'Now make the pasta. While the rice and lentils are \r\n'
+      + 'cooking, make the pasta according to package instructions\r\n'
+      + ' by adding the elbow pasta to boiling water with a \r\n'
+      + 'dash of salt and a little oil. Cook until the pasta is \r\n'
+      + 'al dente. Drain.\r\nCover the chickpeas and warm in \r\n'
+      + 'the microwave briefly before serving.\r\n\r\n'
+      + 'Make the crispy onion topping. \r\n\r\n'
+      + 'Sprinkle the onion rings with salt, then toss them \r\n'
+      + 'in the flour to coat. Shake off excess flour.\r\n'
+      + 'In a large skillet, heat the cooking oil over \r\n'
+      + 'medium-high heat, cook the onion rings, stirring often, \r\n'
+      + 'until they turn a nice caramelized brown. \r\n'
+      + 'Onions must be crispy, but not burned (15-20 minutes).',
       strMealThumb: 'https://www.themealdb.com/images/media/meals/4er7mj1598733193.jpg',
       strTags: null,
       strYoutube: 'https://www.youtube.com/watch?v=y0d2ZMZBW4Y',
@@ -677,7 +907,7 @@ export const mockMealsData = {
       strIngredient5: 'Chickpeas',
       strIngredient6: 'Onion',
       strIngredient7: 'Salt',
-      strIngredient8: 'Vegetable Oil',
+      strIngredient8: vegetableOil,
       strIngredient9: '',
       strIngredient10: '',
       strIngredient11: '',
@@ -721,11 +951,34 @@ export const mockMealsData = {
       strDrinkAlternate: null,
       strCategory: 'Beef',
       strArea: 'American',
-      strInstructions: 'For the Big Mac sauce, combine all the ingredients in a bowl, season with salt and chill until ready to use.\r\n2. To make the patties, season the mince with salt and pepper and form into 4 balls using about 1/3 cup mince each. Place each onto a square of baking paper and flatten to form into four x 15cm circles. Heat oil in a large frypan over high heat. In 2 batches, cook beef patties for 1-2 minutes each side until lightly charred and cooked through. Remove from heat and keep warm. Repeat with remaining two patties.\r\n3. Carefully slice each burger bun into three acrossways, then lightly toast.\r\n4. To assemble the burgers, spread a little Big Mac sauce over the bottom base. Top with some chopped onion, shredded lettuce, slice of cheese, beef patty and some pickle slices. Top with the middle bun layer, and spread with more Big Mac sauce, onion, lettuce, pickles, beef patty and then finish with more sauce. Top with burger lid to serve.\r\n5. After waiting half an hour for your food to settle, go for a jog.',
+      strInstructions: 'For the Big Mac sauce, \r\n'
+      + 'combine all the ingredients in a bowl, \r\n'
+      + 'season with salt and chill until ready to use.\r\n'
+      + '2. To make the patties, season the mince \r\n'
+      + 'with salt and pepper and form into 4 balls using\r\n'
+      + ' about 1/3 cup mince each. Place each onto a square\r\n'
+      + ' of baking paper and flatten to form into \r\n'
+      + 'four x 15cm circles. Heat oil in a large \r\n'
+      + 'frypan over high heat. In 2 batches, cook beef \r\n'
+      + 'patties for 1-2 minutes each side until \r\n'
+      + 'lightly charred and cooked through. Remove \r\n'
+      + 'from heat and keep warm. Repeat with remaining two patties.\r\n'
+      + '3. Carefully slice each burger bun into \r\n'
+      + 'three acrossways, then lightly toast.\r\n'
+      + '4. To assemble the burgers, spread a little \r\n'
+      + 'Big Mac sauce over the bottom base. \r\n'
+      + 'Top with some chopped onion, shredded lettuce, \r\n'
+      + 'slice of cheese, beef patty and some \r\n'
+      + 'pickle slices. Top with the middle bun layer, \r\n'
+      + 'and spread with more Big Mac sauce, onion, \r\n'
+      + 'lettuce, pickles, beef patty and then finish \r\n'
+      + 'with more sauce. Top with burger lid to serve.\r\n'
+      + '5. After waiting half an hour \r\n'
+      + 'for your food to settle, go for a jog.',
       strMealThumb: 'https://www.themealdb.com/images/media/meals/urzj1d1587670726.jpg',
       strTags: null,
       strYoutube: 'https://www.youtube.com/watch?v=C5J39YnnPsg',
-      strIngredient1: 'Minced Beef',
+      strIngredient1: mincedBeef,
       strIngredient2: 'Olive Oil',
       strIngredient3: 'Sesame Seed Burger Buns',
       strIngredient4: 'Onion',
@@ -776,7 +1029,32 @@ export const mockMealsData = {
       strDrinkAlternate: null,
       strCategory: 'Chicken',
       strArea: 'Egyptian',
-      strInstructions: 'Combine the marinade ingredients in a large ziplock bag (or bowl).\r\nAdd the chicken and use your hands to make sure each piece is coated. If using a ziplock bag, I find it convenient to close the bag then massage the bag to disperse the rub all over each chicken piece.\r\nMarinate overnight or up to 24 hours.\r\nCombine the Yoghurt Sauce ingredients in a bowl and mix. Cover and put in the fridge until required (it will last for 3 days in the fridge).\r\nHeat grill/BBQ (or large heavy based pan on stove) on medium high. You should not need to oil it because the marinade has oil in it and also thigh fillets have fat. But if you are worried then oil your hotplate/grill. (See notes for baking)\r\nPlace chicken on the grill and cook the first side for 4 to 5 minutes until nicely charred, then turn and cook the other side for 3 to 4 minutes (the 2nd side takes less time).\r\nRemove chicken from the grill and cover loosely with foil. Set aside to rest for 5 minutes.\r\nTO SERVE\r\nSlice chicken and pile onto platter alongside flatbreads, Salad and the Yoghurt Sauce.\r\nTo make a wrap, get a piece of flatbread and smear with Yoghurt Sauce. Top with a bit of lettuce and tomato and Chicken Shawarma. Roll up and enjoy!',
+      strInstructions: 'Combine the marinade ingredients\r\n'
+      + ' in a large ziplock bag (or bowl).\r\n'
+      + 'Add the chicken and use your hands to make \r\n'
+      + 'sure each piece is coated. If using a \r\n'
+      + 'ziplock bag, I find it convenient to close \r\n'
+      + 'the bag then massage the bag to disperse the \r\n'
+      + 'rub all over each chicken piece.\r\n'
+      + 'Marinate overnight or up to 24 hours.\r\n'
+      + 'Combine the Yoghurt Sauce ingredients \r\n'
+      + 'in a bowl and mix. Cover and put in the \r\n'
+      + 'fridge until required (it will last for 3 days in the fridge).\r\n'
+      + 'Heat grill/BBQ (or large heavy based pan on stove) \r\n'
+      + 'on medium high. You should not need to oil it because \r\n'
+      + 'the marinade has oil in it and also thigh fillets \r\n'
+      + 'have fat. But if you are worried then oil your hotplate/grill.\r\n'
+      + ' (See notes for baking)\r\nPlace chicken on \r\n'
+      + 'the grill and cook the first side for 4 to 5 \r\n'
+      + 'minutes until nicely charred, then turn and cook\r\n'
+      + ' the other side for 3 to 4 minutes (the 2nd side takes less time).\r\n'
+      + 'Remove chicken from the grill and cover \r\n'
+      + 'loosely with foil. Set aside to rest for 5 minutes.\r\n'
+      + 'TO SERVE\r\nSlice chicken and pile onto platter \r\n'
+      + 'alongside flatbreads, Salad and the Yoghurt Sauce.\r\n'
+      + 'To make a wrap, get a piece of flatbread and\r\n'
+      + ' smear with Yoghurt Sauce. Top with a bit of \r\n'
+      + 'lettuce and tomato and Chicken Shawarma. Roll up and enjoy!',
       strMealThumb: 'https://www.themealdb.com/images/media/meals/kcv6hj1598733479.jpg',
       strTags: null,
       strYoutube: 'https://www.youtube.com/watch?v=3lxUIeKDgic',
@@ -786,12 +1064,12 @@ export const mockMealsData = {
       strIngredient4: 'Cardamom',
       strIngredient5: 'Cayenne Pepper',
       strIngredient6: 'Paprika',
-      strIngredient7: 'Lemon Juice',
+      strIngredient7: lemonJuice,
       strIngredient8: 'Olive Oil',
       strIngredient9: 'Greek Yogurt',
-      strIngredient10: 'Garlic Clove',
+      strIngredient10: garlicClove,
       strIngredient11: 'Cumin',
-      strIngredient12: 'Lemon Juice',
+      strIngredient12: lemonJuice,
       strIngredient13: 'Lettuce',
       strIngredient14: 'Tomato',
       strIngredient15: 'Pita Bread',
@@ -835,15 +1113,22 @@ export const mockDrinksData = {
       strDrinkAlternate: null,
       strTags: null,
       strVideo: null,
-      strCategory: 'Ordinary Drink',
+      strCategory: ordinaryDrink,
       strIBA: null,
       strAlcoholic: 'Optional alcohol',
       strGlass: 'Collins Glass',
-      strInstructions: 'Pour the Galliano liqueur over ice. Fill the remainder of the glass with ginger ale and thats all there is to it. You now have a your very own GG.',
+      strInstructions: 'Pour the Galliano liqueur over ice. \r\n'
+      + 'Fill the remainder of the glass with ginger ale and \r\n'
+      + 'thats all there is to it. You now have a your very own GG.',
       strInstructionsES: null,
-      strInstructionsDE: 'Den Galliano-Lik\u00F6r \u00FCber Eis gie\u00DFen. F\u00FCllen Sie den Rest des Glases mit Ginger Ale und das ist alles, was dazu geh\u00F6rt. Du hast jetzt ein eigenes GG.',
+      strInstructionsDE: 'Den Galliano-Lik\u00F6r \u00FCber Eis \r\n'
+      + 'gie\u00DFen. F\u00FCllen Sie den Rest des Glases mit \r\n'
+      + 'Ginger Ale und das ist alles, was dazu geh\u00F6rt. \r\n'
+      + 'Du hast jetzt ein eigenes GG.',
       strInstructionsFR: null,
-      strInstructionsIT: 'Versare il liquore Galliano su ghiaccio.\r\nRiempi il resto del bicchiere con ginger ale e questo \u00E8 tutto.\r\nOra hai il tuo GG personale.',
+      strInstructionsIT: 'Versare il liquore Galliano su ghiaccio.\r\n'
+      + 'Riempi il resto del bicchiere con ginger ale e questo \u00E8 tutto.\r\n'
+      + 'Ora hai il tuo GG personale.',
       'strInstructionsZH-HANS': null,
       'strInstructionsZH-HANT': null,
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg',
@@ -891,18 +1176,26 @@ export const mockDrinksData = {
       strCategory: 'Cocktail',
       strIBA: null,
       strAlcoholic: 'Alcoholic',
-      strGlass: 'Cocktail glass',
-      strInstructions: 'Pour all ingredients into a cocktail shaker, mix and serve over ice into a chilled glass.',
-      strInstructionsES: 'Vierta todos los ingredientes en una coctelera, mezcle y sirva con hielo en un vaso fr\u00EDo.',
-      strInstructionsDE: 'Alle Zutaten in einen Cocktailshaker geben, mischen und \u00FCber Eis in ein gek\u00FChltes Glas servieren.',
+      strGlass: cocktailGlass,
+      strInstructions: 'Pour all ingredients \r\n'
+      + 'into a cocktail shaker, mix and\r\n'
+      + ' serve over ice into a chilled glass.',
+      strInstructionsES: 'Vierta todos los \r\n'
+      + 'ingredientes en una coctelera, \r\n'
+      + 'mezcle y sirva con hielo en un vaso fr\u00EDo.',
+      strInstructionsDE: 'Alle Zutaten in \r\n'
+      + 'einen Cocktailshaker geben, mischen und\r\n'
+      + ' \u00FCber Eis in ein gek\u00FChltes Glas servieren.',
       strInstructionsFR: null,
-      strInstructionsIT: 'Versare tutti gli ingredienti in uno shaker, mescolare e servire con ghiaccio in un bicchiere freddo.',
+      strInstructionsIT: 'Versare tutti gli \r\n'
+      + 'ingredienti in uno shaker, mescolare \r\n'
+      + 'e servire con ghiaccio in un bicchiere freddo.',
       'strInstructionsZH-HANS': null,
       'strInstructionsZH-HANT': null,
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/2x8thr1504816928.jpg',
       strIngredient1: 'Gin',
-      strIngredient2: 'Grand Marnier',
-      strIngredient3: 'Lemon Juice',
+      strIngredient2: grandMarnier,
+      strIngredient3: lemonJuice,
       strIngredient4: 'Grenadine',
       strIngredient5: null,
       strIngredient6: null,
@@ -945,11 +1238,19 @@ export const mockDrinksData = {
       strIBA: null,
       strAlcoholic: 'Alcoholic',
       strGlass: 'Martini Glass',
-      strInstructions: 'Shake all the ingredients in a cocktail shaker and ice then strain in a cold glass.',
-      strInstructionsES: 'Agite todos los ingredientes en una coctelera con hielo y entonces cu\u00E9lelos sobre un vaso enfriado.',
-      strInstructionsDE: 'Alle Zutaten in einem Cocktailshaker mit Eis sch\u00FCtteln und dann in einem kalten Glas abseihen.',
+      strInstructions: 'Shake all the ingredients\r\n'
+      + ' in a cocktail shaker and ice then strain\r\n'
+      + ' in a cold glass.',
+      strInstructionsES: 'Agite todos los ingredientes\r\n'
+      + ' en una coctelera con hielo y entonces \r\n'
+      + 'cu\u00E9lelos sobre un vaso enfriado.',
+      strInstructionsDE: 'Alle Zutaten in einem \r\n'
+      + 'Cocktailshaker mit Eis sch\u00FCtteln \r\n'
+      + 'und dann in einem kalten Glas abseihen.',
       strInstructionsFR: null,
-      strInstructionsIT: 'Shakerare tutti gli ingredienti in uno shaker e ghiaccio, quindi filtrare in un bicchiere freddo.',
+      strInstructionsIT: 'Shakerare tutti gli \r\n'
+      + 'ingredienti in uno shaker e ghiaccio,\r\n'
+      + ' quindi filtrare in un bicchiere freddo.',
       'strInstructionsZH-HANS': null,
       'strInstructionsZH-HANT': null,
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/l3cd7f1504818306.jpg',
@@ -997,17 +1298,23 @@ export const mockDrinksData = {
       strCategory: 'Shot',
       strIBA: null,
       strAlcoholic: 'Alcoholic',
-      strGlass: 'Shot glass',
-      strInstructions: 'pour kaluha, then Baileys, then Frangelico not chilled and not layered -- SERVE!!!',
+      strGlass: shotGlass,
+      strInstructions: 'pour kaluha, then \r\n'
+      + 'Baileys, then Frangelico not \r\n'
+      + 'chilled and not layered -- SERVE!!!',
       strInstructionsES: null,
-      strInstructionsDE: 'Gie\u00DFen Sie kaluha, dann Baileys, dann Frangelico nicht gek\u00FChlt und nicht geschichtet -- SERVE!!!!!!!!',
+      strInstructionsDE: 'Gie\u00DFen Sie kaluha,\r\n'
+      + ' dann Baileys, dann Frangelico \r\n'
+      + 'nicht gek\u00FChlt und nicht geschichtet\r\n'
+      + ' -- SERVE!!!!!!!!',
       strInstructionsFR: null,
-      strInstructionsIT: 'Versa Kahlua, Baileys e poi Frangelico.',
+      strInstructionsIT: 'Versa Kahlua, Baileys\r\n'
+      + ' e poi Frangelico.',
       'strInstructionsZH-HANS': null,
       'strInstructionsZH-HANT': null,
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/xxsxqy1472668106.jpg',
       strIngredient1: 'Kahlua',
-      strIngredient2: 'Baileys irish cream',
+      strIngredient2: baileysIrishCream,
       strIngredient3: 'Frangelico',
       strIngredient4: null,
       strIngredient5: null,
@@ -1047,15 +1354,21 @@ export const mockDrinksData = {
       strDrinkAlternate: null,
       strTags: 'IBA,ContemporaryClassic',
       strVideo: null,
-      strCategory: 'Ordinary Drink',
+      strCategory: ordinaryDrink,
       strIBA: null,
       strAlcoholic: 'Alcoholic',
       strGlass: 'Wine Glass',
-      strInstructions: 'Add the cr\u00E8me de cassis to the bottom of the glass, then top up with wine.',
+      strInstructions: 'Add the cr\u00E8me \r\n'
+      + 'de cassis to the bottom of the \r\n'
+      + 'glass, then top up with wine.',
       strInstructionsES: null,
-      strInstructionsDE: 'Gib die Creme de Cassis auf den Boden des Glases und f\u00FCge dann Wein hinzu.',
+      strInstructionsDE: 'Gib die Creme de \r\n'
+      + 'Cassis auf den Boden des Glases\r\n'
+      + ' und f\u00FCge dann Wein hinzu.',
       strInstructionsFR: null,
-      strInstructionsIT: 'Aggiungere la cr\u00E8me de cassis sul fondo del bicchiere, quindi rabboccare con il vino.',
+      strInstructionsIT: 'Aggiungere la \r\n'
+      + 'cr\u00E8me de cassis sul fondo \r\n'
+      + 'del bicchiere, quindi rabboccare con il vino.',
       'strInstructionsZH-HANS': null,
       'strInstructionsZH-HANT': null,
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/apneom1504370294.jpg',
@@ -1103,17 +1416,20 @@ export const mockDrinksData = {
       strCategory: 'Shot',
       strIBA: null,
       strAlcoholic: 'Alcoholic',
-      strGlass: 'Shot glass',
+      strGlass: shotGlass,
       strInstructions: 'Layered in a shot glass.',
       strInstructionsES: 'Coloque todos los ingredientes en un vaso de chupito.',
       strInstructionsDE: 'Schichtaufbau in einem Schnapsglas.',
       strInstructionsFR: null,
-      strInstructionsIT: "Versa in ordine di lettera i vari ingredienti. 1/3 del bicchiere va riempito con l'Amaretto, 1/3 di Baileys e il restante di Cognac.",
+      strInstructionsIT:
+      'Versa in ordine di lettera i vari ingredienti.'
+      + "1/3 del bicchiere va riempito con l'Amaretto, "
+      + '1/3 di Baileys e il restante di Cognac.',
       'strInstructionsZH-HANS': null,
       'strInstructionsZH-HANT': null,
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/tqpvqp1472668328.jpg',
       strIngredient1: 'Amaretto',
-      strIngredient2: 'Baileys irish cream',
+      strIngredient2: baileysIrishCream,
       strIngredient3: 'Cognac',
       strIngredient4: null,
       strIngredient5: null,
@@ -1156,12 +1472,14 @@ export const mockDrinksData = {
       strCategory: 'Shot',
       strIBA: null,
       strAlcoholic: 'Alcoholic',
-      strGlass: 'Shot glass',
+      strGlass: shotGlass,
       strInstructions: 'Add both ingredients to shot glass, shoot, and get drunk quick',
       strInstructionsES: null,
       strInstructionsDE: 'Beide Zutaten in ein Schnapsglas geben.',
       strInstructionsFR: null,
-      strInstructionsIT: 'Aggiungi entrambi gli ingredienti al bicchierino, bevi e ubriacati velocemente',
+      strInstructionsIT: 'Aggiungi entrambi \r\n'
+      + 'gli ingredienti al bicchierino, \r\n'
+      + 'bevi e ubriacati velocemente',
       'strInstructionsZH-HANS': null,
       'strInstructionsZH-HANT': null,
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/rtpxqw1468877562.jpg',
@@ -1206,15 +1524,20 @@ export const mockDrinksData = {
       strDrinkAlternate: null,
       strTags: null,
       strVideo: null,
-      strCategory: 'Ordinary Drink',
+      strCategory: ordinaryDrink,
       strIBA: null,
       strAlcoholic: 'Alcoholic',
       strGlass: 'Highball Glass',
       strInstructions: 'Pour Vodka and Gin over ice, add Tonic and Stir',
-      strInstructionsES: 'Vierta el vodka y la ginebra sobre el hielo, agregue la t\u00F3nica y revuelva.',
-      strInstructionsDE: 'Wodka und Gin \u00FCber das Eis gie\u00DFen, Tonic hinzuf\u00FCgen und umr\u00FChren.',
+      strInstructionsES: 'Vierta el vodka y la \r\n'
+      + 'ginebra sobre el hielo, agregue \r\n'
+      + 'la t\u00F3nica y revuelva.',
+      strInstructionsDE: 'Wodka und Gin \u00FCber \r\n'
+      + 'das Eis gie\u00DFen, Tonic \r\n'
+      + 'hinzuf\u00FCgen und umr\u00FChren.',
       strInstructionsFR: null,
-      strInstructionsIT: "Versare la vodka e il gin sul ghiaccio, aggiungere l'acqua tonica e mescolare",
+      strInstructionsIT: 'Versare la vodka e il gin sul ghiaccio,'
+      + "aggiungere l'acqua tonica e mescolare",
       'strInstructionsZH-HANS': null,
       'strInstructionsZH-HANT': null,
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/rhhwmp1493067619.jpg',
@@ -1316,17 +1639,22 @@ export const mockDrinksData = {
       strIBA: null,
       strAlcoholic: 'Alcoholic',
       strGlass: 'Collins Glass',
-      strInstructions: 'Layer the Kahlua, Sambucca and Grand Marnier into a shot glas in that order. Better than B-52',
+      strInstructions: 'Layer the Kahlua, \r\n'
+      + 'Sambucca and Grand Marnier into \r\n'
+      + 'a shot glas in that order. Better than B-52',
       strInstructionsES: null,
-      strInstructionsDE: 'Schichte die Kahlua, Sambucca und Grand Marnier in dieser Reihenfolge in ein Schnapsglas ein. Besser als B-52',
+      strInstructionsDE: 'Schichte die Kahlua,\r\n'
+      + ' Sambucca und Grand Marnier in dieser\r\n'
+      + ' Reihenfolge in ein Schnapsglas ein. Besser als B-52',
       strInstructionsFR: null,
-      strInstructionsIT: "Metti Kahlua, Sambuca e Grand Marnier in un bicchierino in quest'ordine. ",
+      strInstructionsIT:
+      "Metti Kahlua, Sambuca e Grand Marnier in un bicchierino in quest'ordine. ",
       'strInstructionsZH-HANS': null,
       'strInstructionsZH-HANT': null,
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/rwqxrv1461866023.jpg',
       strIngredient1: 'Kahlua',
       strIngredient2: 'Sambuca',
-      strIngredient3: 'Grand Marnier',
+      strIngredient3: grandMarnier,
       strIngredient4: null,
       strIngredient5: null,
       strIngredient6: null,
@@ -1365,20 +1693,32 @@ export const mockDrinksData = {
       strDrinkAlternate: null,
       strTags: 'Alcoholic,Holiday',
       strVideo: null,
-      strCategory: 'Ordinary Drink',
+      strCategory: ordinaryDrink,
       strIBA: null,
       strAlcoholic: 'Alcoholic',
-      strGlass: 'Cocktail glass',
-      strInstructions: 'In a shaker half-filled with ice cubes, combine all of the ingredients. Shake well. Strain into a cocktail glass.',
-      strInstructionsES: 'Mezclar todos los ingredientes en una coctelera con cubitos de hielo hasta la mitad. Agitar bien. Colar el contenido en un vaso de c\u00F3ctel.',
-      strInstructionsDE: 'In einem Shaker, der halb mit Eisw\u00FCrfeln gef\u00FCllt ist, alle Zutaten vermengen. Gut sch\u00FCtteln. In ein Cocktailglas abseihen.',
+      strGlass: cocktailGlass,
+      strInstructions: 'In a shaker half-filled \r\n'
+      + 'with ice cubes, combine all of the \r\n'
+      + 'ingredients. Shake well. Strain into a cocktail glass.',
+      strInstructionsES: 'Mezclar todos los \r\n'
+      + 'ingredientes en una coctelera con \r\n'
+      + 'cubitos de hielo hasta la mitad. \r\n'
+      + 'Agitar bien. Colar el contenido \r\n'
+      + 'en un vaso de c\u00F3ctel.',
+      strInstructionsDE: 'In einem Shaker, der\r\n'
+      + ' halb mit Eisw\u00FCrfeln gef\u00FCllt\r\n'
+      + ' ist, alle Zutaten vermengen. Gut \r\n'
+      + 'sch\u00FCtteln. In ein Cocktailglas abseihen.',
       strInstructionsFR: null,
-      strInstructionsIT: 'In uno shaker riempito a met\u00E0 con cubetti di ghiaccio, unire tutti gli ingredienti.Agitare bene.Filtrare in un bicchiere da cocktail.',
+      strInstructionsIT: 'In uno shaker riempito\r\n'
+      + ' a met\u00E0 con cubetti di ghiaccio,\r\n'
+      + ' unire tutti gli ingredienti.Agitare\r\n'
+      + ' bene.Filtrare in un bicchiere da cocktail.',
       'strInstructionsZH-HANS': null,
       'strInstructionsZH-HANT': null,
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/v0at4i1582478473.jpg',
       strIngredient1: 'Dark rum',
-      strIngredient2: 'Lemon juice',
+      strIngredient2: lemonJuice,
       strIngredient3: 'Grenadine',
       strIngredient4: null,
       strIngredient5: null,
@@ -1421,12 +1761,19 @@ export const mockDrinksData = {
       strCategory: 'Shot',
       strIBA: null,
       strAlcoholic: 'Alcoholic',
-      strGlass: 'Shot glass',
-      strInstructions: 'Poor in the 151 first followed by the 101 served with a Coke or Dr Pepper chaser.',
-      strInstructionsES: 'Vierta primero el Bacardi 151, seguido del Wild Turkey 101 y sirva con Coca-Cola o Dr Pepper.',
-      strInstructionsDE: 'Gering den 151 gefolgt von der 101, die mit einer Cola oder Dr. Pepper Chaser serviert wird.',
+      strGlass: shotGlass,
+      strInstructions: 'Poor in the 151 first \r\n'
+      + 'followed by the 101 served with a \r\n'
+      + 'Coke or Dr Pepper chaser.',
+      strInstructionsES: 'Vierta primero el Bacardi\r\n'
+      + ' 151, seguido del Wild Turkey 101 y sirva\r\n'
+      + ' con Coca-Cola o Dr Pepper.',
+      strInstructionsDE: 'Gering den 151 gefolgt\r\n'
+      + ' von der 101, die mit einer Cola oder\r\n'
+      + ' Dr. Pepper Chaser serviert wird.',
       strInstructionsFR: null,
-      strInstructionsIT: 'Versa prima il Bacardi 151 seguito dal 101, servito con una Coca-Cola.',
+      strInstructionsIT: 'Versa prima il Bacardi\r\n'
+      + ' 151 seguito dal 101, servito con una Coca-Cola.',
       'strInstructionsZH-HANS': null,
       'strInstructionsZH-HANT': null,
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/xuxpxt1479209317.jpg',
@@ -1475,16 +1822,21 @@ export const mockDrinksData = {
       strIBA: null,
       strAlcoholic: 'Alcoholic',
       strGlass: 'Beer mug',
-      strInstructions: 'Mix the whisky and Baileys Cream in a beer-glass (at least 50 cl). Fill the rest of the glass with coffee.',
+      strInstructions: 'Mix the whisky and Baileys Cream in a\r\n'
+      + ' beer-glass (at least 50 cl). Fill the rest of the glass with coffee.',
       strInstructionsES: null,
-      strInstructionsDE: 'Den Whisky und die Baileys Cream in einem Bierglas (mind. 50 cl) mischen. F\u00FCllen Sie den Rest des Glases mit Kaffee.',
+      strInstructionsDE: 'Den Whisky und die Baileys Cream in \r\n'
+      + 'einem Bierglas (mind. 50 cl) mischen. F\u00FCllen Sie\r\n'
+      + ' den Rest des Glases mit Kaffee.',
       strInstructionsFR: null,
-      strInstructionsIT: 'Mescolare il whisky e la crema di Baileys in un bicchiere da birra (almeno 50 cl).\r\nRiempi il resto del bicchiere di caff\u00E8.',
+      strInstructionsIT: 'Mescolare il whisky e la crema \r\n'
+      + 'di Baileys in un bicchiere da birra (almeno 50 cl).\r\n'
+      + 'Riempi il resto del bicchiere di caff\u00E8.',
       'strInstructionsZH-HANS': null,
       'strInstructionsZH-HANT': null,
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/upusyu1472667977.jpg',
       strIngredient1: 'Whisky',
-      strIngredient2: 'Baileys irish cream',
+      strIngredient2: baileysIrishCream,
       strIngredient3: 'Coffee',
       strIngredient4: null,
       strIngredient5: null,
@@ -1527,17 +1879,19 @@ export const mockDrinksData = {
       strCategory: 'Shot',
       strIBA: 'New Era Drinks',
       strAlcoholic: 'Alcoholic',
-      strGlass: 'Shot glass',
+      strGlass: shotGlass,
       strInstructions: 'Layer ingredients into a shot glass. Serve with a stirrer.',
       strInstructionsES: null,
-      strInstructionsDE: 'Zutaten in ein Schnapsglas schichten. Mit einem R\u00FChrstab servieren.',
+      strInstructionsDE: 'Zutaten in ein Schnapsglas schichten. \r\n'
+      + 'Mit einem R\u00FChrstab servieren.',
       strInstructionsFR: null,
-      strInstructionsIT: 'Metti gli ingredienti in un bicchiere da shot a strati.\r\nServire con una paletta.',
+      strInstructionsIT: 'Metti gli ingredienti in un bicchiere da shot a strati.\r\n'
+      + 'Servire con una paletta.',
       'strInstructionsZH-HANS': null,
       'strInstructionsZH-HANT': null,
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/5a3vg61504372070.jpg',
-      strIngredient1: 'Baileys irish cream',
-      strIngredient2: 'Grand Marnier',
+      strIngredient1: baileysIrishCream,
+      strIngredient2: grandMarnier,
       strIngredient3: 'Kahlua',
       strIngredient4: null,
       strIngredient5: null,
@@ -1577,22 +1931,25 @@ export const mockDrinksData = {
       strDrinkAlternate: null,
       strTags: 'IBA,ContemporaryClassic',
       strVideo: null,
-      strCategory: 'Ordinary Drink',
+      strCategory: ordinaryDrink,
       strIBA: 'Contemporary Classics',
       strAlcoholic: 'Alcoholic',
-      strGlass: 'Cocktail glass',
-      strInstructions: 'Shake together in a cocktail shaker, then strain into chilled glass. Garnish and serve.',
+      strGlass: cocktailGlass,
+      strInstructions: 'Shake together in a cocktail \r\n'
+      + 'shaker, then strain into chilled glass. Garnish and serve.',
       strInstructionsES: null,
-      strInstructionsDE: 'In einem Cocktailshaker vermengen und dann in ein gek\u00FChltes Glas abseihen. Garnieren und servieren.',
+      strInstructionsDE: 'In einem Cocktailshaker vermengen und\r\n'
+      + ' dann in ein gek\u00FChltes Glas abseihen. Garnieren und servieren.',
       strInstructionsFR: null,
-      strInstructionsIT: 'Shakerare insieme in uno shaker, quindi filtrare in un bicchiere freddo.\r\nGuarnire e servire.',
+      strInstructionsIT: 'Shakerare insieme in uno shaker,\r\n'
+      + ' quindi filtrare in un bicchiere freddo.\r\nGuarnire e servire.',
       'strInstructionsZH-HANS': null,
       'strInstructionsZH-HANT': null,
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/8kxbvq1504371462.jpg',
       strIngredient1: 'Dry Vermouth',
       strIngredient2: 'Gin',
       strIngredient3: 'Apricot brandy',
-      strIngredient4: 'Lemon juice',
+      strIngredient4: lemonJuice,
       strIngredient5: 'Grenadine',
       strIngredient6: 'Powdered sugar',
       strIngredient7: null,
