@@ -1,7 +1,7 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { findByTestId } from '@testing-library/dom';
+
 import App from '../App';
 import DoneRecipes from '../pages/DoneRecipes';
 import Drinks from '../pages/Drinks';
