@@ -183,7 +183,7 @@ describe('Testando o component Header', () => {
     expect(profileIconElement).toBeInTheDocument();
   });
 
-  test.only('Renderiza icone de pesquisa se showSearchIcon tiver valor true', () => {
+  test('Renderiza icone de pesquisa se showSearchIcon tiver valor true', () => {
     const { getByAltText } = renderWithRouter(<HomeMeal />);
 
     const searchIconElement = getByAltText(searchIcon);
