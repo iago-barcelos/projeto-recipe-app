@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Login from './pages/Login';
@@ -20,7 +20,7 @@ function App() {
     handleChange,
     handleSearch,
   } = useRecipeSearch();
-  console.log(searchResults);
+
   return (
     <RecipeAppContext.Provider
       value={ { searchResults, searchValue, handleChange, handleSearch } }
