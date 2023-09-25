@@ -30,3 +30,11 @@ export type FormDataType = {
   searchValue: string,
   searchType: string,
 };
+
+export type ByCategoriesType = {
+  byCategories: []
+};
+
+export type DrinksCategories = {
+  drinks: [],
+};

@@ -10,10 +10,12 @@ type SearchBarProps = {
 
 function SearchBar({ page }: SearchBarProps) {
   const recipeContext = useContext(RecipeAppContext);
-  const { searchResults,
+  const {
+    searchResults,
     searchValue,
     handleChange,
-    handleSearch } = recipeContext;
+    handleSearch,
+  } = recipeContext;
   const navigate = useNavigate();
 
   const { meals, drinks } = searchResults;
@@ -121,7 +123,7 @@ function SearchBar({ page }: SearchBarProps) {
           Search
         </button>
       </section>
-      <FilterBar />
+      <FilterBar page={ page } />
       {meals.length > 0 && createMealCard()}
       {drinks.length > 0 && createDrinkCard()}
       <section />

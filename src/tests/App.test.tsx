@@ -183,7 +183,7 @@ describe('Testando o component Header', () => {
     expect(profileIconElement).toBeInTheDocument();
   });
 
-  test('Renderiza icone de pesquisa se showSearchIcon tiver valor true', () => {
+  test.only('Renderiza icone de pesquisa se showSearchIcon tiver valor true', () => {
     const { getByAltText } = renderWithRouter(<HomeMeal />);
 
     const searchIconElement = getByAltText(searchIcon);
@@ -452,6 +452,7 @@ test('Os cards de drinks são renderizados corretamente', async () => {
   const corba = await findByText(/gg/i);
   expect(corba).toBeInTheDocument();
 });
+
 describe('Footer', () => {
   test('Renderiza corretamente', () => {
     const { getByTestId } = renderWithRouter(<App />);
