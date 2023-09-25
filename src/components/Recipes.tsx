@@ -5,7 +5,7 @@ type RecipeCardProps = {
   meals?: MealType[],
 };
 
-function RecipeCard({ meals = [], drinks = [] }: RecipeCardProps) {
+function Recipes({ meals = [], drinks = [] }: RecipeCardProps) {
   const shownMealsResults = meals.length > 12 ? (
     meals.slice(0, 12)) : meals;
   const shownDrinksResults = drinks.length > 12 ? (
@@ -40,4 +40,4 @@ function RecipeCard({ meals = [], drinks = [] }: RecipeCardProps) {
   );
 }
 
-export default RecipeCard;
+export default Recipes;

@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import searchIcon from '../images/searchIcon.svg';
 import RecipeAppContext from '../context/RecipeAppContext';
 import FilterBar from './FilterBar';
-import RecipeCard from './RecipeCard';
+import Recipes from './Recipes';
+import { getFetch } from '../utils/functions';
+import { SearchResultsType } from '../types';
 
 type SearchBarProps = {
   page: string,
@@ -19,8 +21,12 @@ function SearchBar({ page }: SearchBarProps) {
   } = recipeContext;
   const navigate = useNavigate();
 
-  const { meals, drinks } = searchResults;
+  const meals = searchResults?.meals || [];
+  const drinks = searchResults?.drinks || [];
   const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
+  const [initialRecipes, setInitialRecipes] = useState<SearchResultsType>(
+    { meals: [], drinks: [] },
+  );
 
   useEffect(() => {
     if (meals.length === 1) {
@@ -32,7 +38,17 @@ function SearchBar({ page }: SearchBarProps) {
       navigate(`/drinks/${id}`);
     }
   }, [searchResults]);
-  console.log(searchResults);
+
+  useEffect(() => {
+    const fetchData = async (string: string) => {
+      const toggle = string === 'meals' ? 'themealdb' : 'thecocktaildb';
+      const endpoint = `https://www.${toggle}.com/api/json/v1/1/search.php?s=`;
+      const result = await getFetch(endpoint, '');
+      setInitialRecipes(result);
+    };
+    fetchData(page);
+  }, [page]);
+  console.log(initialRecipes);
   return (
     <>
       <section>
@@ -95,8 +111,10 @@ function SearchBar({ page }: SearchBarProps) {
         </button>
       </section>
       <FilterBar page={ page } />
-      {meals.length > 0 && <RecipeCard meals={ meals } />}
-      {drinks.length > 0 && <RecipeCard drinks={ drinks } />}
+      {initialRecipes.meals && <Recipes meals={ initialRecipes.meals } /> }
+      {initialRecipes.drinks && <Recipes drinks={ initialRecipes.drinks } />}
+      {meals.length > 0 && <Recipes meals={ meals } />}
+      {drinks.length > 0 && <Recipes drinks={ drinks } />}
       <section />
     </>
   );
