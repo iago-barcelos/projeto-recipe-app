@@ -1,67 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { getFetch } from '../utils/functions';
 import { CocktailType, MealType } from '../types';
 
-function Recipes() {
-  const location = useLocation();
-  const isMealsRoute = location.pathname === '/meals';
-  const isDrinksRoute = location.pathname === '/drinks';
+type RecipeCardProps = {
+  drinks?: CocktailType[],
+  meals?: MealType[],
+};
 
-  const [recipesData, setRecipesData] = useState<MealType[] | CocktailType[]>([]);
-
-  const mealEndPoint = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
-  const drinkEndPoint = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let endpoint = '';
-
-        if (isMealsRoute) {
-          endpoint = mealEndPoint;
-        } else if (isDrinksRoute) {
-          endpoint = drinkEndPoint;
-        }
-
-        const result = await getFetch(endpoint, '');
-        if (result && result.length > 0) {
-          setRecipesData(result.slice(0, 12));
-        }
-      } catch (error) {
-        console.error('Ocorreu um erro ao buscar receitas:', error);
-      }
-    };
-
-    if (isMealsRoute || isDrinksRoute) {
-      fetchData();
-    }
-  }, [isMealsRoute, isDrinksRoute]);
-
+function Recipes({ meals = [], drinks = [] }: RecipeCardProps) {
+  const shownMealsResults = meals.length > 12 ? (
+    meals.slice(0, 12)) : meals;
+  const shownDrinksResults = drinks.length > 12 ? (
+    drinks.slice(0, 12)) : drinks;
   return (
-    <div>
-      {recipesData.map((recipe, index) => (
-        <section key={ index } data-testid={ `${index}-recipe-card` }>
-          {recipe && (
-            <>
-              <img
-                data-testid={ `${index}-card-img` }
-                src={
-                  (recipe as MealType)
-                    .strMealThumb
-                    || (recipe as CocktailType)
-                      .strDrinkThumb
-                  }
-                alt=""
-              />
-              <p data-testid={ `${index}-card-name` }>
-                {(recipe as MealType).strMeal || (recipe as CocktailType).strDrink}
-              </p>
-            </>
-          )}
-        </section>
-      ))}
-    </div>
+    <>
+      {shownMealsResults.length > 0 && (
+        shownMealsResults.map(({ strMealThumb, strMeal }, index) => (
+          <div data-testid={ `${index}-recipe-card` } key={ index }>
+            <img
+              data-testid={ `${index}-card-img` }
+              src={ strMealThumb }
+              alt={ strMeal }
+            />
+            <span data-testid={ `${index}-card-name` } key={ index }>{strMeal}</span>
+          </div>
+        ))
+      )}
+      {shownDrinksResults.length > 0 && (
+        shownDrinksResults.map(({ strDrink, strDrinkThumb }, index) => (
+          <div data-testid={ `${index}-recipe-card` } key={ index }>
+            <img
+              data-testid={ `${index}-card-img` }
+              src={ strDrinkThumb }
+              alt={ strDrink }
+            />
+            <span data-testid={ `${index}-card-name` } key={ index }>{strDrink}</span>
+          </div>
+        ))
+      )}
+    </>
   );
 }
 
