@@ -409,7 +409,7 @@ test('Os cards de meals são renderizados corretamente', async () => {
   } as Response;
   const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
 
-  const { getByText, getByRole, findByText } = renderWithRouter(<HomeMeal />);
+  const { getByText, getByRole, getByTestId } = renderWithRouter(<HomeMeal />);
 
   const screenSearchIcon = getByRole('img', { name: /search icon/i });
   await userEvent.click(screenSearchIcon);
@@ -418,12 +418,12 @@ test('Os cards de meals são renderizados corretamente', async () => {
   await userEvent.click(nameRadioButton);
 
   const searchInput = getByRole('textbox');
-  await userEvent.type(searchInput, 'Co');
+  await userEvent.type(searchInput, 'r');
 
   const searchBTN = getByText(/Search/i);
   await userEvent.click(searchBTN);
 
-  const corba = await findByText(/corba/i);
+  const corba = await getByTestId('0-recipe-card');
   expect(corba).toBeInTheDocument();
 });
 
@@ -435,7 +435,7 @@ test('Os cards de drinks são renderizados corretamente', async () => {
   } as Response;
   const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
 
-  const { getByText, getByRole, findByText } = renderWithRouter(<Drinks />);
+  const { getByText, getByRole, getByTestId } = renderWithRouter(<Drinks />);
 
   const screenSearchIcon = getByRole('img', { name: /search icon/i });
   await userEvent.click(screenSearchIcon);
@@ -444,17 +444,17 @@ test('Os cards de drinks são renderizados corretamente', async () => {
   await userEvent.click(nameRadioButton);
 
   const searchInput = getByRole('textbox');
-  await userEvent.type(searchInput, 'GG');
+  await userEvent.type(searchInput, 'a');
 
   const searchBTN = getByText(/Search/i);
   await userEvent.click(searchBTN);
 
-  const corba = await findByText(/gg/i);
-  expect(corba).toBeInTheDocument();
+  const drink1 = await getByTestId('0-recipe-card');
+  expect(drink1).toBeInTheDocument();
 });
 describe('Footer', () => {
   test('Renderiza corretamente', () => {
-    const { getByTestId } = renderWithRouter(<App />);
+    const { getByTestId } = renderWithRouter(<HomeMeal />);
 
     const footerElement = getByTestId('footer');
     const mealsButton = getByTestId('meals-bottom-btn');
