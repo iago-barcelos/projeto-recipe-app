@@ -136,7 +136,7 @@ describe('Testa componente DoneRecipes', () => {
 });
 
 describe('Componente Drinks', () => {
-  test.only('Renderiza a página com o endereço correto', async () => {
+  test('Renderiza a página com o endereço correto', async () => {
     const { findByRole } = renderWithRouter(<Drinks />);
 
     const allDrinksBtn = findByRole('button', { name: /all drinks/i });
@@ -483,11 +483,21 @@ describe.only('Profile', () => {
     expect(searchIconElement).toBeNull();
   });
 
-  test('Verifica data-testid do email', () => {
+  test('Renderiza página com título correto e e-mail visível', () => {
+    // Simule a adição do e-mail ao localStorage
+    localStorage.setItem('userEmail', validEmail);
+
     const { getByTestId } = renderWithRouter(<Profile />);
 
-    const emailElement = getByTestId('profile-email');
+    const pageTitleElement = getByTestId(pageTitleTestId);
+    const emailElement = getByTestId('profile-email'); // Aqui você pega o elemento do e-mail
+
+    expect(pageTitleElement).toBeInTheDocument();
+    expect(pageTitleElement.textContent).toBe('Profile');
+
+    // Verifique se o e-mail armazenado em localStorage está visível
     expect(emailElement).toBeInTheDocument();
+    expect(emailElement.textContent).toBe('email@mail.com');
   });
 
   test('Verifica data-testid dos botões', () => {
