@@ -466,3 +466,39 @@ describe('Footer', () => {
     expect(drinksButton).toBeInTheDocument();
   });
 });
+
+describe.only('Profile', () => {
+  test('Renderiza página de perfil com título correto', () => {
+    const { getByTestId } = renderWithRouter(<Profile />);
+
+    const pageTitleElement = getByTestId('page-title');
+    expect(pageTitleElement).toBeInTheDocument();
+    expect(pageTitleElement.textContent).toBe('Profile');
+  });
+
+  test('Não renderiza ícone de pesquisa no perfil', () => {
+    const { queryByAltText } = renderWithRouter(<Profile />);
+
+    const searchIconElement = queryByAltText('Search Icon');
+    expect(searchIconElement).toBeNull();
+  });
+
+  test('Verifica data-testid do email', () => {
+    const { getByTestId } = renderWithRouter(<Profile />);
+
+    const emailElement = getByTestId('profile-email');
+    expect(emailElement).toBeInTheDocument();
+  });
+
+  test('Verifica data-testid dos botões', () => {
+    const { getByTestId } = renderWithRouter(<Profile />);
+
+    const doneButton = getByTestId('profile-done-btn');
+    const favoriteButton = getByTestId('profile-favorite-btn');
+    const logoutButton = getByTestId('profile-logout-btn');
+
+    expect(doneButton).toBeInTheDocument();
+    expect(favoriteButton).toBeInTheDocument();
+    expect(logoutButton).toBeInTheDocument();
+  });
+});
