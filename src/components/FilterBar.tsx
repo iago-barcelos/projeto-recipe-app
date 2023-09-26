@@ -14,6 +14,8 @@ function FilterBar({ page }: FilterBarProps) {
     setMealsByCategories,
     getByCategories,
   } = recipeContext;
+  const checkMealCat = mealCategories || [];
+  const checkDrinkCat = drinkCategories || [];
   return (
     <>
       <button
@@ -35,7 +37,7 @@ function FilterBar({ page }: FilterBarProps) {
         {page}
       </button>
       {page === 'meals'
-        && mealCategories.map((category, i) => (
+        && checkMealCat.map((category, i) => (
           <button
             key={ i }
             data-testid={ `${
@@ -57,7 +59,7 @@ function FilterBar({ page }: FilterBarProps) {
           </button>
         ))}
       {page === 'drinks'
-        && drinkCategories.map((category, i) => (
+        && checkDrinkCat.map((category, i) => (
           <button
             key={ i }
             data-testid={ `${

@@ -9,11 +9,11 @@ import FavoriteRecipes from '../pages/FavoriteRecipes';
 import Header from '../components/Header';
 import HomeMeal from '../pages/HomeMeal';
 import Profile from '../pages/Profile';
-import SearchBar from '../components/SearchBar';
 import { renderWithRouter } from './helpers/renderWIth';
 import { mockDrinksData, mockMealsData } from './helpers/mockData';
 
 const emailTestId = 'email-input';
+const searchBtn = 'exec-search-btn';
 const passwordTestId = 'password-input';
 const submitButtonTestId = 'login-submit-btn';
 const pageTitleTestId = 'page-title';
@@ -23,6 +23,7 @@ const searchInputTestId = 'search-input';
 const validEmail = 'email@valido.com';
 const profileIcon = 'Profile Icon';
 const searchIcon = 'Search Icon';
+const nameRadio = 'name-search-radio';
 
 // Mateus Tápias: Criei um renderWithRouter() para facilitar a legibilidade do código
 beforeEach(() => {
@@ -137,9 +138,9 @@ describe('Testa componente DoneRecipes', () => {
 
 describe('Componente Drinks', () => {
   test('Renderiza a página com o endereço correto', async () => {
-    const { findByRole } = renderWithRouter(<Drinks />);
+    const { getByRole } = renderWithRouter(<Drinks />);
 
-    const allDrinksBtn = findByRole('button', { name: /all drinks/i });
+    const allDrinksBtn = getByRole('heading', { name: /drinks/i });
     expect(allDrinksBtn).toBeInTheDocument();
   });
 
@@ -242,17 +243,17 @@ describe('Componente homeMeal', () => {
 test('Renderiza a página HomeMeal com os radio buttons corretos', () => {
   const { getByTestId } = renderWithRouter(<HomeMeal />);
   const ingredientRadio = getByTestId('ingredient-search-radio');
-  const nameRadio = getByTestId('name-search-radio');
+  const nameRadioBTN = getByTestId(nameRadio);
   const firstLetterRadio = getByTestId('first-letter-search-radio');
 
   expect(ingredientRadio).toBeInTheDocument();
-  expect(nameRadio).toBeInTheDocument();
+  expect(nameRadioBTN).toBeInTheDocument();
   expect(firstLetterRadio).toBeInTheDocument();
 });
 
 test('Renderiza a página HomeMeal com o botão de busca', () => {
   const { getByTestId } = renderWithRouter(<HomeMeal />);
-  const execSearchButton = getByTestId('exec-search-btn');
+  const execSearchButton = getByTestId(searchBtn);
   expect(execSearchButton).toBeInTheDocument();
 });
 
@@ -278,30 +279,42 @@ describe('Testes do SearchBar', () => {
     const { getByTestId } = renderWithRouter(<HomeMeal />);
 
     const ingredientRadio = getByTestId('ingredient-search-radio');
-    const nameRadio = getByTestId('name-search-radio');
+    const nameRadioBTN = getByTestId(nameRadio);
     const firstLetterRadio = getByTestId('first-letter-search-radio');
 
     expect(ingredientRadio).toBeInTheDocument();
-    expect(nameRadio).toBeInTheDocument();
+    expect(nameRadioBTN).toBeInTheDocument();
     expect(firstLetterRadio).toBeInTheDocument();
   });
 
   test('Renderiza o componente SearchBar com o botão de busca', () => {
     const { getByTestId } = renderWithRouter(<HomeMeal />);
 
-    const execSearchButton = getByTestId('exec-search-btn');
+    const execSearchButton = getByTestId(searchBtn);
 
     expect(execSearchButton).toBeInTheDocument();
   });
 
-  test('Testa para ver se é possivel digitar no input de busca', async () => {
-    const { getByRole } = renderWithRouter(<HomeMeal />);
+  test.only('Testa para ver se é possivel digitar no input de busca', async () => {
+    const MOCK_RESPONSE = {
+      ok: true,
+      status: 200,
+      json: async () => mockMealsData,
+    } as Response;
+    vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
+    const { getByRole, getByTestId } = renderWithRouter(<HomeMeal />);
 
     const screenSearchIcon = getByRole('img', { name: /search icon/i });
     await userEvent.click(screenSearchIcon);
 
+    const nameRadioBTN = getByTestId(nameRadio);
+    await userEvent.click(nameRadioBTN);
+
     const searchInput = getByRole('textbox');
-    await userEvent.type(searchInput, 'apple');
+    await userEvent.type(searchInput, 'Corba');
+
+    const searchButton = getByTestId(searchBtn);
+    await userEvent.click(searchButton);
   });
 
   test('Testa para ver se é possivel clicar nos radio buttons', async () => {
@@ -319,7 +332,7 @@ describe('Testes do SearchBar', () => {
 
   test('O radio button "Name" funciona corretamente', async () => {
     const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue({} as Response);
-    const { getByText, getByRole } = renderWithRouter(<HomeMeal />);
+    const { getByText, getByRole, getByTestId } = renderWithRouter(<HomeMeal />);
 
     const screenSearchIcon = getByRole('img', { name: /search icon/i });
     await userEvent.click(screenSearchIcon);
@@ -330,7 +343,7 @@ describe('Testes do SearchBar', () => {
     const searchInput = getByRole('textbox');
     await userEvent.type(searchInput, 'aa');
 
-    const searchBTN = getByText(/Search/i);
+    const searchBTN = getByTestId(searchBtn);
     await userEvent.click(searchBTN);
 
     expect(mockFetch).toHaveBeenCalled();
@@ -338,12 +351,13 @@ describe('Testes do SearchBar', () => {
 
   test('É exibido um alert ao procurar um ingrediente sem digitar um valor', async () => {
     const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
-    const { getByText } = renderWithRouter(<HomeMeal />);
+    const { getByTestId } = renderWithRouter(<HomeMeal />);
 
-    const searchBTN = getByText(/Search/i);
+    const searchBTN = getByTestId(searchBtn);
     await userEvent.click(searchBTN);
 
     expect(alertSpy).toHaveBeenCalled();
+    alertSpy.mockRestore();
   });
 });
 
@@ -407,7 +421,7 @@ test('Os cards de meals são renderizados corretamente', async () => {
     status: 200,
     json: async () => mockMealsData,
   } as Response;
-  const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
+  vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
 
   const { getByText, getByRole, getByTestId } = renderWithRouter(<HomeMeal />);
 
@@ -433,7 +447,7 @@ test('Os cards de drinks são renderizados corretamente', async () => {
     status: 200,
     json: async () => mockDrinksData,
   } as Response;
-  const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
+  vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
 
   const { getByText, getByRole, getByTestId } = renderWithRouter(<Drinks />);
 
@@ -467,7 +481,7 @@ describe('Footer', () => {
   });
 });
 
-describe.only('Profile', () => {
+describe('Profile', () => {
   test('Renderiza página de perfil com título correto', () => {
     const { getByTestId } = renderWithRouter(<Profile />);
 

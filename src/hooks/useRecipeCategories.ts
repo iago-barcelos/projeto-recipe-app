@@ -10,8 +10,10 @@ const useRecipeCategories = () => {
   const getCategories = async () => {
     const mealCategoriesResult = await getFetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list', '');
     const drinkCategoriesResult = await getFetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list', '');
-    const filteredMealCat = mealCategoriesResult.meals.slice(0, 5);
-    const filteredDrinkCat = drinkCategoriesResult.drinks.slice(0, 5);
+    const mealCat = mealCategoriesResult?.meals || [];
+    const drinkCat = drinkCategoriesResult?.drinks || [];
+    const filteredMealCat = mealCat.slice(0, 5);
+    const filteredDrinkCat = drinkCat.slice(0, 5);
     setMealCategories(filteredMealCat);
     setDrinkCategories(filteredDrinkCat);
   };
