@@ -34,7 +34,7 @@ function Drinks() {
       navigate(`/drinks/${id}`);
     }
   }, [searchResults]);
-  console.log(drinksByCategories);
+
   return (
     <div>
       <Header pageTitle="Drinks" />

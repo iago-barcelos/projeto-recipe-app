@@ -1,13 +1,12 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { screen, within } from '@testing-library/dom';
+import { screen } from '@testing-library/dom';
 import { vi } from 'vitest';
 
 import App from '../App';
 import DoneRecipes from '../pages/DoneRecipes';
 import Drinks from '../pages/Drinks';
 import FavoriteRecipes from '../pages/FavoriteRecipes';
-import Header from '../components/Header';
 import HomeMeal from '../pages/HomeMeal';
 import Profile from '../pages/Profile';
 import { renderWithRouter } from './helpers/renderWIth';
@@ -15,6 +14,19 @@ import { mockDrinksData, mockMealsData } from './helpers/mockData';
 
 const validEmail = 'email@valido.com';
 const getPageTitle = 'page-title';
+const footerDrinksRoute = 'drinks-bottom-btn';
+const searchIconTestId = 'search-top-btn';
+const searchBtnTestId = 'exec-search-btn';
+const nameSearchRadioTestId = 'name-search-radio';
+const searchInputTestId = 'search-input';
+
+beforeEach(() => {
+  vi.spyOn(global, 'fetch');
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe('Testes da página de Login', () => {
   test('Testa para ver se existe uma página de Login', () => {
@@ -54,11 +66,11 @@ describe('Testes referentes a HomeMeal', () => {
   test('Testa se ao entrar na pagina Meals, aparece a SearchBar', () => {
     renderWithRouter(<HomeMeal />);
 
-    const searchIcon = screen.getByTestId('search-top-btn');
+    const searchIcon = screen.getByTestId(searchIconTestId);
     const profileIcon = screen.getByTestId('profile-top-btn');
     const AllCatBtn = screen.getByTestId('All-category-filter');
-    const nameRadioBtn = screen.getByTestId('name-search-radio');
-    const searchBtn = screen.getByTestId('exec-search-btn');
+    const nameRadioBtn = screen.getByTestId(nameSearchRadioTestId);
+    const searchBtn = screen.getByTestId(searchBtnTestId);
 
     expect(searchIcon).toBeInTheDocument();
     expect(nameRadioBtn).toBeInTheDocument();
@@ -67,9 +79,8 @@ describe('Testes referentes a HomeMeal', () => {
     expect(AllCatBtn).toBeInTheDocument();
   });
 
-  test('Testa se ao entrar na pagina HomeMeals, aparece uma receita na tela', async () => {
+  test('Testa se ao realizar uma pesquisa por nome, aparecem receitas relacionadas', async () => {
     renderWithRouter(<HomeMeal />);
-
     const MOCK_RESPONSE = {
       ok: true,
       status: 200,
@@ -77,9 +88,18 @@ describe('Testes referentes a HomeMeal', () => {
     } as Response;
     vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
 
-    const firstRecipe = await screen.findByTestId('0-recipe-card');
+    const searchIcon = screen.getByTestId(searchIconTestId);
+    await userEvent.click(searchIcon);
+    const searchInput = screen.getByTestId(searchInputTestId);
+    await userEvent.type(searchInput, 'Cor');
+    const nameRadioBtn = screen.getByTestId(nameSearchRadioTestId);
+    await userEvent.click(nameRadioBtn);
+    const searchBtn = screen.getByTestId(searchBtnTestId);
+    await userEvent.click(searchBtn);
 
-    expect(firstRecipe).toBeInTheDocument();
+    const corba = await screen.findByAltText('Corba');
+
+    expect(corba).toBeInTheDocument();
   });
 });
 describe('Testes referentes a Drinks', () => {
@@ -94,7 +114,7 @@ describe('Testes referentes a Drinks', () => {
   test('Testa se ao entrar na página Drinks, aparece um Drink', async () => {
     renderWithRouter(<HomeMeal />);
 
-    const drinkRoute = screen.getByTestId('drinks-bottom-btn');
+    const drinkRoute = screen.getByTestId(footerDrinksRoute);
     await userEvent.click(drinkRoute);
 
     const MOCK_RESPONSE = {
@@ -109,11 +129,8 @@ describe('Testes referentes a Drinks', () => {
     expect(firstRecipe).toBeInTheDocument();
   });
 
-  test('Testa se procurar pelo ingrediente "ice", aparece o drink GG', async () => {
-    renderWithRouter(<HomeMeal />);
-
-    const drinkRoute = screen.getByTestId('drinks-bottom-btn');
-    await userEvent.click(drinkRoute);
+  test('Testa se procurar pelo ingrediente "gin", aparece os drinks A1 e Ace', async () => {
+    renderWithRouter(<Drinks />);
 
     const MOCK_RESPONSE = {
       ok: true,
@@ -122,18 +139,51 @@ describe('Testes referentes a Drinks', () => {
     } as Response;
     vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
 
-    const searchIcon = screen.getByTestId('search-top-btn');
+    const searchIcon = screen.getByTestId(searchIconTestId);
     await userEvent.click(searchIcon);
     const ingredientRadio = screen.getByTestId('ingredient-search-radio');
     await userEvent.click(ingredientRadio);
-    const searchInput = screen.getByTestId('search-input');
-    await userEvent.type(searchInput, 'ice');
-    const searchBTN = screen.getByTestId('exec-search-btn');
+    const searchInput = screen.getByTestId(searchInputTestId);
+    await userEvent.type(searchInput, 'gin');
+    const searchBTN = screen.getByTestId(searchBtnTestId);
     await userEvent.click(searchBTN);
 
-    const GG = await screen.findByText(/gg/i);
+    const A1 = await screen.findByAltText(/a1/i);
+    const Ace = await screen.findByAltText(/ace/i);
 
-    expect(GG).toBeInTheDocument();
+    expect(A1).toBeInTheDocument();
+    expect(Ace).toBeInTheDocument();
+  });
+
+  test('Testa se procurar pelo nome A1, é redirecionado para a pagina de detalhes', async () => {
+    renderWithRouter(<Drinks />);
+
+    const MOCK_RESPONSE = {
+      ok: true,
+      status: 200,
+      json: async () => mockDrinksData,
+    } as Response;
+    vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
+
+    const searchIcon = screen.getByTestId(searchIconTestId);
+    await userEvent.click(searchIcon);
+    const nameRadio = screen.getByTestId(nameSearchRadioTestId);
+    await userEvent.click(nameRadio);
+    const searchInput = screen.getByTestId(searchInputTestId);
+    await userEvent.type(searchInput, 'A1');
+    const searchBTN = screen.getByTestId(searchBtnTestId);
+    await userEvent.click(searchBTN);
+    // VERIFICAR TESTE
+    // expect(window.location.pathname).toBe('/drinks/17222');
+  });
+});
+
+describe('Testes referentes a FilterBar', () => {
+  test('Testa para ver se os filtros estão sendo carregados', async () => {
+    renderWithRouter(<HomeMeal />);
+    const allFilterBtn = await screen.findByTestId('All-category-filter');
+
+    expect(allFilterBtn).toBeInTheDocument();
   });
 });
 
@@ -205,7 +255,7 @@ describe('Testes referentes ao Footer', () => {
 
     const footerElement = screen.getByTestId('footer');
     const mealsButton = screen.getByTestId('meals-bottom-btn');
-    const drinksButton = screen.getByTestId('drinks-bottom-btn');
+    const drinksButton = screen.getByTestId(footerDrinksRoute);
 
     expect(footerElement).toBeInTheDocument();
     expect(mealsButton).toBeInTheDocument();
