@@ -1,4 +1,4 @@
-import { ByCategoriesType, CocktailType, MealType } from '../types';
+import { CocktailType, MealType } from '../types';
 
 type RecipeCardProps = {
   drinks?: CocktailType[],

@@ -1,12 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
 import searchIcon from '../images/searchIcon.svg';
 import RecipeAppContext from '../context/RecipeAppContext';
 import FilterBar from './FilterBar';
-import Recipes from './Recipes';
-import { getFetch } from '../utils/functions';
-import { CocktailType, MealType, SearchResultsType } from '../types';
-import useRecipeCategories from '../hooks/useRecipeCategories';
 
 type SearchBarProps = {
   page: string,
@@ -15,48 +10,13 @@ type SearchBarProps = {
 function SearchBar({ page }: SearchBarProps) {
   const recipeContext = useContext(RecipeAppContext);
   const {
-    searchResults,
     searchValue,
     handleChange,
     handleSearch,
   } = recipeContext;
-  const {
-    byCategories,
-    categories,
-    setByCategories,
-    getByCategories,
-  } = useRecipeCategories(page);
-  const navigate = useNavigate();
 
-  const meals = searchResults?.meals || [];
-  const drinks = searchResults?.drinks || [];
   const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
-  const [initialRecipes, setInitialRecipes] = useState<SearchResultsType>(
-    { meals: [], drinks: [] },
-  );
 
-  useEffect(() => {
-    if (meals.length === 1) {
-      const id = meals[0].idMeal;
-      navigate(`/meals/${id}`);
-    }
-    if (drinks.length === 1) {
-      const id = drinks[0].idDrink;
-      navigate(`/drinks/${id}`);
-    }
-  }, [searchResults]);
-
-  useEffect(() => {
-    const fetchData = async (string: string) => {
-      const toggle = string === 'meals' ? 'themealdb' : 'thecocktaildb';
-      const endpoint = `https://www.${toggle}.com/api/json/v1/1/search.php?s=`;
-      const result = await getFetch(endpoint, '');
-      setInitialRecipes(result);
-    };
-    fetchData(page);
-  }, [page]);
-
-  console.log(byCategories);
   return (
     <>
       <section>
@@ -118,25 +78,7 @@ function SearchBar({ page }: SearchBarProps) {
           Search
         </button>
       </section>
-      <FilterBar
-        page={ page }
-        getByCategories={ getByCategories }
-        categories={ categories }
-        setByCategories={ setByCategories }
-      />
-      {meals.length === 0 && byCategories[page].length === 0 && (
-        <Recipes meals={ initialRecipes.meals } />
-      )}
-      {drinks.length === 0 && byCategories[page].length === 0 && (
-        <Recipes drinks={ initialRecipes.drinks } />
-      )}
-      {byCategories[page].length > 0 && (
-        <Recipes byCategories={ byCategories } />
-      )}
-      {meals.length > 0 && (
-        <Recipes meals={ meals } />
-      )}
-      {drinks.length > 0 && <Recipes drinks={ drinks } />}
+      <FilterBar page={ page } />
       <section />
     </>
   );

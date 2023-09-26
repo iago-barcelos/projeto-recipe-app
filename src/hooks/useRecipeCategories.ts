@@ -1,35 +1,44 @@
 import { useState, useEffect } from 'react';
-import { ByCategoriesType } from '../types';
 import { getFetch } from '../utils/functions';
 
-const useRecipeCategories = (page: string) => {
-  const [categories, setCategories] = useState([{ strCategory: '' }]);
-  const [byCategories, setByCategories] = useState({
-    [page]: [],
-  });
+const useRecipeCategories = () => {
+  const [mealCategories, setMealCategories] = useState([{ strCategory: '' }]);
+  const [drinkCategories, setDrinkCategories] = useState([{ strCategory: '' }]);
+  const [drinksByCategories, setDrinksByCategories] = useState({ drinks: [] });
+  const [mealsByCategories, setMealsByCategories] = useState({ meals: [] });
 
-  const getCategories = async (toggle: string) => {
-    const endpoint = toggle === 'meals' ? 'themealdb' : 'thecocktaildb';
-    const filterResult = await getFetch(`https://www.${endpoint}.com/api/json/v1/1/list.php?c=list`, '');
-    const filteredCategories = filterResult[toggle].slice(0, 5);
-    setCategories(filteredCategories);
+  const getCategories = async () => {
+    const mealCategoriesResult = await getFetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list', '');
+    const drinkCategoriesResult = await getFetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list', '');
+    const filteredMealCat = mealCategoriesResult.meals.slice(0, 5);
+    const filteredDrinkCat = drinkCategoriesResult.drinks.slice(0, 5);
+    setMealCategories(filteredMealCat);
+    setDrinkCategories(filteredDrinkCat);
   };
 
   const getByCategories = async (toggle: string, category: string) => {
     const endpoint = toggle === 'meals' ? 'themealdb' : 'thecocktaildb';
     const filterResult = await getFetch(`https://www.${endpoint}.com/api/json/v1/1/filter.php?c=`, `${category}`);
-    setByCategories({ [toggle]: filterResult[toggle] });
+    setDrinksByCategories(
+      toggle === 'drinks' ? { drinks: filterResult.drinks } : { drinks: [] },
+    );
+    setMealsByCategories(
+      toggle === 'meals' ? { meals: filterResult.meals } : { meals: [] },
+    );
   };
 
   useEffect(() => {
-    getCategories(page);
-  }, [page]);
+    getCategories();
+  }, []);
 
   return {
-    categories,
-    byCategories,
+    mealCategories,
+    drinkCategories,
+    drinksByCategories,
+    mealsByCategories,
     getByCategories,
-    setByCategories,
+    setDrinksByCategories,
+    setMealsByCategories,
   };
 };
 

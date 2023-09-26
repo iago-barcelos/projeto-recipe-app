@@ -1,25 +1,28 @@
-import { ByCategoriesType } from '../types';
+import { useContext } from 'react';
+import RecipeAppContext from '../context/RecipeAppContext';
 
 type FilterBarProps = {
   page: string;
-  categories: { strCategory: string }[];
-  getByCategories: (toggle: string, category: string) => void;
-  setByCategories:React.Dispatch<React.SetStateAction<{
-    [x: string]: never[];
-  }>>
 };
 
-function FilterBar({
-  page,
-  categories,
-  getByCategories,
-  setByCategories,
-}: FilterBarProps) {
+function FilterBar({ page }: FilterBarProps) {
+  const recipeContext = useContext(RecipeAppContext);
+  const {
+    mealCategories,
+    drinkCategories,
+    setDrinksByCategories,
+    setMealsByCategories,
+    getByCategories,
+  } = recipeContext;
   return (
     <>
       <button
         data-testid="All-category-filter"
-        onClick={ () => setByCategories({ [page]: [] }) }
+        onClick={
+          page === 'meals'
+            ? () => setMealsByCategories({ meals: [] })
+            : () => setDrinksByCategories({ drinks: [] })
+        }
       >
         <img
           src={ `../src/images/FilterBarIcons/all-${
@@ -31,27 +34,50 @@ function FilterBar({
         {' '}
         {page}
       </button>
-      {categories.map((category, i) => (
-        <button
-          key={ i }
-          data-testid={ `${
-            category.strCategory.includes('/')
-              ? 'Other/Unknown'
-              : category.strCategory
-          }-category-filter` }
-          onClick={ () => getByCategories(page, category.strCategory) }
-        >
-          <img
-            src={ `../src/images/FilterBarIcons/${
+      {page === 'meals'
+        && mealCategories.map((category, i) => (
+          <button
+            key={ i }
+            data-testid={ `${
               category.strCategory.includes('/')
-                ? 'Other'
+                ? 'Other/Unknown'
                 : category.strCategory
-            }.svg` }
-            alt={ category.strCategory }
-          />
-          {category.strCategory}
-        </button>
-      ))}
+            }-category-filter` }
+            onClick={ () => getByCategories(page, category.strCategory) }
+          >
+            <img
+              src={ `../src/images/FilterBarIcons/${
+                category.strCategory.includes('/')
+                  ? 'Other'
+                  : category.strCategory
+              }.svg` }
+              alt={ category.strCategory }
+            />
+            {category.strCategory}
+          </button>
+        ))}
+      {page === 'drinks'
+        && drinkCategories.map((category, i) => (
+          <button
+            key={ i }
+            data-testid={ `${
+              category.strCategory.includes('/')
+                ? 'Other/Unknown'
+                : category.strCategory
+            }-category-filter` }
+            onClick={ () => getByCategories(page, category.strCategory) }
+          >
+            <img
+              src={ `../src/images/FilterBarIcons/${
+                category.strCategory.includes('/')
+                  ? 'Other'
+                  : category.strCategory
+              }.svg` }
+              alt={ category.strCategory }
+            />
+            {category.strCategory}
+          </button>
+        ))}
     </>
   );
 }

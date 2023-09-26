@@ -10,9 +10,7 @@ import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
 import useRecipeSearch from './hooks/useRecipeSearch';
 import RecipeAppContext from './context/RecipeAppContext';
-import Recipes from './components/Recipes';
-
-// ..
+import useRecipeCategories from './hooks/useRecipeCategories';
 
 function App() {
   const {
@@ -21,10 +19,31 @@ function App() {
     handleChange,
     handleSearch,
   } = useRecipeSearch();
+  const {
+    mealCategories,
+    drinkCategories,
+    drinksByCategories,
+    mealsByCategories,
+    setDrinksByCategories,
+    setMealsByCategories,
+    getByCategories,
+  } = useRecipeCategories();
 
   return (
     <RecipeAppContext.Provider
-      value={ { searchResults, searchValue, handleChange, handleSearch } }
+      value={ {
+        searchResults,
+        searchValue,
+        handleChange,
+        handleSearch,
+        mealCategories,
+        drinkCategories,
+        drinksByCategories,
+        mealsByCategories,
+        setDrinksByCategories,
+        setMealsByCategories,
+        getByCategories,
+      } }
     >
       <Routes>
         <Route path="/" element={ <Login /> } />
