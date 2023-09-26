@@ -1,17 +1,26 @@
-// import useRecipeCategories from '../hooks/useRecipeCategories';
+import { ByCategoriesType } from '../types';
 
 type FilterBarProps = {
   page: string;
   categories: { strCategory: string }[];
   getByCategories: (toggle: string, category: string) => void;
+  setByCategories:React.Dispatch<React.SetStateAction<{
+    [x: string]: never[];
+  }>>
 };
 
-function FilterBar({ page, categories, getByCategories }: FilterBarProps) {
-  // const { getByCategories, categories, byCategories } = useRecipeCategories(page);
-
+function FilterBar({
+  page,
+  categories,
+  getByCategories,
+  setByCategories,
+}: FilterBarProps) {
   return (
     <>
-      <button data-testid="All-category-filter">
+      <button
+        data-testid="All-category-filter"
+        onClick={ () => setByCategories({ [page]: [] }) }
+      >
         <img
           src={ `../src/images/FilterBarIcons/all-${
             page === 'meals' ? 'meals' : 'drinks'

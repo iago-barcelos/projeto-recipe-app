@@ -20,7 +20,12 @@ function SearchBar({ page }: SearchBarProps) {
     handleChange,
     handleSearch,
   } = recipeContext;
-  const { byCategories, categories, getByCategories } = useRecipeCategories(page);
+  const {
+    byCategories,
+    categories,
+    setByCategories,
+    getByCategories,
+  } = useRecipeCategories(page);
   const navigate = useNavigate();
 
   const meals = searchResults?.meals || [];
@@ -117,18 +122,16 @@ function SearchBar({ page }: SearchBarProps) {
         page={ page }
         getByCategories={ getByCategories }
         categories={ categories }
+        setByCategories={ setByCategories }
       />
-      {meals.length === 0 && byCategories.byCategories.length === 0 && (
+      {meals.length === 0 && byCategories[page].length === 0 && (
         <Recipes meals={ initialRecipes.meals } />
       )}
-      {drinks.length === 0 && byCategories.byCategories.length === 0 && (
+      {drinks.length === 0 && byCategories[page].length === 0 && (
         <Recipes drinks={ initialRecipes.drinks } />
       )}
-      {byCategories.byCategories.length > 0 && meals.length === 0 && (
-        <Recipes meals={ byCategories.byCategories as MealType[] } />
-      )}
-      {byCategories.byCategories.length > 0 && meals.length === 0 && (
-        <Recipes drinks={ byCategories.byCategories as CocktailType[] } />
+      {byCategories[page].length > 0 && (
+        <Recipes byCategories={ byCategories } />
       )}
       {meals.length > 0 && (
         <Recipes meals={ meals } />

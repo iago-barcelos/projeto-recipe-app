@@ -4,8 +4,8 @@ import { getFetch } from '../utils/functions';
 
 const useRecipeCategories = (page: string) => {
   const [categories, setCategories] = useState([{ strCategory: '' }]);
-  const [byCategories, setByCategories] = useState<ByCategoriesType>({
-    byCategories: [],
+  const [byCategories, setByCategories] = useState({
+    [page]: [],
   });
 
   const getCategories = async (toggle: string) => {
@@ -18,7 +18,7 @@ const useRecipeCategories = (page: string) => {
   const getByCategories = async (toggle: string, category: string) => {
     const endpoint = toggle === 'meals' ? 'themealdb' : 'thecocktaildb';
     const filterResult = await getFetch(`https://www.${endpoint}.com/api/json/v1/1/filter.php?c=`, `${category}`);
-    setByCategories({ byCategories: filterResult[toggle] });
+    setByCategories({ [toggle]: filterResult[toggle] });
   };
 
   useEffect(() => {
@@ -29,6 +29,7 @@ const useRecipeCategories = (page: string) => {
     categories,
     byCategories,
     getByCategories,
+    setByCategories,
   };
 };
 
