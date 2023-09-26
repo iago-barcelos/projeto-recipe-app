@@ -108,6 +108,33 @@ describe('Testes referentes a Drinks', () => {
 
     expect(firstRecipe).toBeInTheDocument();
   });
+
+  test('Testa se procurar pelo ingrediente "ice", aparece o drink GG', async () => {
+    renderWithRouter(<HomeMeal />);
+
+    const drinkRoute = screen.getByTestId('drinks-bottom-btn');
+    await userEvent.click(drinkRoute);
+
+    const MOCK_RESPONSE = {
+      ok: true,
+      status: 200,
+      json: async () => mockDrinksData,
+    } as Response;
+    vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
+
+    const searchIcon = screen.getByTestId('search-top-btn');
+    await userEvent.click(searchIcon);
+    const ingredientRadio = screen.getByTestId('ingredient-search-radio');
+    await userEvent.click(ingredientRadio);
+    const searchInput = screen.getByTestId('search-input');
+    await userEvent.type(searchInput, 'ice');
+    const searchBTN = screen.getByTestId('exec-search-btn');
+    await userEvent.click(searchBTN);
+
+    const GG = await screen.findByText(/gg/i);
+
+    expect(GG).toBeInTheDocument();
+  });
 });
 
 describe('Testes referentes a Done Recipes', () => {
