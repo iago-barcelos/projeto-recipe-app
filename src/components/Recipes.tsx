@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { CocktailType, MealType } from '../types';
 
 type RecipeCardProps = {
@@ -17,12 +18,31 @@ function Recipes({
   const catDrink = byCategories?.drinks || [];
   const shownCatMeals = catMeal.length > 12 ? catMeal.slice(0, 12) : catMeal;
   const shownCatDrinks = catDrink.length > 12 ? catDrink.slice(0, 12) : catDrink;
+
+  const navigate = useNavigate();
+
+  const handleCardClick = (id: string) => {
+    const route = shownMealsResults.length > 0 ? 'meals' : 'drinks';
+    navigate(`/${route}/${id}`);
+  };
+
   return (
     <>
       {shownMealsResults.length > 0
         && shownDrinksResults.length === 0
-        && shownMealsResults.map(({ strMealThumb, strMeal }, index) => (
-          <div data-testid={ `${index}-recipe-card` } key={ index }>
+        && shownMealsResults.map(({ idMeal, strMealThumb, strMeal }, index) => (
+          <div
+            data-testid={ `${index}-recipe-card` }
+            key={ idMeal }
+            role="button"
+            tabIndex={ 0 }
+            onClick={ () => handleCardClick(idMeal) }
+            onKeyDown={ (event) => {
+              if (event.key === 'Enter') {
+                handleCardClick(idMeal);
+              }
+            } }
+          >
             <img
               data-testid={ `${index}-card-img` }
               src={ strMealThumb }
@@ -35,8 +55,19 @@ function Recipes({
         ))}
       {shownDrinksResults.length > 0
         && shownMealsResults.length === 0
-        && shownDrinksResults.map(({ strDrink, strDrinkThumb }, index) => (
-          <div data-testid={ `${index}-recipe-card` } key={ index }>
+        && shownDrinksResults.map(({ idDrink, strDrink, strDrinkThumb }, index) => (
+          <div
+            data-testid={ `${index}-recipe-card` }
+            key={ idDrink }
+            role="button"
+            tabIndex={ 0 }
+            onClick={ () => handleCardClick(idDrink) }
+            onKeyDown={ (event) => {
+              if (event.key === 'Enter') {
+                handleCardClick(idDrink);
+              }
+            } }
+          >
             <img
               data-testid={ `${index}-card-img` }
               src={ strDrinkThumb }
