@@ -14,6 +14,7 @@ import { mockDrinksData, mockMealsData } from './helpers/mockData';
 import RecipeAppContext from '../context/RecipeAppContext';
 import { mockContext } from './helpers/contextMock';
 
+const loginBtnTestId = 'login-submit-btn';
 const validEmail = 'email@valido.com';
 const getPageTitle = 'page-title';
 const footerDrinksRoute = 'drinks-bottom-btn';
@@ -42,7 +43,7 @@ describe('Testes da página de Login', () => {
   test('Testa para ver se, ao carregar a página, o botão "Entrar" está desabilitado', () => {
     renderWithRouter(<App />);
 
-    const loginBtn = screen.getByTestId('login-submit-btn');
+    const loginBtn = screen.getByTestId(loginBtnTestId);
 
     expect(loginBtn).toBeDisabled();
   });
@@ -52,7 +53,7 @@ describe('Testes da página de Login', () => {
 
     const emailInput = screen.getByTestId('email-input');
     const passwordInput = screen.getByTestId('password-input');
-    const loginBtn = screen.getByTestId('login-submit-btn');
+    const loginBtn = screen.getByTestId(loginBtnTestId);
 
     await userEvent.type(emailInput, validEmail);
     await userEvent.type(passwordInput, '1234567');
@@ -227,7 +228,7 @@ describe('Testes referentes a Drinks', () => {
 
     const emailInput = screen.getByTestId('email-input');
     const passwordInput = screen.getByTestId('password-input');
-    const loginBtn = screen.getByTestId('login-submit-btn');
+    const loginBtn = screen.getByTestId(loginBtnTestId);
 
     await userEvent.type(emailInput, validEmail);
     await userEvent.type(passwordInput, '1234567');
