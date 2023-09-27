@@ -82,7 +82,12 @@ describe('Testes referentes a HomeMeal', () => {
   });
 
   test('Testa se ao realizar uma pesquisa por nome, aparecem receitas relacionadas', async () => {
-    renderWithRouter(<HomeMeal />);
+    renderWithRouter(
+      <RecipeAppContext.Provider value={ mockContext }>
+        <HomeMeal />
+        ,
+      </RecipeAppContext.Provider>,
+    );
     const MOCK_RESPONSE = {
       ok: true,
       status: 200,
@@ -175,7 +180,12 @@ describe('Testes referentes a Drinks', () => {
   });
 
   test('Testa se procurar pelo ingrediente "gin", aparece os drinks A1 e Ace', async () => {
-    renderWithRouter(<Drinks />);
+    renderWithRouter(
+      <RecipeAppContext.Provider value={ mockContext }>
+        <Drinks />
+        ,
+      </RecipeAppContext.Provider>,
+    );
 
     const MOCK_RESPONSE = {
       ok: true,
@@ -201,7 +211,12 @@ describe('Testes referentes a Drinks', () => {
   });
 
   test('Testa se procurar pelo nome A1, é redirecionado para a pagina de detalhes', async () => {
-    renderWithRouter(<Drinks />);
+    renderWithRouter(
+      <RecipeAppContext.Provider value={ mockContext }>
+        <Drinks />
+        ,
+      </RecipeAppContext.Provider>,
+    );
 
     const MOCK_RESPONSE = {
       ok: true,
