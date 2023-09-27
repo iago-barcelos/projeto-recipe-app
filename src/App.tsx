@@ -12,6 +12,7 @@ import useRecipeSearch from './hooks/useRecipeSearch';
 import RecipeAppContext from './context/RecipeAppContext';
 import useRecipeCategories from './hooks/useRecipeCategories';
 import RecipeDetail from './components/RecipeDetail';
+import RecipeInProgress from './components/RecipeInProgress';
 
 function App() {
   const {
@@ -52,13 +53,13 @@ function App() {
         <Route path="/meals/:id" element={ <RecipeDetail /> } />
         <Route
           path="/meals/:id/in-progress"
-          element={ <HomeMeal /> }
+          element={ <RecipeInProgress /> }
         />
         <Route path="/drinks" element={ <Drinks /> } />
         <Route path="/drinks/:id" element={ <RecipeDetail /> } />
         <Route
           path="/drinks/:id/in-progress"
-          element={ <HomeMeal /> }
+          element={ <RecipeInProgress /> }
         />
         <Route path="/profile" element={ <Profile /> } />
         <Route path="/done-recipes" element={ <DoneRecipes /> } />
