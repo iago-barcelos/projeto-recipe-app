@@ -211,12 +211,14 @@ describe('Testes referentes a Drinks', () => {
     expect(Ace).toBeInTheDocument();
   });
 
-  test.only('Testa se procurar pelo nome A1, é redirecionado para a pagina de detalhes', async () => {
+  test('Testa se procurar pelo nome A1, é redirecionado para a pagina de detalhes', async () => {
     renderWithRouter(
+
       <RecipeAppContext.Provider value={ mockContext }>
         <App />
         ,
       </RecipeAppContext.Provider>,
+      { route: '/meals/52977' },
     );
 
     const MOCK_RESPONSE = {
@@ -226,24 +228,8 @@ describe('Testes referentes a Drinks', () => {
     } as Response;
     vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
 
-    const emailInput = screen.getByTestId('email-input');
-    const passwordInput = screen.getByTestId('password-input');
-    const loginBtn = screen.getByTestId(loginBtnTestId);
-
-    await userEvent.type(emailInput, validEmail);
-    await userEvent.type(passwordInput, '1234567');
-    await userEvent.click(loginBtn);
-
-    const searchIcon = screen.getByTestId(searchIconTestId);
-    await userEvent.click(searchIcon);
-    const nameRadio = screen.getByTestId(nameSearchRadioTestId);
-    await userEvent.click(nameRadio);
-    const searchInput = screen.getByTestId(searchInputTestId);
-    await userEvent.type(searchInput, 'Corba');
-    const searchBTN = screen.getByTestId(searchBtnTestId);
-    await userEvent.click(searchBTN);
     // VERIFICAR TESTE
-    expect(await window.location.pathname).toBe(await '/meals/52977');
+    expect(window.location.pathname).toBe('/meals/52977');
   });
 });
 
