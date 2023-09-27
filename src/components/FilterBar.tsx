@@ -16,6 +16,7 @@ function FilterBar({ page }: FilterBarProps) {
   } = recipeContext;
   const checkMealCat = mealCategories || [];
   const checkDrinkCat = drinkCategories || [];
+  console.log(checkDrinkCat);
   return (
     <>
       <button

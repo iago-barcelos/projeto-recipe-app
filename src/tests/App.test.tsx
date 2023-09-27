@@ -11,6 +11,8 @@ import HomeMeal from '../pages/HomeMeal';
 import Profile from '../pages/Profile';
 import { renderWithRouter } from './helpers/renderWIth';
 import { mockDrinksData, mockMealsData } from './helpers/mockData';
+import RecipeAppContext from '../context/RecipeAppContext';
+import { mockContext } from './helpers/contextMock';
 
 const validEmail = 'email@valido.com';
 const getPageTitle = 'page-title';
@@ -101,7 +103,29 @@ describe('Testes referentes a HomeMeal', () => {
 
     expect(corba).toBeInTheDocument();
   });
+
+  test('Testa se os botões de filtro de meals são carregados na tela', async () => {
+    renderWithRouter(
+      <RecipeAppContext.Provider value={ mockContext }>
+        <HomeMeal />
+        ,
+      </RecipeAppContext.Provider>,
+    );
+
+    const beefFilterBtn = screen.getByTestId('Beef-category-filter');
+    const breakfastFilterBtn = screen.getByTestId('Breakfast-category-filter');
+    const goatFilterBtn = screen.getByTestId('Breakfast-category-filter');
+    const dessertFilterBtn = screen.getByTestId('Dessert-category-filter');
+    const chickenFilterBtn = screen.getByTestId('Chicken-category-filter');
+
+    expect(beefFilterBtn).toBeInTheDocument();
+    expect(breakfastFilterBtn).toBeInTheDocument();
+    expect(goatFilterBtn).toBeInTheDocument();
+    expect(dessertFilterBtn).toBeInTheDocument();
+    expect(chickenFilterBtn).toBeInTheDocument();
+  });
 });
+
 describe('Testes referentes a Drinks', () => {
   test('Testa se ao entrar na página Drinks, o título aparece na tela', () => {
     renderWithRouter(<Drinks />);
@@ -127,6 +151,27 @@ describe('Testes referentes a Drinks', () => {
     const firstRecipe = await screen.findByTestId('0-recipe-card');
 
     expect(firstRecipe).toBeInTheDocument();
+  });
+
+  test('Testa se os filtros de Drinks são carregados corretamente', async () => {
+    renderWithRouter(
+      <RecipeAppContext.Provider value={ mockContext }>
+        <Drinks />
+        ,
+      </RecipeAppContext.Provider>,
+    );
+
+    const ordinaryDrink = screen.getByTestId('Ordinary Drink-category-filter');
+    const cocktail = screen.getByTestId('Cocktail-category-filter');
+    const shake = screen.getByTestId('Shake-category-filter');
+    const otherUnknown = screen.getByTestId('Other/Unknown-category-filter');
+    const cocoa = screen.getByTestId('Cocoa-category-filter');
+
+    expect(ordinaryDrink).toBeInTheDocument();
+    expect(cocktail).toBeInTheDocument();
+    expect(shake).toBeInTheDocument();
+    expect(otherUnknown).toBeInTheDocument();
+    expect(cocoa).toBeInTheDocument();
   });
 
   test('Testa se procurar pelo ingrediente "gin", aparece os drinks A1 e Ace', async () => {
