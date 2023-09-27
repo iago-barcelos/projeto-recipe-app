@@ -55,7 +55,7 @@ function App() {
           element={ <HomeMeal /> }
         />
         <Route path="/drinks" element={ <Drinks /> } />
-        <Route path="/drinks:id" element={ <RecipeDetail /> } />
+        <Route path="/drinks/:id" element={ <RecipeDetail /> } />
         <Route
           path="/drinks/:id/in-progress"
           element={ <HomeMeal /> }

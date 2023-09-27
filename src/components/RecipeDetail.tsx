@@ -4,7 +4,9 @@ import useRecipeDetails from '../hooks/useRecipeDetails';
 function RecipeDetail() {
   const { id } = useParams();
   const { recipeDetail } = useRecipeDetails(id as string);
-  console.log(recipeDetail);
+  const page = window.location.pathname.includes('meals') ? 'meals' : 'drinks';
+  const checkRecipeDetail = recipeDetail ? recipeDetail[page] : undefined;
+  console.log(checkRecipeDetail);
   return (
     <>
       <h1>Recipe Detail</h1>
