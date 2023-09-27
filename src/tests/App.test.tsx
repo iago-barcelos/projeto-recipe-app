@@ -82,7 +82,12 @@ describe('Testes referentes a HomeMeal', () => {
   });
 
   test('Testa se ao realizar uma pesquisa por nome, aparecem receitas relacionadas', async () => {
-    renderWithRouter(<HomeMeal />);
+    renderWithRouter(
+      <RecipeAppContext.Provider value={ mockContext }>
+        <HomeMeal />
+        ,
+      </RecipeAppContext.Provider>,
+    );
     const MOCK_RESPONSE = {
       ok: true,
       status: 200,
@@ -175,7 +180,12 @@ describe('Testes referentes a Drinks', () => {
   });
 
   test('Testa se procurar pelo ingrediente "gin", aparece os drinks A1 e Ace', async () => {
-    renderWithRouter(<Drinks />);
+    renderWithRouter(
+      <RecipeAppContext.Provider value={ mockContext }>
+        <Drinks />
+        ,
+      </RecipeAppContext.Provider>,
+    );
 
     const MOCK_RESPONSE = {
       ok: true,
@@ -200,26 +210,39 @@ describe('Testes referentes a Drinks', () => {
     expect(Ace).toBeInTheDocument();
   });
 
-  test('Testa se procurar pelo nome A1, é redirecionado para a pagina de detalhes', async () => {
-    renderWithRouter(<Drinks />);
+  test.only('Testa se procurar pelo nome A1, é redirecionado para a pagina de detalhes', async () => {
+    renderWithRouter(
+      <RecipeAppContext.Provider value={ mockContext }>
+        <App />
+        ,
+      </RecipeAppContext.Provider>,
+    );
 
     const MOCK_RESPONSE = {
       ok: true,
       status: 200,
-      json: async () => mockDrinksData,
+      json: async () => mockMealsData,
     } as Response;
     vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
+
+    const emailInput = screen.getByTestId('email-input');
+    const passwordInput = screen.getByTestId('password-input');
+    const loginBtn = screen.getByTestId('login-submit-btn');
+
+    await userEvent.type(emailInput, validEmail);
+    await userEvent.type(passwordInput, '1234567');
+    await userEvent.click(loginBtn);
 
     const searchIcon = screen.getByTestId(searchIconTestId);
     await userEvent.click(searchIcon);
     const nameRadio = screen.getByTestId(nameSearchRadioTestId);
     await userEvent.click(nameRadio);
     const searchInput = screen.getByTestId(searchInputTestId);
-    await userEvent.type(searchInput, 'A1');
+    await userEvent.type(searchInput, 'Corba');
     const searchBTN = screen.getByTestId(searchBtnTestId);
     await userEvent.click(searchBTN);
     // VERIFICAR TESTE
-    // expect(window.location.pathname).toBe('/drinks/17222');
+    expect(await window.location.pathname).toBe(await '/meals/52977');
   });
 });
 
