@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 
@@ -17,7 +18,9 @@ function Profile() {
       <div>
         <p data-testid="profile-email">email@mail.com</p>
 
-        <button data-testid="profile-done-btn">Done Recipes</button>
+        <Link to="/done-recipes">
+          <button data-testid="profile-done-btn">Done Recipes</button>
+        </Link>
 
         <button data-testid="profile-favorite-btn">Favorite Recipes</button>
 
