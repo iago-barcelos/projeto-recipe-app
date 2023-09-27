@@ -11,6 +11,7 @@ import FavoriteRecipes from './pages/FavoriteRecipes';
 import useRecipeSearch from './hooks/useRecipeSearch';
 import RecipeAppContext from './context/RecipeAppContext';
 import useRecipeCategories from './hooks/useRecipeCategories';
+import RecipeDetail from './components/RecipeDetail';
 
 function App() {
   const {
@@ -48,15 +49,15 @@ function App() {
       <Routes>
         <Route path="/" element={ <Login /> } />
         <Route path="/meals" element={ <HomeMeal /> } />
-        <Route path="/meals/:id-da-receita" element={ <HomeMeal /> } />
+        <Route path="/meals/:id" element={ <RecipeDetail /> } />
         <Route
-          path="/meals/:id-da-receita/in-progress"
+          path="/meals/:id/in-progress"
           element={ <HomeMeal /> }
         />
         <Route path="/drinks" element={ <Drinks /> } />
-        <Route path="/drinks:id-da-receita" element={ <Drinks /> } />
+        <Route path="/drinks/:id" element={ <RecipeDetail /> } />
         <Route
-          path="/drinks/:id-da-receita/in-progress"
+          path="/drinks/:id/in-progress"
           element={ <HomeMeal /> }
         />
         <Route path="/profile" element={ <Profile /> } />
