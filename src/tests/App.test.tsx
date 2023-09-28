@@ -204,7 +204,6 @@ describe('Testes referentes a Drinks', () => {
   test('Testa se procurar pelo nome A1, é redirecionado para a pagina de detalhes', async () => {
     renderWithRouterAndContext(<App />, '/drinks', { initialContext: mockContext });
 
-
     const MOCK_RESPONSE = {
       ok: true,
       status: 200,
