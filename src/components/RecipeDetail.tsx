@@ -7,10 +7,12 @@ import {
   FormatedRecipe,
 } from '../types';
 import { formatDrinkRecipe, formatMealRecipe } from '../utils/functions';
+import useFetch from '../hooks/useFetch';
 
 function RecipeDetail() {
   const { id } = useParams();
   const mealOrDrink = window.location.pathname.includes('meals');
+  const { recommendedDrinks, recommendedMeals } = useFetch('api/json/v1/1/search.php?s=');
 
   // recebe os dados da Api via recipeDetail e depois trata, usando as funções formatMealRecipe e formatDrinkRecipe no useEffect
   const { mealRecipeDetail, drinkRecipeDetail } = useRecipeDetails(id as string);
@@ -68,7 +70,7 @@ function RecipeDetail() {
               <iframe
                 width="560"
                 height="315"
-                src={ detail.video }
+                src={ detail.video.replace('watch?v=', 'embed/') }
                 data-testid="video"
                 title="YouTube video player"
                 frameBorder="0"

@@ -19,7 +19,7 @@ export const saveLocalStorage = (
 //   return loadItens;
 // };
 
-export const getFetch = (endpoint: string, searchValue: string) => {
+export const getFetch = (endpoint: string, searchValue: string = '') => {
   const fetchResult = fetch((endpoint += searchValue))
     .then((response) => response.json())
     .then((data) => data)
