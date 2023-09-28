@@ -36,15 +36,17 @@ function HomeMeal() {
   }, []);
 
   const meals = searchResults?.meals || [];
+  const mealsCat = mealsByCategories?.meals || [];
+  const checkInitialMeals = initialMeals?.meals || [];
 
   return (
     <div>
       <Header pageTitle="Meals" />
       <SearchBar page="meals" />
-      {meals.length === 0 && mealsByCategories.meals.length === 0 && (
-        <Recipes meals={ initialMeals.meals } />
+      {meals.length === 0 && mealsCat.length === 0 && (
+        <Recipes meals={ checkInitialMeals } />
       )}
-      {mealsByCategories.meals.length > 0 && (
+      {mealsCat.length > 0 && (
         <Recipes byCategories={ mealsByCategories } />
       )}
       {meals.length > 0 && (

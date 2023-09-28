@@ -17,6 +17,7 @@ function Drinks() {
   const navigate = useNavigate();
 
   const drinks = searchResults?.drinks || [];
+  const drinksByCat = drinksByCategories?.drinks || [];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,15 +34,15 @@ function Drinks() {
       navigate(`/drinks/${id}`);
     }
   }, [searchResults]);
-  console.log(drinksByCategories);
+
   return (
     <div>
       <Header pageTitle="Drinks" />
       <SearchBar page="drinks" />
-      {drinks.length === 0 && drinksByCategories.drinks.length === 0 && (
+      {drinks.length === 0 && drinksByCat.length === 0 && (
         <Recipes drinks={ initialDrinks.drinks } />
       )}
-      {drinksByCategories.drinks.length > 0 && (
+      {drinksByCat.length > 0 && (
         <Recipes byCategories={ drinksByCategories } />
       )}
       {drinks.length > 0 && <Recipes drinks={ drinks } />}
