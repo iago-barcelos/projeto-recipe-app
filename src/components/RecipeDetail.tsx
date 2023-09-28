@@ -68,7 +68,7 @@ function RecipeDetail() {
               <iframe
                 width="560"
                 height="315"
-                src={ detail.video }
+                src={ detail.video.replace('watch?v=', 'embed/') }
                 data-testid="video"
                 title="YouTube video player"
                 frameBorder="0"
