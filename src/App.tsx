@@ -12,41 +12,12 @@ import useRecipeSearch from './hooks/useRecipeSearch';
 import RecipeAppContext from './context/RecipeAppContext';
 import useRecipeCategories from './hooks/useRecipeCategories';
 import RecipeDetail from './components/RecipeDetail';
+import RecipeAppProvider from './context/RecipeAppProvider';
 import RecipeInProgress from './components/RecipeInProgress';
 
 function App() {
-  const {
-    searchResults,
-    searchValue,
-    handleChange,
-    handleSearch,
-  } = useRecipeSearch();
-  const {
-    mealCategories,
-    drinkCategories,
-    drinksByCategories,
-    mealsByCategories,
-    setDrinksByCategories,
-    setMealsByCategories,
-    getByCategories,
-  } = useRecipeCategories();
-
   return (
-    <RecipeAppContext.Provider
-      value={ {
-        searchResults,
-        searchValue,
-        handleChange,
-        handleSearch,
-        mealCategories,
-        drinkCategories,
-        drinksByCategories,
-        mealsByCategories,
-        setDrinksByCategories,
-        setMealsByCategories,
-        getByCategories,
-      } }
-    >
+    <RecipeAppProvider>
       <Routes>
         <Route path="/" element={ <Login /> } />
         <Route path="/meals" element={ <HomeMeal /> } />
@@ -65,7 +36,7 @@ function App() {
         <Route path="/done-recipes" element={ <DoneRecipes /> } />
         <Route path="/favorite-recipes" element={ <FavoriteRecipes /> } />
       </Routes>
-    </RecipeAppContext.Provider>
+    </RecipeAppProvider>
   );
 }
 

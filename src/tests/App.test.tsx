@@ -1,514 +1,318 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/dom';
 import { vi } from 'vitest';
 
 import App from '../App';
 import DoneRecipes from '../pages/DoneRecipes';
 import Drinks from '../pages/Drinks';
 import FavoriteRecipes from '../pages/FavoriteRecipes';
-import Header from '../components/Header';
 import HomeMeal from '../pages/HomeMeal';
 import Profile from '../pages/Profile';
-import SearchBar from '../components/SearchBar';
-import { renderWithRouter } from './helpers/renderWIth';
+import { renderWithRouterAndContext } from './helpers/renderWith';
 import { mockDrinksData, mockMealsData } from './helpers/mockData';
+import RecipeAppContext from '../context/RecipeAppContext';
+import { mockContext } from './helpers/contextMock';
 
-const emailTestId = 'email-input';
-const passwordTestId = 'password-input';
-const submitButtonTestId = 'login-submit-btn';
-const pageTitleTestId = 'page-title';
-const profileTopBtnTestId = 'profile-top-btn';
-const searchTopBtnTestId = 'search-top-btn';
-const searchInputTestId = 'search-input';
+const loginBtnTestId = 'login-submit-btn';
 const validEmail = 'email@valido.com';
-const profileIcon = 'Profile Icon';
-const searchIcon = 'Search Icon';
+const getPageTitle = 'page-title';
+const footerDrinksRoute = 'drinks-bottom-btn';
+const searchIconTestId = 'search-top-btn';
+const searchBtnTestId = 'exec-search-btn';
+const nameSearchRadioTestId = 'name-search-radio';
+const searchInputTestId = 'search-input';
 
-// Mateus Tápias: Criei um renderWithRouter() para facilitar a legibilidade do código
 beforeEach(() => {
+  vi.spyOn(global, 'fetch');
+});
+
+afterEach(() => {
   vi.restoreAllMocks();
 });
 
-test('Verifica se existe uma tela de login', () => {
-  const { getByText } = renderWithRouter(<App />);
+describe('Testes da página de Login', () => {
+  test('Testa para ver se existe uma página de Login', () => {
+    renderWithRouterAndContext(<App />);
 
-  const linkElement = getByText(/Login/i);
-  expect(linkElement).toBeInTheDocument();
-});
+    const loginTitle = screen.getByRole('heading', { name: /login/i });
 
-test('Botão desativado se e-mail inválido', () => {
-  const { getByTestId } = renderWithRouter(<App />);
-
-  const emailInput = getByTestId(emailTestId);
-  const passwordInput = getByTestId(passwordTestId);
-  const submitButton = getByTestId(submitButtonTestId);
-
-  userEvent.type(emailInput, 'emailInvalido');
-  userEvent.type(passwordInput, 'senhaValida');
-
-  expect(submitButton).toBeDisabled();
-});
-
-test('Botão desativado se Senha inválida', () => {
-  const { getByTestId } = renderWithRouter(<App />);
-
-  const emailInput = getByTestId(emailTestId);
-  const passwordInput = getByTestId(passwordTestId);
-  const submitButton = getByTestId(submitButtonTestId);
-
-  userEvent.type(emailInput, validEmail);
-  userEvent.type(passwordInput, '123');
-
-  expect(submitButton).toBeDisabled();
-});
-
-test('Botão ativado se Senha válida', async () => {
-  const { findByTestId } = renderWithRouter(<App />);
-
-  const emailInput = await findByTestId(emailTestId);
-  const passwordInput = await findByTestId(passwordTestId);
-  const submitButton = await findByTestId(submitButtonTestId);
-
-  await userEvent.type(emailInput, validEmail);
-  await userEvent.type(passwordInput, 'senhaValidaAAA');
-  await userEvent.click(submitButton);
-
-  /* expect(await submitButton).toBeEnabled(); */
-});
-
-test('Botão desativado se Senha e Email inválido', () => {
-  const { getByTestId } = renderWithRouter(<App />);
-
-  const emailInput = getByTestId(emailTestId);
-  const passwordInput = getByTestId(passwordTestId);
-  const submitButton = getByTestId(submitButtonTestId);
-
-  userEvent.type(emailInput, 'emailInvalido.com');
-  userEvent.type(passwordInput, '123');
-
-  expect(submitButton).toBeDisabled();
-});
-
-test('Botão desativa se for menor que 6', async () => {
-  const { findByTestId } = renderWithRouter(<App />);
-
-  const emailInput = await findByTestId(emailTestId);
-  const passwordInput = await findByTestId(passwordTestId);
-  const submitButton = await findByTestId(submitButtonTestId);
-
-  await userEvent.type(emailInput, validEmail);
-  await userEvent.type(passwordInput, 'senha');
-  await userEvent.click(submitButton);
-  expect(submitButton).toBeDisabled();
-});
-
-test('Navega para homeMeal', async () => {
-  const { findByTestId, getByRole } = renderWithRouter(<App />);
-
-  const emailInput = await findByTestId(emailTestId);
-  const passwordInput = await findByTestId(passwordTestId);
-  const submitButton = await findByTestId(submitButtonTestId);
-
-  await userEvent.type(emailInput, validEmail);
-  await userEvent.type(passwordInput, 'senha123');
-  await userEvent.click(submitButton);
-
-  const homeMealText = await getByRole('heading', { name: /meals/i });
-
-  expect(await homeMealText).toBeInTheDocument();
-});
-
-describe('Testa componente DoneRecipes', () => {
-  test('Renderiza página com título certo', () => {
-    const { getByTestId } = renderWithRouter(<DoneRecipes />);
-
-    const pageTitleElement = getByTestId(pageTitleTestId);
-    expect(pageTitleElement).toBeInTheDocument();
-    expect(pageTitleElement.textContent).toBe('Done Recipes');
+    expect(loginTitle).toBeInTheDocument();
   });
 
-  test('Não renderiza ícone de search', () => {
-    const { queryByAltText } = renderWithRouter(<DoneRecipes />);
+  test('Testa para ver se, ao carregar a página, o botão "Entrar" está desabilitado', () => {
+    renderWithRouterAndContext(<App />);
 
-    const searchIconElement = queryByAltText(searchIcon);
-    expect(searchIconElement).toBeNull();
+    const loginBtn = screen.getByTestId(loginBtnTestId);
+
+    expect(loginBtn).toBeDisabled();
+  });
+
+  test('Testa para ver se ao digitar um e-mail valido e uma senha válida, o botão é habilitado', async () => {
+    renderWithRouterAndContext(<App />);
+
+    const emailInput = screen.getByTestId('email-input');
+    const passwordInput = screen.getByTestId('password-input');
+    const loginBtn = screen.getByTestId(loginBtnTestId);
+
+    await userEvent.type(emailInput, validEmail);
+    await userEvent.type(passwordInput, '1234567');
+    await userEvent.click(loginBtn);
+
+    const mealsTitle = screen.getByTestId(getPageTitle);
+
+    expect(mealsTitle).toBeInTheDocument();
   });
 });
 
-describe('Componente Drinks', () => {
-  test('Renderiza a página com o endereço correto', async () => {
-    const { findByRole } = renderWithRouter(<Drinks />);
+describe('Testes referentes a HomeMeal', () => {
+  test('Testa se ao entrar na pagina Meals, aparece a SearchBar', () => {
+    renderWithRouterAndContext(<HomeMeal />);
 
-    const allDrinksBtn = findByRole('button', { name: /all drinks/i });
-    expect(allDrinksBtn).toBeInTheDocument();
+    const searchIcon = screen.getByTestId(searchIconTestId);
+    const profileIcon = screen.getByTestId('profile-top-btn');
+    const AllCatBtn = screen.getByTestId('All-category-filter');
+    const nameRadioBtn = screen.getByTestId(nameSearchRadioTestId);
+    const searchBtn = screen.getByTestId(searchBtnTestId);
+
+    expect(searchIcon).toBeInTheDocument();
+    expect(nameRadioBtn).toBeInTheDocument();
+    expect(searchBtn).toBeInTheDocument();
+    expect(profileIcon).toBeInTheDocument();
+    expect(AllCatBtn).toBeInTheDocument();
   });
 
-  test('Renderiza o icone de pesquisa', () => {
-    const { getByAltText } = renderWithRouter(<Drinks />);
+  test('Testa se ao realizar uma pesquisa por nome, aparecem receitas relacionadas', async () => {
+    renderWithRouterAndContext(
+      <RecipeAppContext.Provider value={ mockContext }>
+        <HomeMeal />
+        ,
+      </RecipeAppContext.Provider>,
+    );
+    const MOCK_RESPONSE = {
+      ok: true,
+      status: 200,
+      json: async () => mockMealsData,
+    } as Response;
+    vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
 
-    const searchIconElement = getByAltText(searchIcon);
-    expect(searchIconElement).toBeInTheDocument();
-  });
-});
+    const searchIcon = screen.getByTestId(searchIconTestId);
+    await userEvent.click(searchIcon);
+    const searchInput = screen.getByTestId(searchInputTestId);
+    await userEvent.type(searchInput, 'Cor');
+    const nameRadioBtn = screen.getByTestId(nameSearchRadioTestId);
+    await userEvent.click(nameRadioBtn);
+    const searchBtn = screen.getByTestId(searchBtnTestId);
+    await userEvent.click(searchBtn);
 
-describe('Testa componente FavoriteRecipes', () => {
-  test('Renderiza página com título devido', () => {
-    const { getByTestId } = renderWithRouter(<FavoriteRecipes />);
+    const corba = await screen.findByAltText('Corba');
 
-    const pageTitleElement = getByTestId(pageTitleTestId);
-    expect(pageTitleElement).toBeInTheDocument();
-    expect(pageTitleElement.textContent).toBe('Favorite Recipes');
-  });
-
-  test('Não renderiza ícone de pesquisa', () => {
-    const { queryByAltText } = renderWithRouter(<FavoriteRecipes />);
-
-    const searchIconElement = queryByAltText(searchIcon);
-    expect(searchIconElement).toBeNull();
-  });
-});
-
-describe('Testando o component Header', () => {
-  test('Renderiza pageTitle', () => {
-    const { getByTestId } = renderWithRouter(<Header pageTitle="Test Title" />);
-
-    const pageTitleElement = getByTestId(pageTitleTestId);
-    expect(pageTitleElement).toBeInTheDocument();
+    expect(corba).toBeInTheDocument();
   });
 
-  test('Renderiza icone de profile', () => {
-    const { getByAltText } = renderWithRouter(<Header pageTitle="Test Title" />);
+  test('Testa se os botões de filtro de meals são carregados na tela', async () => {
+    renderWithRouterAndContext(
+      <RecipeAppContext.Provider value={ mockContext }>
+        <HomeMeal />
+        ,
+      </RecipeAppContext.Provider>,
+    );
 
-    const profileIconElement = getByAltText(profileIcon);
-    expect(profileIconElement).toBeInTheDocument();
-  });
+    const beefFilterBtn = screen.getByTestId('Beef-category-filter');
+    const breakfastFilterBtn = screen.getByTestId('Breakfast-category-filter');
+    const goatFilterBtn = screen.getByTestId('Breakfast-category-filter');
+    const dessertFilterBtn = screen.getByTestId('Dessert-category-filter');
+    const chickenFilterBtn = screen.getByTestId('Chicken-category-filter');
 
-  test('Renderiza icone de pesquisa se showSearchIcon tiver valor true', () => {
-    const { getByAltText } = renderWithRouter(<HomeMeal />);
-
-    const searchIconElement = getByAltText(searchIcon);
-    expect(searchIconElement).toBeInTheDocument();
-  });
-
-  test('Não renderiza icone de pesquisa se showSearchIcon tiver valor false', () => {
-    const { queryByAltText } = renderWithRouter(<Header pageTitle="Test Title" />);
-
-    const searchIconElement = queryByAltText(searchIcon);
-    expect(searchIconElement).toBeNull();
-  });
-
-  test('Navega para "/profile" ao clicar no ícone de perfil', async () => {
-    const { getByTestId } = renderWithRouter(<Header pageTitle="Test Title" />);
-
-    const profileIconElement = getByTestId(profileTopBtnTestId);
-
-    await userEvent.click(profileIconElement);
-
-    expect(global.window.location.pathname).toBe('/profile');
-    // const pageTitle = getByTestId(pageTitleTestId);
-    // expect(pageTitle.innerHTML).toBe("Profile")
-  });
-
-  test('Renderiza o componente SearchBar ao clicar no ícone de pesquisa', async () => {
-    const { queryByTestId, getByTestId } = renderWithRouter(<HomeMeal />);
-
-    expect(queryByTestId(searchInputTestId)).toBeNull();
-
-    const searchIconElement = getByTestId(searchTopBtnTestId);
-
-    await userEvent.click(searchIconElement);
-
-    expect(queryByTestId(searchInputTestId)).toBeInTheDocument();
+    expect(beefFilterBtn).toBeInTheDocument();
+    expect(breakfastFilterBtn).toBeInTheDocument();
+    expect(goatFilterBtn).toBeInTheDocument();
+    expect(dessertFilterBtn).toBeInTheDocument();
+    expect(chickenFilterBtn).toBeInTheDocument();
   });
 });
 
-describe('Componente homeMeal', () => {
-  test('Renderiza página com título correto', () => {
-    const { getByTestId } = renderWithRouter(<HomeMeal />);
+describe('Testes referentes a Drinks', () => {
+  test('Testa se ao entrar na página Drinks, o título aparece na tela', () => {
+    renderWithRouterAndContext(<Drinks />);
 
-    const pageTitleElement = getByTestId(pageTitleTestId);
-    expect(pageTitleElement).toBeInTheDocument();
-    expect(pageTitleElement.textContent).toBe('Meals');
+    const drinksHeader = screen.getByRole('heading', { name: /drinks/i });
+
+    expect(drinksHeader).toBeInTheDocument();
   });
 
-  test('Renderiza ícone de pesquisa', () => {
-    const { getByAltText } = renderWithRouter(<HomeMeal />);
+  test('Testa se ao entrar na página Drinks, aparece um Drink', async () => {
+    renderWithRouterAndContext(<HomeMeal />);
 
-    const searchIconElement = getByAltText(searchIcon);
-    expect(searchIconElement).toBeInTheDocument();
-  });
-});
+    const drinkRoute = screen.getByTestId(footerDrinksRoute);
+    await userEvent.click(drinkRoute);
 
-test('Renderiza a página HomeMeal com os radio buttons corretos', () => {
-  const { getByTestId } = renderWithRouter(<HomeMeal />);
-  const ingredientRadio = getByTestId('ingredient-search-radio');
-  const nameRadio = getByTestId('name-search-radio');
-  const firstLetterRadio = getByTestId('first-letter-search-radio');
+    const MOCK_RESPONSE = {
+      ok: true,
+      status: 200,
+      json: async () => mockDrinksData,
+    } as Response;
+    vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
 
-  expect(ingredientRadio).toBeInTheDocument();
-  expect(nameRadio).toBeInTheDocument();
-  expect(firstLetterRadio).toBeInTheDocument();
-});
+    const firstRecipe = await screen.findByTestId('0-recipe-card');
 
-test('Renderiza a página HomeMeal com o botão de busca', () => {
-  const { getByTestId } = renderWithRouter(<HomeMeal />);
-  const execSearchButton = getByTestId('exec-search-btn');
-  expect(execSearchButton).toBeInTheDocument();
-});
-
-describe('Componente Profile', () => {
-  test('Renderiza página com título correto', () => {
-    const { getByTestId } = renderWithRouter(<Profile />);
-
-    const pageTitleElement = getByTestId(pageTitleTestId);
-    expect(pageTitleElement).toBeInTheDocument();
-    expect(pageTitleElement.textContent).toBe('Profile');
+    expect(firstRecipe).toBeInTheDocument();
   });
 
-  test('Não renderiza ícone de pesquisa', () => {
-    const { queryByAltText } = renderWithRouter(<Profile />);
+  test('Testa se os filtros de Drinks são carregados corretamente', async () => {
+    renderWithRouterAndContext(<App />, '/drinks', { initialContext: mockContext });
 
-    const searchIconElement = queryByAltText(searchIcon);
-    expect(searchIconElement).toBeNull();
-  });
-});
+    const ordinaryDrink = await screen.findByTestId('Ordinary Drink-category-filter');
+    const cocktail = screen.getByTestId('Cocktail-category-filter');
+    const shake = screen.getByTestId('Shake-category-filter');
+    const otherUnknown = screen.getByTestId('Other/Unknown-category-filter');
+    const cocoa = screen.getByTestId('Cocoa-category-filter');
 
-describe('Testes do SearchBar', () => {
-  test('Renderiza o componente SearchBar com os radio buttons corretos', () => {
-    const { getByTestId } = renderWithRouter(<HomeMeal />);
-
-    const ingredientRadio = getByTestId('ingredient-search-radio');
-    const nameRadio = getByTestId('name-search-radio');
-    const firstLetterRadio = getByTestId('first-letter-search-radio');
-
-    expect(ingredientRadio).toBeInTheDocument();
-    expect(nameRadio).toBeInTheDocument();
-    expect(firstLetterRadio).toBeInTheDocument();
+    expect(ordinaryDrink).toBeInTheDocument();
+    expect(cocktail).toBeInTheDocument();
+    expect(shake).toBeInTheDocument();
+    expect(otherUnknown).toBeInTheDocument();
+    expect(cocoa).toBeInTheDocument();
   });
 
-  test('Renderiza o componente SearchBar com o botão de busca', () => {
-    const { getByTestId } = renderWithRouter(<HomeMeal />);
+  test('Testa se procurar pelo ingrediente "gin", aparece os drinks A1 e Ace', async () => {
+    renderWithRouterAndContext(<App />, '/drinks/', { initialContext: mockContext });
 
-    const execSearchButton = getByTestId('exec-search-btn');
+    const MOCK_RESPONSE = {
+      ok: true,
+      status: 200,
+      json: async () => mockDrinksData,
+    } as Response;
+    vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
 
-    expect(execSearchButton).toBeInTheDocument();
-  });
-
-  test('Testa para ver se é possivel digitar no input de busca', async () => {
-    const { getByRole } = renderWithRouter(<HomeMeal />);
-
-    const screenSearchIcon = getByRole('img', { name: /search icon/i });
-    await userEvent.click(screenSearchIcon);
-
-    const searchInput = getByRole('textbox');
-    await userEvent.type(searchInput, 'apple');
-  });
-
-  test('Testa para ver se é possivel clicar nos radio buttons', async () => {
-    const { getByText } = renderWithRouter(<HomeMeal />);
-
-    const ingredientsRadioButton = getByText(/ingredient/i);
-    await userEvent.click(ingredientsRadioButton);
-
-    const nameRadioButton = getByText(/name/i);
-    await userEvent.click(nameRadioButton);
-
-    const firstLetterRadioButton = getByText(/first letter/i);
-    await userEvent.click(firstLetterRadioButton);
-  });
-
-  test('O radio button "Name" funciona corretamente', async () => {
-    const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue({} as Response);
-    const { getByText, getByRole } = renderWithRouter(<HomeMeal />);
-
-    const screenSearchIcon = getByRole('img', { name: /search icon/i });
-    await userEvent.click(screenSearchIcon);
-
-    const nameRadioButton = getByText(/name/i);
-    await userEvent.click(nameRadioButton);
-
-    const searchInput = getByRole('textbox');
-    await userEvent.type(searchInput, 'aa');
-
-    const searchBTN = getByText(/Search/i);
+    const searchIcon = screen.getByTestId(searchIconTestId);
+    await userEvent.click(searchIcon);
+    const ingredientRadio = screen.getByTestId('ingredient-search-radio');
+    await userEvent.click(ingredientRadio);
+    const searchInput = screen.getByTestId(searchInputTestId);
+    await userEvent.type(searchInput, 'gin');
+    const searchBTN = screen.getByTestId(searchBtnTestId);
     await userEvent.click(searchBTN);
 
-    expect(mockFetch).toHaveBeenCalled();
+    const A1 = await screen.findByAltText(/a1/i);
+    const Ace = await screen.findByAltText(/ace/i);
+
+    expect(A1).toBeInTheDocument();
+    expect(Ace).toBeInTheDocument();
   });
 
-  test('É exibido um alert ao procurar um ingrediente sem digitar um valor', async () => {
-    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
-    const { getByText } = renderWithRouter(<HomeMeal />);
+  test('Testa se procurar pelo nome A1, é redirecionado para a pagina de detalhes', async () => {
+    renderWithRouterAndContext(<App />, '/drinks', { initialContext: mockContext });
 
-    const searchBTN = getByText(/Search/i);
-    await userEvent.click(searchBTN);
+    const MOCK_RESPONSE = {
+      ok: true,
+      status: 200,
+      json: async () => mockMealsData,
+    } as Response;
+    vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
 
-    expect(alertSpy).toHaveBeenCalled();
-  });
-});
-
-test('É exibido um alert caso seja usado mais de uma letra com o searchType "First Letter"', async () => {
-  const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
-  const { getByText, getByRole } = renderWithRouter(<HomeMeal />);
-
-  const screenSearchIcon = getByRole('img', { name: /search icon/i });
-  await userEvent.click(screenSearchIcon);
-
-  const firstLetterRadioButton = getByText(/first letter/i);
-  await userEvent.click(firstLetterRadioButton);
-
-  const searchInput = getByRole('textbox');
-  await userEvent.type(searchInput, 'aa');
-
-  const searchBTN = getByText(/Search/i);
-  await userEvent.click(searchBTN);
-
-  expect(alertSpy).toHaveBeenCalled();
-});
-
-test('O fetch é realizado corretamente quando o botão de busca é clicado', async () => {
-  const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue({} as Response);
-  const { getByText, getByRole } = renderWithRouter(<HomeMeal />);
-
-  const screenSearchIcon = getByRole('img', { name: /search icon/i });
-  await userEvent.click(screenSearchIcon);
-
-  const searchInput = getByRole('textbox');
-  await userEvent.type(searchInput, 'aa');
-
-  const searchBTN = getByText(/Search/i);
-  await userEvent.click(searchBTN);
-
-  expect(mockFetch).toHaveBeenCalled();
-});
-
-test('É exibido um alert caso o fetch não retorne uma receita', async () => {
-  const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue({} as Response);
-  const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
-
-  const { getByText, getByRole } = renderWithRouter(<HomeMeal />);
-
-  const screenSearchIcon = getByRole('img', { name: /search icon/i });
-  await userEvent.click(screenSearchIcon);
-
-  const searchInput = getByRole('textbox');
-  await userEvent.type(searchInput, 'IMPOSSIBLE_NAME');
-
-  const searchBTN = getByText(/Search/i);
-  await userEvent.click(searchBTN);
-
-  expect(mockFetch).toHaveBeenCalled();
-  expect(alertSpy).toHaveBeenCalled();
-});
-
-test('Os cards de meals são renderizados corretamente', async () => {
-  const MOCK_RESPONSE = {
-    ok: true,
-    status: 200,
-    json: async () => mockMealsData,
-  } as Response;
-  const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
-
-  const { getByText, getByRole, getByTestId } = renderWithRouter(<HomeMeal />);
-
-  const screenSearchIcon = getByRole('img', { name: /search icon/i });
-  await userEvent.click(screenSearchIcon);
-
-  const nameRadioButton = getByText(/name/i);
-  await userEvent.click(nameRadioButton);
-
-  const searchInput = getByRole('textbox');
-  await userEvent.type(searchInput, 'r');
-
-  const searchBTN = getByText(/Search/i);
-  await userEvent.click(searchBTN);
-
-  const corba = await getByTestId('0-recipe-card');
-  expect(corba).toBeInTheDocument();
-});
-
-test('Os cards de drinks são renderizados corretamente', async () => {
-  const MOCK_RESPONSE = {
-    ok: true,
-    status: 200,
-    json: async () => mockDrinksData,
-  } as Response;
-  const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
-
-  const { getByText, getByRole, getByTestId } = renderWithRouter(<Drinks />);
-
-  const screenSearchIcon = getByRole('img', { name: /search icon/i });
-  await userEvent.click(screenSearchIcon);
-
-  const nameRadioButton = getByText(/name/i);
-  await userEvent.click(nameRadioButton);
-
-  const searchInput = getByRole('textbox');
-  await userEvent.type(searchInput, 'a');
-
-  const searchBTN = getByText(/Search/i);
-  await userEvent.click(searchBTN);
-
-  const drink1 = await getByTestId('0-recipe-card');
-  expect(drink1).toBeInTheDocument();
-});
-
-describe('Footer', () => {
-  test('Renderiza corretamente', () => {
-    const { getByTestId } = renderWithRouter(<HomeMeal />);
-
-    const footerElement = getByTestId('footer');
-    const mealsButton = getByTestId('meals-bottom-btn');
-    const drinksButton = getByTestId('drinks-bottom-btn');
-
-    expect(footerElement).toBeInTheDocument();
-    expect(mealsButton).toBeInTheDocument();
-    expect(drinksButton).toBeInTheDocument();
+    // VERIFICAR TESTE
+    // expect(window.location.pathname).toBe('/meals/52977');
   });
 });
 
-describe.only('Profile', () => {
+describe('Testes referentes a FilterBar', () => {
+  test('Testa para ver se os filtros estão sendo carregados', async () => {
+    renderWithRouterAndContext(<HomeMeal />);
+    const allFilterBtn = await screen.findByTestId('All-category-filter');
+
+    expect(allFilterBtn).toBeInTheDocument();
+  });
+});
+
+describe('Testes referentes a Done Recipes', () => {
+  test('Testa para ver se existe titulo na página', () => {
+    renderWithRouterAndContext(<DoneRecipes />);
+    const pageTitle = screen.getByText('Done Recipes');
+
+    expect(pageTitle).toBeInTheDocument();
+  });
+});
+
+describe('Testes referentes a Favorite Recipes', () => {
+  test('Testa para ver se existe titulo na página', () => {
+    renderWithRouterAndContext(<FavoriteRecipes />);
+    const pageTitle = screen.getByText('Favorite Recipes');
+
+    expect(pageTitle).toBeInTheDocument();
+  });
+});
+
+describe('Profile', () => {
   test('Renderiza página de perfil com título correto', () => {
-    const { getByTestId } = renderWithRouter(<Profile />);
+    renderWithRouterAndContext(<Profile />);
 
-    const pageTitleElement = getByTestId('page-title');
+    const pageTitleElement = screen.getByTestId(getPageTitle);
     expect(pageTitleElement).toBeInTheDocument();
     expect(pageTitleElement.textContent).toBe('Profile');
   });
 
   test('Não renderiza ícone de pesquisa no perfil', () => {
-    const { queryByAltText } = renderWithRouter(<Profile />);
+    renderWithRouterAndContext(<Profile />);
 
-    const searchIconElement = queryByAltText('Search Icon');
+    const searchIconElement = screen.queryByAltText('Search Icon');
     expect(searchIconElement).toBeNull();
   });
 
   test('Renderiza página com título correto e e-mail visível', () => {
-    // Simule a adição do e-mail ao localStorage
     localStorage.setItem('userEmail', validEmail);
 
-    const { getByTestId } = renderWithRouter(<Profile />);
+    renderWithRouterAndContext(<Profile />);
 
-    const pageTitleElement = getByTestId(pageTitleTestId);
-    const emailElement = getByTestId('profile-email'); // Aqui você pega o elemento do e-mail
+    const pageTitleElement = screen.getByTestId(getPageTitle);
+    const emailElement = screen.getByTestId('profile-email');
 
     expect(pageTitleElement).toBeInTheDocument();
     expect(pageTitleElement.textContent).toBe('Profile');
 
-    // Verifique se o e-mail armazenado em localStorage está visível
     expect(emailElement).toBeInTheDocument();
     expect(emailElement.textContent).toBe('email@mail.com');
   });
 
   test('Verifica data-testid dos botões', () => {
-    const { getByTestId } = renderWithRouter(<Profile />);
+    renderWithRouterAndContext(<Profile />);
 
-    const doneButton = getByTestId('profile-done-btn');
-    const favoriteButton = getByTestId('profile-favorite-btn');
-    const logoutButton = getByTestId('profile-logout-btn');
+    const doneButton = screen.getByTestId('profile-done-btn');
+    const favoriteButton = screen.getByTestId('profile-favorite-btn');
+    const logoutButton = screen.getByTestId('profile-logout-btn');
 
     expect(doneButton).toBeInTheDocument();
     expect(favoriteButton).toBeInTheDocument();
     expect(logoutButton).toBeInTheDocument();
+  });
+
+  test('Limpa o localStorage e redireciona para a tela de login ao clicar no botão "Logout"', async () => {
+    localStorage.setItem('userEmail', 'usuario@example.com');
+
+    renderWithRouterAndContext(<Profile />);
+
+    const logoutButton = screen.getByTestId('profile-logout-btn');
+
+    userEvent.click(logoutButton);
+
+    await waitFor(() => {
+      expect(localStorage.getItem('userEmail')).toBeNull();
+    });
+
+    expect(window.location.pathname).toBe('/');
+  });
+});
+
+describe('Testes referentes ao Footer', () => {
+  test('Renderiza corretamente', () => {
+    renderWithRouterAndContext(<HomeMeal />);
+
+    const footerElement = screen.getByTestId('footer');
+    const mealsButton = screen.getByTestId('meals-bottom-btn');
+    const drinksButton = screen.getByTestId(footerDrinksRoute);
+
+    expect(footerElement).toBeInTheDocument();
+    expect(mealsButton).toBeInTheDocument();
+    expect(drinksButton).toBeInTheDocument();
   });
 });

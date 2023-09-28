@@ -1,12 +1,22 @@
 import { useParams } from 'react-router-dom';
 import useRecipeDetails from '../hooks/useRecipeDetails';
+import { DrinksRecipeDetailsType, MealRecipeDetailsType } from '../types';
 
 function RecipeDetail() {
   const { id } = useParams();
-  const { recipeDetail } = useRecipeDetails(id as string);
-  const page = window.location.pathname.includes('meals') ? 'meals' : 'drinks';
-  const checkRecipeDetail = recipeDetail ? recipeDetail[page] : undefined;
-  console.log(checkRecipeDetail);
+  const checkID = id as string;
+  const { recipeDetail } = useRecipeDetails(checkID);
+  const checkMealRecipe = recipeDetail as MealRecipeDetailsType;
+  const checkDrinkRecipe = recipeDetail as DrinksRecipeDetailsType;
+  // Componente tá quebrado e só funciona pra drinks
+  const mapedDrinkRecipe = checkDrinkRecipe?.drinks.map((details) => ({
+    name: details.strDrink,
+    img: details.strDrinkThumb,
+    category: details.strCategory,
+    instructions: details.strInstructions,
+    ingredients: '',
+  }));
+
   return (
     <>
       <h1>Recipe Detail</h1>
@@ -15,6 +25,7 @@ function RecipeDetail() {
         {' '}
         {id as string}
       </h2>
+
     </>
   );
 }
