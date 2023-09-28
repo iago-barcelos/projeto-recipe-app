@@ -23,7 +23,11 @@ function DoneRecipes() {
       <button data-testid="filter-by-drink-btn">Drinks</button>
       {doneRecipes.map((recipe, index) => (
         <div key={ index }>
-          <img src={ recipe.image } alt={ recipe.name } data-testid={ `${index}-horizontal-image` } />
+          <img
+            src={ recipe.image }
+            alt={ recipe.name }
+            data-testid={ `${index}-horizontal-image` }
+          />
           <p data-testid={ `${index}-horizontal-top-text` }>{recipe.category}</p>
           <h2 data-testid={ `${index}-horizontal-name` }>{recipe.name}</h2>
           <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
