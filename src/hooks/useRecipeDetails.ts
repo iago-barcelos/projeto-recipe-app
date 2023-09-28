@@ -3,9 +3,8 @@ import { getFetch } from '../utils/functions';
 import { MealRecipeDetailsType, DrinksRecipeDetailsType } from '../types';
 
 const useRecipeDetails = (id: string) => {
-  const [recipeDetail, setRecipeDetail] = useState<
-  MealRecipeDetailsType | DrinksRecipeDetailsType
-  >();
+  const [mealRecipeDetail, setMealRecipeDetail] = useState<MealRecipeDetailsType>();
+  const [drinkRecipeDetail, setDrinkRecipeDetail] = useState<DrinksRecipeDetailsType>();
 
   const checkURL = window.location.pathname;
   const endpoint = checkURL.includes('meals') ? 'themealdb' : 'thecocktaildb';
@@ -13,15 +12,16 @@ const useRecipeDetails = (id: string) => {
     const fetchData = async () => {
       const result = await getFetch(`https://www.${endpoint}.com/api/json/v1/1/lookup.php?i=${id}`, '');
       if (endpoint === 'themealdb') {
-        setRecipeDetail({ meals: result.meals } as MealRecipeDetailsType);
+        setMealRecipeDetail({ meals: result.meals } as MealRecipeDetailsType);
       }
-      setRecipeDetail({ drinks: result.drinks } as DrinksRecipeDetailsType);
+      setDrinkRecipeDetail({ drinks: result.drinks } as DrinksRecipeDetailsType);
     };
     fetchData();
   }, [endpoint, id]);
 
   return {
-    recipeDetail,
+    mealRecipeDetail,
+    drinkRecipeDetail,
   };
 };
 

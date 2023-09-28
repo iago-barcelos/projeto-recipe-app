@@ -154,3 +154,15 @@ export type DrinksRecipeDetailsType = {
     },
   ]
 };
+
+export type FormatedRecipe = {
+  id: string;
+  name: string;
+  alcoholic?: string;
+  img: string;
+  category: string;
+  instructions: string;
+  ingredients: string[];
+  measure: string[];
+  video?: string;
+}[];
