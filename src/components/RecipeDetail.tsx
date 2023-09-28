@@ -8,6 +8,7 @@ function RecipeDetail() {
   const { recipeDetail } = useRecipeDetails(checkID);
   const checkMealRecipe = recipeDetail as MealRecipeDetailsType;
   const checkDrinkRecipe = recipeDetail as DrinksRecipeDetailsType;
+  // Componente tá quebrado e só funciona pra drinks
   const mapedDrinkRecipe = checkDrinkRecipe?.drinks.map((details) => ({
     name: details.strDrink,
     img: details.strDrinkThumb,
