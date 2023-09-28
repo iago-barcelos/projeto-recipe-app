@@ -44,5 +44,4 @@ export const mockContext = {
   setDrinksByCategories: vi.fn(), // Substitua com uma função mock
   setMealsByCategories: vi.fn(), // Substitua com uma função mock
   getByCategories: vi.fn(), // Substitua com uma função mock
-
 };
