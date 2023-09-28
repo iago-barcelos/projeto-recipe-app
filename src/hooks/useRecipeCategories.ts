@@ -8,8 +8,8 @@ const useRecipeCategories = () => {
   const [mealsByCategories, setMealsByCategories] = useState({ meals: [] });
 
   const getCategories = async () => {
-    const mealCategoriesResult = await getFetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list', '');
-    const drinkCategoriesResult = await getFetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list', '');
+    const mealCategoriesResult = await getFetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
+    const drinkCategoriesResult = await getFetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
     const mealCat = mealCategoriesResult?.meals || [];
     const drinkCat = drinkCategoriesResult?.drinks || [];
     const filteredMealCat = mealCat.slice(0, 5);
