@@ -24,6 +24,7 @@ function Header({ pageTitle }: HeaderProps) {
       </button>
       <Link to="/meals">Meals</Link>
       <Link to="/drinks">Drinks</Link>
+      <Link to="/done-recipes">Done Recipes</Link>
     </>
   );
 }
