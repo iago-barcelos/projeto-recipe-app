@@ -22,3 +22,21 @@ export const getFetch = (endpoint: string, searchValue: string) => {
     });
   return fetchResult;
 };
+
+export const fetchById = async (API: string, id: string) => {
+  try {
+    const response = await fetch(
+      `https://www.the${API}db.com/api/json/v1/1/lookup.php?i=${id}`,
+    );
+    if (!response.ok) {
+      throw new Error('Erro ao buscar os dados da API');
+    }
+    const data = await response.json();
+    return data;
+  } catch {
+    console.error('Erro ao buscar os dados da API:', Error);
+  }
+};
+
+// const data = await fetchById('cocktail', '17222');
+// console.log('data');

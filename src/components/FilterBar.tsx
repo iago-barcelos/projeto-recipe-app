@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import RecipeAppContext from '../context/RecipeAppContext';
 
 type FilterBarProps = {
@@ -14,9 +14,23 @@ function FilterBar({ page }: FilterBarProps) {
     setMealsByCategories,
     getByCategories,
   } = recipeContext;
-  const checkMealCat = mealCategories || [];
-  const checkDrinkCat = drinkCategories || [];
-  console.log(checkDrinkCat);
+
+  const [isFilterOn, setIsFilterOn] = useState(false);
+
+  const handleFilterButtonClick = (strCategory: string) => {
+    if (isFilterOn) {
+      // Mateus Tápias: não consegui colocar esse condicional do page em um ternário
+      if (page === 'meals') {
+        setMealsByCategories({ meals: [] });
+      } else {
+        setDrinksByCategories({ drinks: [] });
+      }
+    } else {
+      getByCategories(page, strCategory);
+    }
+    setIsFilterOn(!isFilterOn);
+  };
+
   return (
     <>
       <button
@@ -28,8 +42,7 @@ function FilterBar({ page }: FilterBarProps) {
         }
       >
         <img
-          src={ `../src/images/FilterBarIcons/all-${
-            page === 'meals' ? 'meals' : 'drinks'
+          src={ `../src/images/FilterBarIcons/all-${page === 'meals' ? 'meals' : 'drinks'
           }.svg` }
           alt=""
         />
@@ -37,50 +50,47 @@ function FilterBar({ page }: FilterBarProps) {
         {' '}
         {page}
       </button>
-      {page === 'meals'
-        && checkMealCat.map((category, i) => (
+      {page === 'meals' ? (
+        mealCategories.map((category, i) => (
           <button
             key={ i }
-            data-testid={ `${
-              category.strCategory.includes('/')
-                ? 'Other/Unknown'
-                : category.strCategory
+            data-testid={ `${category.strCategory.includes('/')
+              ? 'Other/Unknown'
+              : category.strCategory
             }-category-filter` }
-            onClick={ () => getByCategories(page, category.strCategory) }
+            onClick={ () => handleFilterButtonClick(category.strCategory) }
           >
             <img
-              src={ `../src/images/FilterBarIcons/${
-                category.strCategory.includes('/')
-                  ? 'Other'
-                  : category.strCategory
+              src={ `../src/images/FilterBarIcons/${category.strCategory.includes('/')
+                ? 'Other'
+                : category.strCategory
               }.svg` }
               alt={ category.strCategory }
             />
             {category.strCategory}
           </button>
-        ))}
-      {page === 'drinks'
-        && checkDrinkCat.map((category, i) => (
+        ))
+      ) : (
+        drinkCategories.map((category, i) => (
           <button
             key={ i }
-            data-testid={ `${
-              category.strCategory.includes('/')
-                ? 'Other/Unknown'
-                : category.strCategory
+            data-testid={ `${category.strCategory.includes('/')
+              ? 'Other/Unknown'
+              : category.strCategory
             }-category-filter` }
-            onClick={ () => getByCategories(page, category.strCategory) }
+            onClick={ () => handleFilterButtonClick(category.strCategory) }
           >
             <img
-              src={ `../src/images/FilterBarIcons/${
-                category.strCategory.includes('/')
-                  ? 'Other'
-                  : category.strCategory
+              src={ `../src/images/FilterBarIcons/${category.strCategory.includes('/')
+                ? 'Other'
+                : category.strCategory
               }.svg` }
               alt={ category.strCategory }
             />
             {category.strCategory}
           </button>
-        ))}
+        ))
+      )}
     </>
   );
 }
