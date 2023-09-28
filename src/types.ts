@@ -168,3 +168,11 @@ export type DrinksRecipeDetailsType = {
     },
   ]
 };
+
+export type RecipeType = {
+  name: string;
+  image: string;
+  category: string;
+  doneDate: string;
+  tags: string[];
+};
