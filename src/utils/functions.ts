@@ -86,10 +86,12 @@ export const formatMealRecipe = (mealRecipe: MealRecipeDetailsType) => {
     instructions: details.strInstructions,
     ingredients: formatedMealIngrList,
     measure: formatedMealMeasureList,
+    video: details.strYoutube,
   }));
 
   return mapedMealRecipes;
 };
+
 export const fetchById = async (API: string, id: string) => {
   try {
     const response = await fetch(

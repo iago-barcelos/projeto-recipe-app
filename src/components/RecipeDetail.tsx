@@ -25,7 +25,7 @@ function RecipeDetail() {
       setFormatedRecipe(recipe);
     }
   }, [mealRecipeDetail, drinkRecipeDetail, mealOrDrink]);
-  console.log(formatedRecipe);
+  console.log(mealRecipeDetail);
   return (
     <>
       <h1>Recipe Detail</h1>
@@ -38,7 +38,7 @@ function RecipeDetail() {
         <div key={ detail.id }>
           <h1 data-testid="recipe-title">{detail.name}</h1>
           <h3 data-testid="recipe-category">{detail.category}</h3>
-          {detail.alcoholic && <h3>{detail.alcoholic}</h3>}
+          {detail.alcoholic && <h3 data-testid="recipe-category">{detail.alcoholic}</h3>}
           <img
             data-testid="recipe-photo"
             key={ detail.id }
@@ -64,7 +64,16 @@ function RecipeDetail() {
               ))}
             </ol>
 
-            {/* {detail.video && <video src={detail.video}></video>} */}
+            {detail.video && (
+              <iframe
+                width="560"
+                height="315"
+                src={ detail.video }
+                data-testid="video"
+                title="YouTube video player"
+                frameBorder="0"
+              />
+            )}
           </section>
         </div>
       ))}
