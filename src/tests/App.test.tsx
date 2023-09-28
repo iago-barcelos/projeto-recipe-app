@@ -1,6 +1,6 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { screen } from '@testing-library/dom';
+import { screen, waitFor } from '@testing-library/dom';
 import { vi } from 'vitest';
 
 import App from '../App';
@@ -175,7 +175,7 @@ describe('Testes referentes a Drinks', () => {
     expect(cocoa).toBeInTheDocument();
   });
 
-  test.only('Testa se procurar pelo ingrediente "gin", aparece os drinks A1 e Ace', async () => {
+  test('Testa se procurar pelo ingrediente "gin", aparece os drinks A1 e Ace', async () => {
     renderWithRouterAndContext(<App />, '/drinks/', { initialContext: mockContext });
 
     const MOCK_RESPONSE = {
@@ -285,6 +285,22 @@ describe('Profile', () => {
     expect(doneButton).toBeInTheDocument();
     expect(favoriteButton).toBeInTheDocument();
     expect(logoutButton).toBeInTheDocument();
+  });
+
+  test('Limpa o localStorage e redireciona para a tela de login ao clicar no botão "Logout"', async () => {
+    localStorage.setItem('userEmail', 'usuario@example.com');
+
+    renderWithRouterAndContext(<Profile />);
+
+    const logoutButton = screen.getByTestId('profile-logout-btn');
+
+    userEvent.click(logoutButton);
+
+    await waitFor(() => {
+      expect(localStorage.getItem('userEmail')).toBeNull();
+    });
+
+    expect(window.location.pathname).toBe('/');
   });
 });
 
