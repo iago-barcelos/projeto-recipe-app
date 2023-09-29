@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import useRecipeDetails from '../hooks/useRecipeDetails';
 import {
@@ -14,6 +14,7 @@ import useFetch from '../hooks/useFetch';
 function RecipeDetail() {
   const { id } = useParams();
   const mealOrDrink = window.location.pathname.includes('meals');
+  const currentURL = window.location.pathname;
 
   // recebe os dados da Api via recipeDetail e depois trata, usando as funções formatMealRecipe e formatDrinkRecipe no useEffect
 
@@ -150,16 +151,20 @@ function RecipeDetail() {
           ))}
         </section>
       )}
-      <button
-        style={ {
-          position: 'fixed',
-          bottom: '0px',
-          display: thisRecipeIsDone ? 'none' : 'block',
-        } }
-        data-testid="start-recipe-btn"
-      >
-        {isMealInProgress || isDrinkInProgress ? 'Continue Recipe' : 'Start Recipe'}
-      </button>
+      <Link to={ `${currentURL}/in-progress` }>
+        <button
+          style={ {
+            position: 'fixed',
+            bottom: '0px',
+            display: thisRecipeIsDone ? 'none' : 'block',
+          } }
+          data-testid="start-recipe-btn"
+        >
+          {isMealInProgress || isDrinkInProgress
+            ? 'Continue Recipe'
+            : 'Start Recipe'}
+        </button>
+      </Link>
     </>
   );
 }
