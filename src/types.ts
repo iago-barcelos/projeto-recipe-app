@@ -35,8 +35,12 @@ export type ByCategoriesType = {
   byCategories: []
 };
 
-export type DrinksCategories = {
+export type DrinksTypes = {
   drinks: [],
+};
+
+export type MealsType = {
+  meals: [],
 };
 
 export type MealRecipeDetailsType = {
