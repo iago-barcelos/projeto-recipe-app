@@ -5,8 +5,10 @@ import {
   MealRecipeDetailsType,
   DrinksRecipeDetailsType,
   FormatedRecipe,
+  DoneRecipeType,
+  InProgressType,
 } from '../types';
-import { formatDrinkRecipe, formatMealRecipe } from '../utils/functions';
+import { formatDrinkRecipe, formatMealRecipe, getLocalStorage } from '../utils/functions';
 import useFetch from '../hooks/useFetch';
 
 function RecipeDetail() {
@@ -45,6 +47,16 @@ function RecipeDetail() {
     setCounter((count) => (count > 0 ? count - 2 : count + 4));
   };
 
+  // verifica no localStorage se a receita já foi feita. Caso tenha sido, o botão 'Start Recipe" não deve estar visivel
+  // verifica se a receita está em progresso no localStorage, se estiver, muda o texto para "Continue Recipe"
+  const doneRecipe = getLocalStorage('doneRecipes') as DoneRecipeType;
+  const thisRecipeIsDone = doneRecipe?.some((recipe) => recipe.id === id);
+
+  const recipesInProgress = getLocalStorage('inProgress') as InProgressType;
+  const isMealInProgress = recipesInProgress?.meals?.idMeal === id;
+  const isDrinkInProgress = recipesInProgress?.drinks?.idDrink === id;
+
+  console.log(isMealInProgress);
   return (
     <>
       <h1>Recipe Detail</h1>
@@ -139,10 +151,14 @@ function RecipeDetail() {
         </section>
       )}
       <button
-        style={ { position: 'fixed', bottom: '0px' } }
+        style={ {
+          position: 'fixed',
+          bottom: '0px',
+          display: thisRecipeIsDone ? 'none' : 'block',
+        } }
         data-testid="start-recipe-btn"
       >
-        Start Recipe
+        {isMealInProgress || isDrinkInProgress ? 'Continue Recipe' : 'Start Recipe'}
       </button>
     </>
   );

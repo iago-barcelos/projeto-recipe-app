@@ -172,6 +172,8 @@ export type FormatedRecipe = {
 }[];
 
 export type RecipeData = {
+  idDrink?: string,
+  idMeal?: string,
   strMealThumb?: string;
   strDrinkThumb?: string;
   strCategory: string;
@@ -184,3 +186,17 @@ export type RecipeData = {
 export type InProgressType = {
   [key: string] : RecipeData;
 };
+
+export type DoneRecipeType = [
+  {
+    id: string,
+    type: string,
+    nationality: string,
+    category: string,
+    alcoholicOrNot: string,
+    name: string,
+    image: string,
+    doneDate: string,
+    tags: string[],
+  },
+];

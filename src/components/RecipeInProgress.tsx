@@ -40,8 +40,6 @@ function RecipeInProgress() {
 
   const recipe = recipeData[isMeal ? 'meals' : 'drinks'];
 
-  console.log(recipe);
-
   const ingredientList = Object.entries(recipe)
     .filter((tupla) => (tupla[0]
       .includes('strIngredient')) && (tupla[1] !== '' && tupla[1] !== null));
