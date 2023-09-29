@@ -1,6 +1,8 @@
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import useRecipeDetails from '../hooks/useRecipeDetails';
+import unFav from '../images/blackHeartIcon.svg';
+import faShare from '../images/shareIcon.svg';
 import {
   MealRecipeDetailsType,
   DrinksRecipeDetailsType,
@@ -73,6 +75,23 @@ function RecipeDetail() {
           {recipe.alcoholic && (
             <h3 data-testid="recipe-category">{recipe.alcoholic}</h3>
           )}
+          {/* Compartilhar */}
+          <button>
+            <img
+              src={ faShare }
+              alt="Share"
+              data-testid="share-btn"
+            />
+          </button>
+
+          {/* Favoritar */}
+          <button>
+            <img
+              src={ unFav }
+              alt="Favorite"
+              data-testid="favorite-btn"
+            />
+          </button>
           <img
             data-testid="recipe-photo"
             key={ recipe.id }
