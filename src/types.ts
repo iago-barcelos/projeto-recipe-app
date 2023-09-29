@@ -172,6 +172,8 @@ export type FormatedRecipe = {
 }[];
 
 export type RecipeData = {
+  idDrink?: string,
+  idMeal?: string,
   strMealThumb?: string;
   strDrinkThumb?: string;
   strCategory: string;
