@@ -9,10 +9,12 @@ import Drinks from '../pages/Drinks';
 import FavoriteRecipes from '../pages/FavoriteRecipes';
 import HomeMeal from '../pages/HomeMeal';
 import Profile from '../pages/Profile';
+import RecipeInProgress from '../components/RecipeInProgress';
 import { renderWithRouterAndContext } from './helpers/renderWith';
 import { mockDrinksData, mockMealsData } from './helpers/mockData';
 import RecipeAppContext from '../context/RecipeAppContext';
 import { mockContext } from './helpers/contextMock';
+import { fetchById } from '../utils/functions';
 
 const loginBtnTestId = 'login-submit-btn';
 const validEmail = 'email@valido.com';
@@ -314,5 +316,14 @@ describe('Testes referentes ao Footer', () => {
     expect(footerElement).toBeInTheDocument();
     expect(mealsButton).toBeInTheDocument();
     expect(drinksButton).toBeInTheDocument();
+  });
+});
+
+describe('Testes referentes ao RecipeInProgress', () => {
+  test('Renderiza o texto Carregando...', () => {
+    renderWithRouterAndContext(<RecipeInProgress />);
+
+    const loading = screen.getByText(/Carregando.../i);
+    expect(loading).toBeInTheDocument();
   });
 });
