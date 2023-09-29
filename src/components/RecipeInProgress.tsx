@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchById } from '../utils/functions';
 import { InProgressType } from '../types';
@@ -17,9 +17,10 @@ function RecipeInProgress() {
           const API = isMeal ? 'meal' : 'cocktail';
           const response = await fetchById(API, id);
 
-          const recipe = response ? response[`${API}s`][0] : null;
+          const key = API === 'meal' ? 'meals' : 'drinks';
+          const recipe = response ? response[key][0] : null;
 
-          setRecipeData({ [API]: recipe });
+          setRecipeData({ [key]: recipe });
         }
       } catch (error) {
         console.error('Erro ao buscar os dados da API:', error);
@@ -37,13 +38,19 @@ function RecipeInProgress() {
     return <p>Ocorreu um erro ao buscar os dados da receita.</p>;
   }
 
-  const recipe = recipeData[isMeal ? 'meal' : 'cocktail'];
+  const recipe = recipeData[isMeal ? 'meals' : 'drinks'];
+
+  console.log(recipe);
+
+  const ingredientList = Object.entries(recipe)
+    .filter((tupla) => (tupla[0]
+      .includes('strIngredient')) && (tupla[1] !== '' && tupla[1] !== null));
 
   return (
     <div>
       <img
         data-testid="recipe-photo"
-        src={ recipe?.strMealThumb || recipe?.strDrinkThumb || '' }
+        src={ recipe?.strMealThumb ? recipe?.strMealThumb : recipe?.strDrinkThumb }
         alt=""
       />
 
@@ -61,9 +68,16 @@ function RecipeInProgress() {
 
       <div>
         <ul>
-          <li>
-            lista
-          </li>
+          {ingredientList.map(([ingredientKey, ingredientValue], index) => (
+            <li key={ index }>
+              <label data-testid={ `${index}-ingredient-step` }>
+                <input
+                  type="checkbox"
+                />
+                { ingredientValue }
+              </label>
+            </li>
+          ))}
         </ul>
 
         <p data-testid="instructions">
