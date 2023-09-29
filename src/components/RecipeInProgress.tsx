@@ -1,10 +1,11 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchById } from '../utils/functions';
 import { InProgressType } from '../types';
 
 function RecipeInProgress() {
   const [recipeData, setRecipeData] = useState<InProgressType | null>(null);
+  const [checkBox, setCheckBox] = useState<(boolean | never)[]>([]);
 
   const { id } = useParams();
 
@@ -35,16 +36,20 @@ function RecipeInProgress() {
   }
 
   if (recipeData.error) {
-    return <p>Ocorreu um erro ao buscar os dados da receita.</p>;
+    return <p>Ocorreu um erro ao buscar os dados da receita</p>;
   }
 
   const recipe = recipeData[isMeal ? 'meals' : 'drinks'];
 
-  console.log(recipe);
-
   const ingredientList = Object.entries(recipe)
     .filter((tupla) => (tupla[0]
       .includes('strIngredient')) && (tupla[1] !== '' && tupla[1] !== null));
+
+  const handleCheckBoxChange = (index: number) => {
+    const clickCheckBox = [...checkBox];
+    clickCheckBox[index] = !clickCheckBox[index];
+    setCheckBox(clickCheckBox);
+  };
 
   return (
     <div>
@@ -70,9 +75,19 @@ function RecipeInProgress() {
         <ul>
           {ingredientList.map(([ingredientKey, ingredientValue], index) => (
             <li key={ index }>
-              <label data-testid={ `${index}-ingredient-step` }>
+              <label
+                data-testid={ `${index}-ingredient-step` }
+                style={
+                  {
+                    textDecoration: checkBox[index]
+                      ? 'line-through solid rgb(0, 0, 0)'
+                      : 'none' }
+                }
+              >
                 <input
                   type="checkbox"
+                  checked={ checkBox[index] }
+                  onChange={ () => handleCheckBoxChange(index) }
                 />
                 { ingredientValue }
               </label>
