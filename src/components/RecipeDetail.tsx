@@ -37,20 +37,14 @@ function RecipeDetail() {
   // cria estado de contagem para o indice do carrossel
   const [counter, setCounter] = useState(0);
 
-  // const handleNextCount = () => {
-  //   setCounter((count) => count + 2);
-  // };
+  const handleNextCount = () => {
+    setCounter((count) => (count < 4 ? count + 2 : count - 4));
+  };
 
-  // const handlePreviousCount = () => {
-  //   setCounter((count) => (count > 0 ? count - 2 : count));
-  // };
+  const handlePreviousCount = () => {
+    setCounter((count) => (count > 0 ? count - 2 : count + 4));
+  };
 
-  // useEffect(() => {
-  //   if (counter === 6) {
-  //     setCounter(0);
-  //   }
-  // }, [counter]);
-  // console.log(counter);
   return (
     <>
       <h1>Recipe Detail</h1>
@@ -106,6 +100,8 @@ function RecipeDetail() {
       ))}
       {mealOrDrink && (
         <section>
+          <button onClick={ handlePreviousCount }>Previous</button>
+          <button onClick={ handleNextCount }>Next</button>
           {drinksCarousel.map((drink, i) => (
             <div
               key={ i }
@@ -125,6 +121,8 @@ function RecipeDetail() {
       )}
       {!mealOrDrink && (
         <section>
+          <button onClick={ handlePreviousCount }>Previous</button>
+          <button onClick={ handleNextCount }>Next</button>
           {mealsCarousel.map((meal, i) => (
             <div
               key={ i }
@@ -140,6 +138,12 @@ function RecipeDetail() {
           ))}
         </section>
       )}
+      <button
+        style={ { position: 'fixed', bottom: '0px' } }
+        data-testid="start-recipe-btn"
+      >
+        Start Recipe
+      </button>
     </>
   );
 }
