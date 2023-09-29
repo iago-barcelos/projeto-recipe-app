@@ -35,8 +35,12 @@ export type ByCategoriesType = {
   byCategories: []
 };
 
-export type DrinksCategories = {
+export type DrinksTypes = {
   drinks: [],
+};
+
+export type MealsType = {
+  meals: [],
 };
 
 export type MealRecipeDetailsType = {
@@ -112,6 +116,8 @@ export type FormatedRecipe = {
 }[];
 
 export type RecipeData = {
+  idDrink?: string,
+  idMeal?: string,
   strMealThumb?: string;
   strDrinkThumb?: string;
   strCategory: string;
@@ -125,67 +131,16 @@ export type InProgressType = {
   [key: string] : RecipeData;
 };
 
-export type DrinksRecipeDetailsType = {
-  drinks: [
-    {
-      dateModified: string,
-      idDrink: string,
-      strAlcoholic: string,
-      strCategory: string,
-      strCreativeCommonsConfirmed: string,
-      strDrink: string,
-      strDrinkAlternate: null
-      strDrinkThumb: string,
-      strGlass: string,
-      strIBA: null,
-      strImageAttribution: null,
-      strImageSource: null,
-      strIngredient1: string,
-      strIngredient2: string,
-      strIngredient3: string,
-      strIngredient4: null,
-      strIngredient5: null,
-      strIngredient6: null,
-      strIngredient7: null,
-      strIngredient8: null,
-      strIngredient9: null,
-      strIngredient10: null,
-      strIngredient11: null,
-      strIngredient12: null,
-      strIngredient13: null,
-      strIngredient14: null,
-      strIngredient15: null,
-      strInstructions: string,
-      strInstructionsDE:string,
-      strInstructionsES:null,
-      strInstructionsFR:null,
-      strInstructionsIT:string,
-      strMeasure1: string
-      strMeasure2: null
-      strMeasure3: null
-      strMeasure4: null
-      strMeasure5: null
-      strMeasure6: null
-      strMeasure7: null
-      strMeasure8: null
-      strMeasure9: null
-      strMeasure10: null
-      strMeasure11: null
-      strMeasure12: null
-      strMeasure13: null
-      strMeasure14: null
-      strMeasure15: null
-      strTags: null
-      strVideo: null
-    },
-  ]
-};
-
-export type RecipeType = {
-  nationality: any;
-  name: string;
-  image: string;
-  category: string;
-  doneDate: string;
-  tags: string[];
-};
+export type DoneRecipeType = [
+  {
+    id: string,
+    type: string,
+    nationality: string,
+    category: string,
+    alcoholicOrNot: string,
+    name: string,
+    image: string,
+    doneDate: string,
+    tags: string[],
+  },
+];

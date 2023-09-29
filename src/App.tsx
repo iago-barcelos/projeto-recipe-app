@@ -8,10 +8,7 @@ import Drinks from './pages/Drinks';
 import Profile from './pages/Profile';
 import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
-import useRecipeSearch from './hooks/useRecipeSearch';
-import RecipeAppContext from './context/RecipeAppContext';
-import useRecipeCategories from './hooks/useRecipeCategories';
-import RecipeDetail from './components/RecipeDetail';
+import RecipeDetail from './components/RecipeDetails';
 import RecipeAppProvider from './context/RecipeAppProvider';
 import RecipeInProgress from './components/RecipeInProgress';
 

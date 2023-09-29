@@ -10,7 +10,7 @@ const useRecipeDetails = (id: string) => {
   const endpoint = checkURL.includes('meals') ? 'themealdb' : 'thecocktaildb';
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getFetch(`https://www.${endpoint}.com/api/json/v1/1/lookup.php?i=${id}`, '');
+      const result = await getFetch(`https://www.${endpoint}.com/api/json/v1/1/lookup.php?i=${id}`);
       if (endpoint === 'themealdb') {
         setMealRecipeDetail({ meals: result.meals } as MealRecipeDetailsType);
       }
