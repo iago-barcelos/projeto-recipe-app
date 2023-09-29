@@ -13,6 +13,8 @@ function RecipeDetail() {
   const { id } = useParams();
   const mealOrDrink = window.location.pathname.includes('meals');
   const { recommendedDrinks, recommendedMeals } = useFetch('api/json/v1/1/search.php?s=');
+  const drinksCarousel = recommendedDrinks.slice(0, 6);
+  const mealsCarousel = recommendedMeals.slice(0, 6);
 
   // recebe os dados da Api via recipeDetail e depois trata, usando as funções formatMealRecipe e formatDrinkRecipe no useEffect
   const { mealRecipeDetail, drinkRecipeDetail } = useRecipeDetails(id as string);
@@ -27,7 +29,7 @@ function RecipeDetail() {
       setFormatedRecipe(recipe);
     }
   }, [mealRecipeDetail, drinkRecipeDetail, mealOrDrink]);
-  console.log(mealRecipeDetail);
+
   return (
     <>
       <h1>Recipe Detail</h1>
@@ -36,22 +38,22 @@ function RecipeDetail() {
         {' '}
         {id as string}
       </h2>
-      {formatedRecipe?.map((detail) => (
-        <div key={ detail.id }>
-          <h1 data-testid="recipe-title">{detail.name}</h1>
-          <h3 data-testid="recipe-category">{detail.category}</h3>
-          {detail.alcoholic && <h3 data-testid="recipe-category">{detail.alcoholic}</h3>}
+      {formatedRecipe?.map((recipe) => (
+        <div key={ recipe.id }>
+          <h1 data-testid="recipe-title">{recipe.name}</h1>
+          <h3 data-testid="recipe-category">{recipe.category}</h3>
+          {recipe.alcoholic && <h3 data-testid="recipe-category">{recipe.alcoholic}</h3>}
           <img
             data-testid="recipe-photo"
-            key={ detail.id }
-            src={ detail.img }
+            key={ recipe.id }
+            src={ recipe.img }
             alt=""
           />
-          <p data-testid="instructions">{detail.instructions}</p>
+          <p data-testid="instructions">{recipe.instructions}</p>
           <section>
             <h4>Ingredients:</h4>
             <ol>
-              {detail.ingredients.map((ingredient, i) => (
+              {recipe.ingredients.map((ingredient, i) => (
                 <li data-testid={ `${i}-ingredient-name-and-measure` } key={ i }>
                   {ingredient}
                 </li>
@@ -59,18 +61,18 @@ function RecipeDetail() {
             </ol>
             <h4>Measures:</h4>
             <ol>
-              {detail.measure.map((measure, i) => (
+              {recipe.measure.map((measure, i) => (
                 <li data-testid={ `${i}-ingredient-name-and-measure` } key={ i }>
                   {measure}
                 </li>
               ))}
             </ol>
 
-            {detail.video && (
+            {recipe.video && (
               <iframe
                 width="560"
                 height="315"
-                src={ detail.video.replace('watch?v=', 'embed/') }
+                src={ recipe.video.replace('watch?v=', 'embed/') }
                 data-testid="video"
                 title="YouTube video player"
                 frameBorder="0"

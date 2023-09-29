@@ -6,17 +6,17 @@ const useFetch = (endPoint: string) => {
   const [initialResults, setInitialResults] = useState<SearchResultsType>(
     { meals: [], drinks: [] },
   );
-  const [recommendedDrinks, setRecommendedDrinks] = useState<CocktailType[]>();
-  const [recommendedMeals, setRecommendedMeals] = useState<MealType[]>();
+  const [recommendedDrinks, setRecommendedDrinks] = useState<CocktailType[]>([]);
+  const [recommendedMeals, setRecommendedMeals] = useState<MealType[]>([]);
 
   const checkURL = window.location.pathname;
   const startPoint = checkURL.includes('meals') ? 'https://www.themealdb.com/' : 'https://www.thecocktaildb.com/';
 
   const getRecommended = async () => {
     const drinks = await getFetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
-    setRecommendedDrinks(drinks);
+    setRecommendedDrinks(drinks.drinks);
     const meals = await getFetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
-    setRecommendedMeals(meals);
+    setRecommendedMeals(meals.meals);
   };
 
   useEffect(() => {
