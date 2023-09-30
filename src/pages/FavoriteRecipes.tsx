@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Header from '../components/Header';
 import unFav from '../images/blackHeartIcon.svg';
 import faShare from '../images/shareIcon.svg';
-import { getLocalStorage } from '../utils/functions';
+import { getLocalStorage, saveLocalStorage } from '../utils/functions';
 import { FavoriteRecipesType } from '../types';
 
 function FavoriteRecipes() {
@@ -27,7 +27,7 @@ function FavoriteRecipes() {
     ));
     setShownRecipes(newFavoriteRecipes);
     setFavoriteRecipes(newFavoriteRecipes);
-    localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteRecipes));
+    saveLocalStorage('favoriteRecipes', newFavoriteRecipes);
   };
 
   const handleFilterClick = (type: string) => {

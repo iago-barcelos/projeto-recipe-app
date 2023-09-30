@@ -1,10 +1,15 @@
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import useRecipeDetails from '../hooks/useRecipeDetails';
 import unFav from '../images/blackHeartIcon.svg';
+import fav from '../images/whiteHeartIcon.svg';
 import faShare from '../images/shareIcon.svg';
-import { DoneRecipeType, InProgressType, FormatedRecipe } from '../types';
-import { getLocalStorage, saveLocalStorage } from '../utils/functions';
+import {
+  DoneRecipeType,
+  FormatedRecipe,
+  FavoriteRecipesType,
+} from '../types';
+import { convertToFavorite, getLocalStorage, saveLocalStorage } from '../utils/functions';
 import useFetch from '../hooks/useFetch';
 import useCounter from '../hooks/useCounter';
 import useFormatRecipes from '../hooks/useFormatRecipes';
@@ -17,6 +22,7 @@ function RecipeDetail() {
   const currentURL = window.location.pathname;
   const currentURLhref = window.location.href;
   const [message, setMessage] = useState('');
+  const [isFavorite, setIsFavorite] = useState(false);
 
   // recebe os dados da Api via useRecipeDetails e depois trata, usando useFormatRecipes
 
@@ -39,16 +45,35 @@ function RecipeDetail() {
   const thisRecipeIsDone = doneRecipe?.some((recipe) => recipe.id === id);
 
   // salva a receita no localStorage usando a chave 'inProgress' quando clicar no botão 'Start Recipe' e envia o usuário para a pagina /in-progress
-
   const handleInProgress = () => {
-    saveLocalStorage('inProgress', formatedRecipe);
+    saveLocalStorage('inProgress', favoriteRecipe);
     navigate(`${currentURL}/in-progress`);
   };
+
+  // converte a receita formatada para favoriteRecipesType, cria função que salva no localStorage e leva para /in-progress
+
+  const favoriteRecipe: FavoriteRecipesType[] = convertToFavorite(
+    formatedRecipe,
+    mealOrDrink,
+  );
 
   // verifica se a receita está em progresso no localStorage, se estiver, muda o texto do botão para "Continue Recipe"
 
   const recipesInProgress = getLocalStorage('inProgress') as FormatedRecipe;
   const isRecipeInProgress = recipesInProgress?.some((recipe) => recipe.id === id);
+
+  // verifica se a receita já está favoritada. Se não estiver, o botão fica com coração branco, se estiver, o coração fica preto
+
+  const handleFavorite = () => {
+    const searchFavorite: FavoriteRecipesType[] = getLocalStorage('favoriteRecipes');
+    if (isFavorite) {
+      const newFavorite = searchFavorite.filter((recipe) => recipe.id !== id);
+      saveLocalStorage('favoriteRecipes', newFavorite);
+      setIsFavorite(false);
+    }
+    saveLocalStorage('favoriteRecipes', favoriteRecipe);
+    setIsFavorite(true);
+  };
 
   const handleShare = async () => {
     await navigator.clipboard.writeText(currentURLhref);
@@ -58,16 +83,12 @@ function RecipeDetail() {
   return (
     <>
       <h1>Recipe Detail</h1>
-      <h2>
-        ID da receita
-        {' '}
-        {id as string}
-      </h2>
+
       {formatedRecipe?.map((recipe) => (
         <div key={ recipe.id }>
           <h1 data-testid="recipe-title">{recipe.name}</h1>
           <h3 data-testid="recipe-category">{recipe.category}</h3>
-          {recipe.alcoholic && (
+          {recipe.alcoholic !== '' && (
             <h3 data-testid="recipe-category">{recipe.alcoholic}</h3>
           )}
           {/* Compartilhar */}
@@ -80,9 +101,9 @@ function RecipeDetail() {
           </button>
 
           {/* Favoritar */}
-          <button>
+          <button onClick={ handleFavorite }>
             <img
-              src={ unFav }
+              src={ isFavorite ? unFav : fav }
               alt="Favorite"
               data-testid="favorite-btn"
             />

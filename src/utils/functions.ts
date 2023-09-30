@@ -6,12 +6,25 @@ import {
   MealRecipeDetailsType,
   FormatedRecipe,
   InProgressType,
+  RecipeData,
+  FavoriteRecipesType,
 } from '../types';
 
 export const saveLocalStorage = (
   key: string,
-  item: UserInfoType | MealType | CocktailType | FormatedRecipe | InProgressType,
+  item:
+  | UserInfoType
+  | MealType
+  | CocktailType
+  | FavoriteRecipesType[]
+  | InProgressType
+  | RecipeData,
 ) => {
+  const searchLocal = getLocalStorage(key);
+  if (searchLocal) {
+    const copy = [...searchLocal, { ...item }];
+    return localStorage.setItem(key, JSON.stringify(copy));
+  }
   const saveItens = localStorage.setItem(key, JSON.stringify(item));
   return saveItens;
 };
@@ -64,6 +77,7 @@ export const formatDrinkRecipe = (drinkRecipe: DrinksRecipeDetailsType) => {
   const mapedDrinkRecipe = drinkRecipe?.drinks.map((details) => ({
     id: details.idDrink,
     name: details.strDrink,
+    nacionality: '',
     alcoholic: details.strAlcoholic,
     img: details.strDrinkThumb,
     category: details.strCategory,
@@ -102,6 +116,8 @@ export const formatMealRecipe = (mealRecipe: MealRecipeDetailsType) => {
   const mapedMealRecipes = mealRecipe?.meals.map((details) => ({
     id: details.idMeal,
     name: details.strMeal,
+    nacionality: details.strArea,
+    alcoholic: '',
     img: details.strMealThumb,
     category: details.strCategory,
     instructions: details.strInstructions,
@@ -113,17 +129,19 @@ export const formatMealRecipe = (mealRecipe: MealRecipeDetailsType) => {
   return mapedMealRecipes;
 };
 
-export const fetchById = async (API: string, id: string) => {
-  try {
-    const response = await fetch(
-      `https://www.the${API}db.com/api/json/v1/1/lookup.php?i=${id}`,
-    );
-    if (!response.ok) {
-      throw new Error('Erro ao buscar os dados da API');
+// converte formatedRecipe em favoriteRecipe
+
+export const convertToFavorite = (recipes: FormatedRecipe, type: boolean) => {
+  const favoriteRecipe = recipes.map((recipe) => (
+    {
+      id: recipe.id,
+      type: type ? 'meal' : 'drink',
+      nationality: recipe.nacionality || '',
+      category: recipe.category,
+      alcoholicOrNot: recipe.alcoholic || '',
+      name: recipe.name,
+      image: recipe.img,
     }
-    const data = await response.json();
-    return data;
-  } catch {
-    console.error('Erro ao buscar os dados da API:', Error);
-  }
+  ));
+  return favoriteRecipe;
 };
