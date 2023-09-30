@@ -1,39 +1,30 @@
 import { Link, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useRecipeDetails from '../hooks/useRecipeDetails';
 import unFav from '../images/blackHeartIcon.svg';
 import faShare from '../images/shareIcon.svg';
-import {
-  MealRecipeDetailsType,
-  DrinksRecipeDetailsType,
-  FormatedRecipe,
-  DoneRecipeType,
-  InProgressType,
-} from '../types';
-import { formatDrinkRecipe, formatMealRecipe, getLocalStorage } from '../utils/functions';
+import { DoneRecipeType, InProgressType } from '../types';
+import { getLocalStorage } from '../utils/functions';
 import useFetch from '../hooks/useFetch';
+import useCounter from '../hooks/useCounter';
+import useFormatRecipes from '../hooks/useFormatRecipes';
 
 function RecipeDetail() {
   const { id } = useParams();
+  const { counter, handleNextCount, handlePreviousCount } = useCounter();
   const mealOrDrink = window.location.pathname.includes('meals');
   const currentURL = window.location.pathname;
   const currentURLhref = window.location.href;
   const [message, setMessage] = useState('');
 
-  // recebe os dados da Api via recipeDetail e depois trata, usando as funções formatMealRecipe e formatDrinkRecipe no useEffect
+  // recebe os dados da Api via useRecipeDetails e depois trata, usando useFormatRecipes
 
   const { mealRecipeDetail, drinkRecipeDetail } = useRecipeDetails(id as string);
-  const [formatedRecipe, setFormatedRecipe] = useState<FormatedRecipe>([]);
-
-  useEffect(() => {
-    if (mealOrDrink && mealRecipeDetail) {
-      const recipe = formatMealRecipe(mealRecipeDetail as MealRecipeDetailsType);
-      setFormatedRecipe(recipe);
-    } else if (!mealOrDrink && drinkRecipeDetail) {
-      const recipe = formatDrinkRecipe(drinkRecipeDetail as DrinksRecipeDetailsType);
-      setFormatedRecipe(recipe);
-    }
-  }, [mealRecipeDetail, drinkRecipeDetail, mealOrDrink]);
+  const { formatedRecipe } = useFormatRecipes(
+    mealOrDrink,
+    mealRecipeDetail,
+    drinkRecipeDetail,
+  );
 
   // faz fetch na API para pegar as bebidas e comidas recomendadas e depois lista as 6 primeiras para o carrossel
 
@@ -41,30 +32,18 @@ function RecipeDetail() {
   const drinksCarousel = recommendedDrinks.slice(0, 6);
   const mealsCarousel = recommendedMeals.slice(0, 6);
 
-  // cria estado de contagem para o indice do carrossel
-  const [counter, setCounter] = useState(0);
-
-  const handleNextCount = () => {
-    setCounter((count) => (count < 4 ? count + 2 : count - 4));
-  };
-
-  const handlePreviousCount = () => {
-    setCounter((count) => (count > 0 ? count - 2 : count + 4));
-  };
-
   // verifica no localStorage se a receita já foi feita. Caso tenha sido, o botão 'Start Recipe" não deve estar visivel
-  // verifica se a receita está em progresso no localStorage, se estiver, muda o texto para "Continue Recipe"
+
   const doneRecipe = getLocalStorage('doneRecipes') as DoneRecipeType;
   const thisRecipeIsDone = doneRecipe?.some((recipe) => recipe.id === id);
+
+  // verifica se a receita está em progresso no localStorage, se estiver, muda o texto para "Continue Recipe"
 
   const recipesInProgress = getLocalStorage('inProgress') as InProgressType;
   const isMealInProgress = recipesInProgress?.meals?.idMeal === id;
   const isDrinkInProgress = recipesInProgress?.drinks?.idDrink === id;
 
-  console.log(isMealInProgress);
-
   const handleShare = async () => {
-    console.log(currentURLhref);
     await navigator.clipboard.writeText(currentURLhref);
     setMessage('Link copied!');
   };

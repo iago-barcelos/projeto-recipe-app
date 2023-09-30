@@ -125,6 +125,3 @@ export const fetchById = async (API: string, id: string) => {
     console.error('Erro ao buscar os dados da API:', Error);
   }
 };
-
-// const data = await fetchById('cocktail', '17222');
-// console.log('data');

@@ -200,3 +200,13 @@ export type DoneRecipeType = [
     tags: string[],
   },
 ];
+
+export type FavoriteRecipesType = {
+  id: string,
+  type: string,
+  nationality: string,
+  category: string,
+  alcoholicOrNot: string,
+  name: string,
+  image: string
+};
