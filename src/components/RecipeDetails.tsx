@@ -1,16 +1,17 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import useRecipeDetails from '../hooks/useRecipeDetails';
 import unFav from '../images/blackHeartIcon.svg';
 import faShare from '../images/shareIcon.svg';
-import { DoneRecipeType, InProgressType } from '../types';
-import { getLocalStorage } from '../utils/functions';
+import { DoneRecipeType, InProgressType, FormatedRecipe } from '../types';
+import { getLocalStorage, saveLocalStorage } from '../utils/functions';
 import useFetch from '../hooks/useFetch';
 import useCounter from '../hooks/useCounter';
 import useFormatRecipes from '../hooks/useFormatRecipes';
 
 function RecipeDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { counter, handleNextCount, handlePreviousCount } = useCounter();
   const mealOrDrink = window.location.pathname.includes('meals');
   const currentURL = window.location.pathname;
@@ -37,11 +38,17 @@ function RecipeDetail() {
   const doneRecipe = getLocalStorage('doneRecipes') as DoneRecipeType;
   const thisRecipeIsDone = doneRecipe?.some((recipe) => recipe.id === id);
 
-  // verifica se a receita está em progresso no localStorage, se estiver, muda o texto para "Continue Recipe"
+  // salva a receita no localStorage usando a chave 'inProgress' quando clicar no botão 'Start Recipe' e envia o usuário para a pagina /in-progress
 
-  const recipesInProgress = getLocalStorage('inProgress') as InProgressType;
-  const isMealInProgress = recipesInProgress?.meals?.idMeal === id;
-  const isDrinkInProgress = recipesInProgress?.drinks?.idDrink === id;
+  const handleInProgress = () => {
+    saveLocalStorage('inProgress', formatedRecipe);
+    navigate(`${currentURL}/in-progress`);
+  };
+
+  // verifica se a receita está em progresso no localStorage, se estiver, muda o texto do botão para "Continue Recipe"
+
+  const recipesInProgress = getLocalStorage('inProgress') as FormatedRecipe;
+  const isRecipeInProgress = recipesInProgress?.some((recipe) => recipe.id === id);
 
   const handleShare = async () => {
     await navigator.clipboard.writeText(currentURLhref);
@@ -158,20 +165,19 @@ function RecipeDetail() {
           ))}
         </section>
       )}
-      <Link to={ `${currentURL}/in-progress` }>
-        <button
-          style={ {
-            position: 'fixed',
-            bottom: '0px',
-            display: thisRecipeIsDone ? 'none' : 'block',
-          } }
-          data-testid="start-recipe-btn"
-        >
-          {isMealInProgress || isDrinkInProgress
-            ? 'Continue Recipe'
-            : 'Start Recipe'}
-        </button>
-      </Link>
+      <button
+        style={ {
+          position: 'fixed',
+          bottom: '0px',
+          display: thisRecipeIsDone ? 'none' : 'block',
+        } }
+        data-testid="start-recipe-btn"
+        onClick={ handleInProgress }
+      >
+        {isRecipeInProgress
+          ? 'Continue Recipe'
+          : 'Start Recipe'}
+      </button>
       {message !== '' && <span>{message}</span>}
     </>
   );

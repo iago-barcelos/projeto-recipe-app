@@ -4,11 +4,13 @@ import {
   UserInfoType,
   DrinksRecipeDetailsType,
   MealRecipeDetailsType,
+  FormatedRecipe,
+  InProgressType,
 } from '../types';
 
 export const saveLocalStorage = (
   key: string,
-  item: UserInfoType | MealType | CocktailType,
+  item: UserInfoType | MealType | CocktailType | FormatedRecipe | InProgressType,
 ) => {
   const saveItens = localStorage.setItem(key, JSON.stringify(item));
   return saveItens;
