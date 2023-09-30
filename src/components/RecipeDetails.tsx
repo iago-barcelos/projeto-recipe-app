@@ -61,6 +61,7 @@ function RecipeDetail() {
 
   const recipesInProgress = getLocalStorage('inProgress') as FormatedRecipe;
   const isRecipeInProgress = recipesInProgress?.some((recipe) => recipe.id === id);
+  console.log(isRecipeInProgress);
 
   // verifica se a receita já está favoritada. Se não estiver, o botão fica com coração branco, se estiver, o coração fica preto
 

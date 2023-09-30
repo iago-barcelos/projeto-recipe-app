@@ -20,11 +20,6 @@ export const saveLocalStorage = (
   | InProgressType
   | RecipeData,
 ) => {
-  const searchLocal = getLocalStorage(key);
-  if (searchLocal) {
-    const copy = [...searchLocal, { ...item }];
-    return localStorage.setItem(key, JSON.stringify(copy));
-  }
   const saveItens = localStorage.setItem(key, JSON.stringify(item));
   return saveItens;
 };
