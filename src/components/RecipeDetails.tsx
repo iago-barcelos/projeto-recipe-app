@@ -17,6 +17,8 @@ function RecipeDetail() {
   const { id } = useParams();
   const mealOrDrink = window.location.pathname.includes('meals');
   const currentURL = window.location.pathname;
+  const currentURLhref = window.location.href;
+  const [message, setMessage] = useState('');
 
   // recebe os dados da Api via recipeDetail e depois trata, usando as funções formatMealRecipe e formatDrinkRecipe no useEffect
 
@@ -24,10 +26,10 @@ function RecipeDetail() {
   const [formatedRecipe, setFormatedRecipe] = useState<FormatedRecipe>([]);
 
   useEffect(() => {
-    if (mealOrDrink) {
+    if (mealOrDrink && mealRecipeDetail) {
       const recipe = formatMealRecipe(mealRecipeDetail as MealRecipeDetailsType);
       setFormatedRecipe(recipe);
-    } else {
+    } else if (!mealOrDrink && drinkRecipeDetail) {
       const recipe = formatDrinkRecipe(drinkRecipeDetail as DrinksRecipeDetailsType);
       setFormatedRecipe(recipe);
     }
@@ -60,6 +62,13 @@ function RecipeDetail() {
   const isDrinkInProgress = recipesInProgress?.drinks?.idDrink === id;
 
   console.log(isMealInProgress);
+
+  const handleShare = async () => {
+    console.log(currentURLhref);
+    await navigator.clipboard.writeText(currentURLhref);
+    setMessage('Link copied!');
+  };
+
   return (
     <>
       <h1>Recipe Detail</h1>
@@ -76,7 +85,7 @@ function RecipeDetail() {
             <h3 data-testid="recipe-category">{recipe.alcoholic}</h3>
           )}
           {/* Compartilhar */}
-          <button>
+          <button onClick={ () => handleShare() }>
             <img
               src={ faShare }
               alt="Share"
@@ -184,6 +193,7 @@ function RecipeDetail() {
             : 'Start Recipe'}
         </button>
       </Link>
+      {message !== '' && <span>{message}</span>}
     </>
   );
 }
