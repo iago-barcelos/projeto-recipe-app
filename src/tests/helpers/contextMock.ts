@@ -1,4 +1,6 @@
 import { vi } from 'vitest';
+import { Meals } from './meals';
+import { Drinks } from './drinks';
 
 export const mockContext = {
   mealCategories: [
@@ -35,7 +37,7 @@ export const mockContext = {
       strCategory: 'Cocoa',
     },
   ],
-  searchResults: { meals: [], drinks: [] }, // Substitua com seus dados de teste
+  searchResults: { meals: Meals, drinks: [] }, // Substitua com seus dados de teste
   searchValue: '', // Substitua com seus dados de teste
   handleChange: vi.fn(), // Substitua com uma função mock
   handleSearch: vi.fn(), // Substitua com uma função mock

@@ -205,6 +205,7 @@ export type DoneRecipeType = {
   doneDate: string,
   tags: string[],
 };
+
 export type FavoriteRecipesType = {
   id: string,
   type: string,

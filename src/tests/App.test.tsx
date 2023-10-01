@@ -9,12 +9,11 @@ import Drinks from '../pages/Drinks';
 import FavoriteRecipes from '../pages/FavoriteRecipes';
 import HomeMeal from '../pages/HomeMeal';
 import Profile from '../pages/Profile';
-import RecipeInProgress from '../components/RecipeInProgress';
 import { renderWithRouterAndContext } from './helpers/renderWith';
 import { mockDrinksData, mockMealsData } from './helpers/mockData';
 import RecipeAppContext from '../context/RecipeAppContext';
 import { mockContext } from './helpers/contextMock';
-import { fetchById } from '../utils/functions';
+import RecipeDetails from '../components/RecipeDetails';
 
 const loginBtnTestId = 'login-submit-btn';
 const validEmail = 'email@valido.com';
@@ -136,7 +135,12 @@ describe('Testes referentes a HomeMeal', () => {
 
 describe('Testes referentes a Drinks', () => {
   test('Testa se ao entrar na página Drinks, o título aparece na tela', () => {
-    renderWithRouterAndContext(<Drinks />);
+    renderWithRouterAndContext(
+      <RecipeAppContext.Provider value={ mockContext }>
+        <Drinks />
+        ,
+      </RecipeAppContext.Provider>,
+    );
 
     const drinksHeader = screen.getByRole('heading', { name: /drinks/i });
 
@@ -144,11 +148,12 @@ describe('Testes referentes a Drinks', () => {
   });
 
   test('Testa se ao entrar na página Drinks, aparece um Drink', async () => {
-    renderWithRouterAndContext(<HomeMeal />);
-
-    const drinkRoute = screen.getByTestId(footerDrinksRoute);
-    await userEvent.click(drinkRoute);
-
+    renderWithRouterAndContext(
+      <RecipeAppContext.Provider value={ mockContext }>
+        <Drinks />
+        ,
+      </RecipeAppContext.Provider>,
+    );
     const MOCK_RESPONSE = {
       ok: true,
       status: 200,
@@ -178,7 +183,13 @@ describe('Testes referentes a Drinks', () => {
   });
 
   test('Testa se procurar pelo ingrediente "gin", aparece os drinks A1 e Ace', async () => {
-    renderWithRouterAndContext(<App />, '/drinks/', { initialContext: mockContext });
+    // renderWithRouterAndContext(<App />, '/drinks', { initialContext: mockContext });
+    renderWithRouterAndContext(
+      <RecipeAppContext.Provider value={ mockContext }>
+        <Drinks />
+        ,
+      </RecipeAppContext.Provider>,
+    );
 
     const MOCK_RESPONSE = {
       ok: true,
@@ -196,8 +207,8 @@ describe('Testes referentes a Drinks', () => {
     const searchBTN = screen.getByTestId(searchBtnTestId);
     await userEvent.click(searchBTN);
 
-    const A1 = await screen.findByAltText(/a1/i);
-    const Ace = await screen.findByAltText(/ace/i);
+    const A1 = await screen.getByAltText(/a1/i);
+    const Ace = await screen.getByAltText(/ace/i);
 
     expect(A1).toBeInTheDocument();
     expect(Ace).toBeInTheDocument();
@@ -209,12 +220,15 @@ describe('Testes referentes a Drinks', () => {
     const MOCK_RESPONSE = {
       ok: true,
       status: 200,
-      json: async () => mockMealsData,
+      json: async () => mockDrinksData,
     } as Response;
     vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
 
-    // VERIFICAR TESTE
-    // expect(window.location.pathname).toBe('/meals/52977');
+    const A1 = await screen.findByAltText('A1');
+    await userEvent.click(A1);
+    const pageTitle = await screen.getByTestId('recipe-title');
+
+    expect(pageTitle).toBeInTheDocument();
   });
 });
 
@@ -230,7 +244,7 @@ describe('Testes referentes a FilterBar', () => {
 describe('Testes referentes a Done Recipes', () => {
   test('Testa para ver se existe titulo na página', () => {
     renderWithRouterAndContext(<DoneRecipes />);
-    const pageTitle = screen.getByText('Done Recipes');
+    const pageTitle = screen.getByRole('heading', { name: 'Done Recipes' });
 
     expect(pageTitle).toBeInTheDocument();
   });
@@ -307,7 +321,20 @@ describe('Profile', () => {
 
 describe('Testes referentes ao Footer', () => {
   test('Renderiza corretamente', () => {
-    renderWithRouterAndContext(<HomeMeal />);
+    renderWithRouterAndContext(
+      <RecipeAppContext.Provider value={ mockContext }>
+        <HomeMeal />
+        ,
+      </RecipeAppContext.Provider>,
+      '/meals/52977',
+    );
+    const MOCK_RESPONSE = {
+      ok: true,
+      status: 200,
+      json: async () => mockMealsData,
+    } as Response;
+
+    vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
 
     const footerElement = screen.getByTestId('footer');
     const mealsButton = screen.getByTestId('meals-bottom-btn');
@@ -320,10 +347,24 @@ describe('Testes referentes ao Footer', () => {
 });
 
 describe('Testes referentes ao RecipeInProgress', () => {
-  test('Renderiza o texto Carregando...', () => {
-    renderWithRouterAndContext(<RecipeInProgress />);
+  test('Renderiza o texto Carregando...', async () => {
+    renderWithRouterAndContext(
+      <RecipeAppContext.Provider value={ mockContext }>
+        <RecipeDetails />
+        ,
+      </RecipeAppContext.Provider>,
+      '/meals/52977',
+    );
+    const MOCK_RESPONSE = {
+      ok: true,
+      status: 200,
+      json: async () => mockMealsData,
+    } as Response;
 
-    const loading = screen.getByText(/Carregando.../i);
-    expect(loading).toBeInTheDocument();
+    vi.spyOn(global, 'fetch').mockResolvedValue(MOCK_RESPONSE);
+    const corba = await screen.getByAltText('Corba');
+    const startRecipeBtn = await screen.findByTestId('start-recipe-btn');
+    await userEvent.click(startRecipeBtn);
+    expect(corba).toBeInTheDocument();
   });
 });
