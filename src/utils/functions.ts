@@ -4,7 +4,6 @@ import {
   MealRecipeDetailsType,
   FormatedRecipe,
   InProgressType,
-  RecipeData,
   FavoriteRecipesType,
 } from '../types';
 
@@ -13,13 +12,39 @@ export const saveUserInLocalStorage = (key: string, user: UserInfoType) => {
   return saveUser;
 };
 
-export const saveLocalStorage = (
-  key: string,
-  item:
-  | FavoriteRecipesType
-  | InProgressType
-  | RecipeData,
-) => {
+export const saveInProgressInLocalStorage = (type: string, recipe: FormatedRecipe) => {
+  const thisKeyExists = localStorage.getItem('inProgress');
+  if (thisKeyExists && type === 'meals') {
+    const savedInLocalStorage: InProgressType = JSON.parse(thisKeyExists);
+    const mealInProgress = recipe.map((mealRecipe) => ({
+      ...savedInLocalStorage.meals, [mealRecipe.id]: [...mealRecipe.ingredients],
+    }))[0];
+    localStorage
+      .setItem('inProgress', JSON
+        .stringify({ drinks: savedInLocalStorage.drinks, meals: mealInProgress }));
+  } else if (thisKeyExists && type === 'drinks') {
+    const savedInLocalStorage: InProgressType = JSON.parse(thisKeyExists);
+    const drinkInProgress = recipe.map((drinkRecipe) => ({
+      ...savedInLocalStorage.drinks, [drinkRecipe.id]: [...drinkRecipe.ingredients],
+    }))[0];
+    localStorage
+      .setItem('inProgress', JSON
+        .stringify({ drinks: drinkInProgress, meals: savedInLocalStorage.meals }));
+  }
+  if (type === 'meals') {
+    const mealInProgress = recipe
+      .map((mealRecipe) => ({ [mealRecipe.id]: [...mealRecipe.ingredients] }))[0];
+    localStorage
+      .setItem('inProgress', JSON.stringify({ drinks: [], meals: mealInProgress }));
+  } else {
+    const drinksInProgress = recipe
+      .map((drinkRecipe) => ({ [drinkRecipe.id]: [...drinkRecipe.ingredients] }))[0];
+    localStorage
+      .setItem('inProgress', JSON.stringify({ drinks: drinksInProgress, meals: [] }));
+  }
+};
+
+export const saveLocalStorage = (key: string, item: FavoriteRecipesType) => {
   // checa no localStorage se a key existe
 
   const thisKeyExists = localStorage.getItem(key);
@@ -29,15 +54,15 @@ export const saveLocalStorage = (
     const savedRecipesArray = JSON
       .parse(thisKeyExists as string);
     const thisRecipeExists = savedRecipesArray.some(
-      (recipe: FavoriteRecipesType | InProgressType) => recipe
-        .id === (item as FavoriteRecipesType | InProgressType).id,
+      (recipe: FavoriteRecipesType) => recipe
+        .id === (item as FavoriteRecipesType).id,
     );
     if (thisRecipeExists) {
       // se o id já estiver incluso, retira do localStorage
 
       const deleteFromLocalStorage = savedRecipesArray
-        .filter((recipe: FavoriteRecipesType | InProgressType) => recipe
-          .id !== (item as FavoriteRecipesType | InProgressType).id);
+        .filter((recipe: FavoriteRecipesType) => recipe
+          .id !== (item as FavoriteRecipesType).id);
       return localStorage.setItem(key, JSON.stringify(deleteFromLocalStorage));
     }
 

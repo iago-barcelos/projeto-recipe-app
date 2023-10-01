@@ -185,7 +185,13 @@ export type RecipeData = {
 };
 
 export type InProgressType = {
-  [key: string] : MealRecipeDetailsType | DrinksRecipeDetailsType;
+  meals: {
+    [key: string] : string[];
+  },
+  drinks: {
+    [key: string] : string[];
+  }
+
 };
 
 export type DoneRecipeType = [

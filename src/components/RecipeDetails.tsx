@@ -1,15 +1,20 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useRecipeDetails from '../hooks/useRecipeDetails';
 import unFav from '../images/blackHeartIcon.svg';
 import fav from '../images/whiteHeartIcon.svg';
 import faShare from '../images/shareIcon.svg';
 import {
   DoneRecipeType,
-  FormatedRecipe,
   FavoriteRecipesType,
+  InProgressType,
 } from '../types';
-import { convertToFavorite, getLocalStorage, saveLocalStorage } from '../utils/functions';
+import {
+  convertToFavorite,
+  getLocalStorage,
+  saveInProgressInLocalStorage,
+  saveLocalStorage,
+} from '../utils/functions';
 import useFetch from '../hooks/useFetch';
 import useCounter from '../hooks/useCounter';
 import useFormatRecipes from '../hooks/useFormatRecipes';
@@ -54,9 +59,10 @@ function RecipeDetail() {
   const doneRecipe = getLocalStorage('doneRecipes') as DoneRecipeType;
   const thisRecipeIsDone = doneRecipe?.some((recipe) => recipe.id === id);
 
-  // salva a receita no localStorage usando a chave 'inProgress' quando clicar no botão 'Start Recipe' e envia o usuário para a pagina /in-progress
+  // salva a receita com a função saveInProgressInLocalStorage quando clicar no botão 'Start Recipe' e envia o usuário para a pagina /in-progress
   const handleInProgress = () => {
-    saveLocalStorage('inProgress', favoriteRecipe);
+    const type = mealOrDrink ? 'meals' : 'drinks';
+    saveInProgressInLocalStorage(type, formatedRecipe);
     navigate(`${currentURL}/in-progress`);
   };
 
@@ -69,8 +75,14 @@ function RecipeDetail() {
 
   // verifica se a receita está em progresso no localStorage, se estiver, muda o texto do botão para "Continue Recipe"
 
-  const recipesInProgress = getLocalStorage('inProgress') as FormatedRecipe;
-  const isRecipeInProgress = recipesInProgress?.some((recipe) => recipe.id === id);
+  const checkLocalInProgress = () => {
+    const recipesInProgress = getLocalStorage('inProgress') as InProgressType;
+    const { meals, drinks } = recipesInProgress;
+    const mealId = Object.keys(meals)[0];
+    const drinkId = Object.keys(drinks)[0];
+    return mealOrDrink ? mealId === id : drinkId === id;
+  };
+  const isInProgress = checkLocalInProgress();
 
   // verifica se a receita já está favoritada. Se não estiver, o botão fica com coração branco, se estiver, o coração fica preto
 
@@ -199,9 +211,7 @@ function RecipeDetail() {
         data-testid="start-recipe-btn"
         onClick={ handleInProgress }
       >
-        {isRecipeInProgress
-          ? 'Continue Recipe'
-          : 'Start Recipe'}
+        {isInProgress ? 'Continue Recipe' : 'StartRecipe'}
       </button>
       {message !== '' && <span>{message}</span>}
     </>

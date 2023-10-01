@@ -21,15 +21,15 @@ function FavoriteRecipes() {
     setMessage('Link copied!');
   };
 
-  const handleUnfav = (id: string) => {
-    const newFavoriteRecipes = favoriteRecipes.filter((recipe) => (
-      recipe.id !== id
+  const handleUnfav = (id: string, recipe: FavoriteRecipesType) => {
+    const newFavoriteRecipes = favoriteRecipes.filter((favRecipe) => (
+      favRecipe.id !== id
     ));
     setShownRecipes(newFavoriteRecipes);
     setFavoriteRecipes(newFavoriteRecipes);
-    // saveLocalStorage('favoriteRecipes', newFavoriteRecipes);
+    saveLocalStorage('favoriteRecipes', recipe);
   };
-  console.log(favoriteRecipes);
+
   const handleFilterClick = (type: string) => {
     const newShownRecipes = favoriteRecipes.filter((recipe) => (
       recipe.type === type
@@ -106,7 +106,7 @@ function FavoriteRecipes() {
 
             { /* Favoritar */ }
             <button
-              onClick={ () => handleUnfav(recipe.id) }
+              onClick={ () => handleUnfav(recipe.id, recipe) }
             >
               <img
                 src={ unFav }
