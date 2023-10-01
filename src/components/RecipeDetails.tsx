@@ -52,7 +52,7 @@ function RecipeDetail() {
 
   // converte a receita formatada para favoriteRecipesType, cria função que salva no localStorage e leva para /in-progress
 
-  const favoriteRecipe: FavoriteRecipesType[] = convertToFavorite(
+  const favoriteRecipe: FavoriteRecipesType = convertToFavorite(
     formatedRecipe,
     mealOrDrink,
   );
@@ -61,19 +61,12 @@ function RecipeDetail() {
 
   const recipesInProgress = getLocalStorage('inProgress') as FormatedRecipe;
   const isRecipeInProgress = recipesInProgress?.some((recipe) => recipe.id === id);
-  console.log(isRecipeInProgress);
 
   // verifica se a receita já está favoritada. Se não estiver, o botão fica com coração branco, se estiver, o coração fica preto
 
   const handleFavorite = () => {
     const searchFavorite: FavoriteRecipesType[] = getLocalStorage('favoriteRecipes');
-    if (isFavorite) {
-      const newFavorite = searchFavorite.filter((recipe) => recipe.id !== id);
-      saveLocalStorage('favoriteRecipes', newFavorite);
-      setIsFavorite(false);
-    }
     saveLocalStorage('favoriteRecipes', favoriteRecipe);
-    setIsFavorite(true);
   };
 
   const handleShare = async () => {

@@ -14,13 +14,25 @@ export const saveLocalStorage = (
   key: string,
   item:
   | UserInfoType
-  | MealType
-  | CocktailType
-  | FavoriteRecipesType[]
+  | FavoriteRecipesType
   | InProgressType
   | RecipeData,
 ) => {
-  const saveItens = localStorage.setItem(key, JSON.stringify(item));
+  const thisKeyExists = localStorage.getItem(key);
+  if (thisKeyExists && thisKeyExists !== 'user') {
+    const savedRecipesArray = JSON
+      .parse(thisKeyExists as string);
+    const thisRecipeExists = savedRecipesArray.some(
+      (recipe: FavoriteRecipesType | InProgressType) => recipe
+        .id === (item as FavoriteRecipesType | InProgressType).id,
+    );
+    if (thisRecipeExists) {
+      return console.log('Essa receita existe no localStorage');
+    }
+    savedRecipesArray.push(item);
+    return localStorage.setItem(key, JSON.stringify(savedRecipesArray));
+  }
+  const saveItens = localStorage.setItem(key, JSON.stringify([item]));
   return saveItens;
 };
 
@@ -138,5 +150,5 @@ export const convertToFavorite = (recipes: FormatedRecipe, type: boolean) => {
       image: recipe.img,
     }
   ));
-  return favoriteRecipe;
+  return favoriteRecipe[0];
 };
