@@ -56,7 +56,7 @@ function RecipeDetail() {
 
   // verifica no localStorage se a receita já foi feita. Caso tenha sido, o botão 'Start Recipe" não deve estar visivel
 
-  const doneRecipe = getLocalStorage('doneRecipes') as DoneRecipeType;
+  const doneRecipe: DoneRecipeType[] = getLocalStorage('doneRecipes');
   const thisRecipeIsDone = doneRecipe?.some((recipe) => recipe.id === id);
 
   // salva a receita com a função saveInProgressInLocalStorage quando clicar no botão 'Start Recipe' e envia o usuário para a pagina /in-progress

@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { convertToFavorite, getFetch, saveLocalStorage } from '../utils/functions';
+import {
+  convertToDoneRecipe,
+  convertToFavorite,
+  getFetch,
+  saveDoneRecipesLocalStorage,
+  saveLocalStorage,
+} from '../utils/functions';
 import { DrinksRecipeDetailsType, MealRecipeDetailsType } from '../types';
 import useFormatRecipes from '../hooks/useFormatRecipes';
 
@@ -30,6 +36,7 @@ function RecipeInProgress() {
   }, [id, isMeal]);
 
   const favoriteRecipe = convertToFavorite(formatedRecipe, isMeal);
+  const doneRecipe = convertToDoneRecipe(favoriteRecipe);
 
   const handleCheckBoxChange = (index: number) => {
     const clickCheckBox = [...checkBox];
@@ -41,15 +48,9 @@ function RecipeInProgress() {
     <>
       {formatedRecipe.map((recipe, i) => (
         <div key={ i }>
-          <img
-            data-testid="recipe-photo"
-            src={ recipe.img }
-            alt=""
-          />
+          <img data-testid="recipe-photo" src={ recipe.img } alt="" />
 
-          <h1 data-testid="recipe-title">
-            {recipe.name}
-          </h1>
+          <h1 data-testid="recipe-title">{recipe.name}</h1>
 
           <p data-testid="recipe-category">{recipe?.category || ''}</p>
 
@@ -78,7 +79,12 @@ function RecipeInProgress() {
 
             <p data-testid="instructions">{recipe.instructions || ''}</p>
 
-            <button data-testid="finish-recipe-btn">Finalizar</button>
+            <button
+              data-testid="finish-recipe-btn"
+              onClick={ () => saveDoneRecipesLocalStorage(doneRecipe) }
+            >
+              Finalizar
+            </button>
           </div>
 
           <button data-testid="share-btn">Compartilhar</button>
@@ -91,7 +97,6 @@ function RecipeInProgress() {
           </button>
         </div>
       ))}
-
     </>
   );
 }

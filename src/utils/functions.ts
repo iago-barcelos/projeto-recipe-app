@@ -4,6 +4,7 @@ import {
   MealRecipeDetailsType,
   FormatedRecipe,
   FavoriteRecipesType,
+  DoneRecipeType,
 } from '../types';
 
 export const saveUserInLocalStorage = (key: string, user: UserInfoType) => {
@@ -25,15 +26,28 @@ export const saveInProgressInLocalStorage = (type: string, recipe: FormatedRecip
   }
 };
 
-export const saveLocalStorage = (key: string, item: FavoriteRecipesType) => {
+export const saveDoneRecipesLocalStorage = (recipe: DoneRecipeType) => {
+  const thisKeyExists = localStorage.getItem('doneRecipes');
+  if (thisKeyExists) {
+    const loadDoneRecipes: DoneRecipeType[] = JSON.parse(thisKeyExists);
+    const newDoneRecipes = [...loadDoneRecipes, recipe];
+    localStorage.setItem('doneRecipes', JSON.stringify(newDoneRecipes));
+  }
+
+  localStorage.setItem('doneRecipes', JSON.stringify([recipe]));
+};
+
+export const saveLocalStorage = (
+  key: string,
+  item: FavoriteRecipesType,
+) => {
   // checa no localStorage se a key existe
 
   const thisKeyExists = localStorage.getItem(key);
   if (thisKeyExists && thisKeyExists !== 'user') {
     // se existir e não for igual a 'user" faz o parse e verifica se o id da receita já está incluso no localStorage
 
-    const savedRecipesArray = JSON
-      .parse(thisKeyExists as string);
+    const savedRecipesArray = JSON.parse(thisKeyExists as string);
     const thisRecipeExists = savedRecipesArray.some(
       (recipe: FavoriteRecipesType) => recipe
         .id === (item as FavoriteRecipesType).id,
@@ -41,9 +55,9 @@ export const saveLocalStorage = (key: string, item: FavoriteRecipesType) => {
     if (thisRecipeExists) {
       // se o id já estiver incluso, retira do localStorage
 
-      const deleteFromLocalStorage = savedRecipesArray
-        .filter((recipe: FavoriteRecipesType) => recipe
-          .id !== (item as FavoriteRecipesType).id);
+      const deleteFromLocalStorage = savedRecipesArray.filter(
+        (recipe: FavoriteRecipesType) => recipe.id !== (item as FavoriteRecipesType).id,
+      );
       return localStorage.setItem(key, JSON.stringify(deleteFromLocalStorage));
     }
 
@@ -174,4 +188,14 @@ export const convertToFavorite = (recipes: FormatedRecipe, type: boolean) => {
     }
   ));
   return favoriteRecipe[0];
+};
+
+export const convertToDoneRecipe = (recipe: FavoriteRecipesType) => {
+  const date = new Date();
+  const day = date.getDate();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+  const myDate = `${day}/${month + 1}/${year}`;
+  const doneRecipe = { ...recipe, doneDate: myDate, tags: [''] };
+  return doneRecipe;
 };

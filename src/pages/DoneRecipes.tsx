@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import { DoneRecipeType } from '../types';
 
 function DoneRecipes() {
-  const [doneRecipes, setDoneRecipes] = useState<DoneRecipeType>();
+  const [doneRecipes, setDoneRecipes] = useState<DoneRecipeType[]>([]);
 
   useEffect(() => {
     const savedDoneRecipes = localStorage.getItem('doneRecipes');
