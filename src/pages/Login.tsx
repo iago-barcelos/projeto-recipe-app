@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserInfoType } from '../types';
-import { saveLocalStorage } from '../utils/functions';
+import { saveUserInLocalStorage } from '../utils/functions';
 
 function Login() {
   const initialUserInfo = {
@@ -28,7 +28,7 @@ function Login() {
       ...userInfo,
       [name]: value,
     });
-    saveLocalStorage('user', { email: userInfo.email });
+    saveUserInLocalStorage('user', { email: userInfo.email });
   };
 
   const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {

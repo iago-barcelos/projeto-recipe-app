@@ -1,6 +1,4 @@
 import {
-  CocktailType,
-  MealType,
   UserInfoType,
   DrinksRecipeDetailsType,
   MealRecipeDetailsType,
@@ -10,16 +8,24 @@ import {
   FavoriteRecipesType,
 } from '../types';
 
+export const saveUserInLocalStorage = (key: string, user: UserInfoType) => {
+  const saveUser = localStorage.setItem(key, JSON.stringify(user));
+  return saveUser;
+};
+
 export const saveLocalStorage = (
   key: string,
   item:
-  | UserInfoType
   | FavoriteRecipesType
   | InProgressType
   | RecipeData,
 ) => {
+  // checa no localStorage se a key existe
+
   const thisKeyExists = localStorage.getItem(key);
   if (thisKeyExists && thisKeyExists !== 'user') {
+    // se existir e não for igual a 'user" faz o parse e verifica se o id da receita já está incluso no localStorage
+
     const savedRecipesArray = JSON
       .parse(thisKeyExists as string);
     const thisRecipeExists = savedRecipesArray.some(
@@ -27,14 +33,22 @@ export const saveLocalStorage = (
         .id === (item as FavoriteRecipesType | InProgressType).id,
     );
     if (thisRecipeExists) {
+      // se o id já estiver incluso, retira do localStorage
+
       const deleteFromLocalStorage = savedRecipesArray
         .filter((recipe: FavoriteRecipesType | InProgressType) => recipe
           .id !== (item as FavoriteRecipesType | InProgressType).id);
       return localStorage.setItem(key, JSON.stringify(deleteFromLocalStorage));
     }
+
+    // caso o id da receita não esteja salvo, adiciona no array de receitas salvas e salva tudo no localStorage
+
     savedRecipesArray.push(item);
     return localStorage.setItem(key, JSON.stringify(savedRecipesArray));
   }
+
+  // caso a key não exista no localStorage, cria uma e salva o item dentro de um array
+
   const saveItens = localStorage.setItem(key, JSON.stringify([item]));
   return saveItens;
 };
