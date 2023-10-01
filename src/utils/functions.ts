@@ -27,7 +27,10 @@ export const saveLocalStorage = (
         .id === (item as FavoriteRecipesType | InProgressType).id,
     );
     if (thisRecipeExists) {
-      return console.log('Essa receita existe no localStorage');
+      const deleteFromLocalStorage = savedRecipesArray
+        .filter((recipe: FavoriteRecipesType | InProgressType) => recipe
+          .id !== (item as FavoriteRecipesType | InProgressType).id);
+      return localStorage.setItem(key, JSON.stringify(deleteFromLocalStorage));
     }
     savedRecipesArray.push(item);
     return localStorage.setItem(key, JSON.stringify(savedRecipesArray));

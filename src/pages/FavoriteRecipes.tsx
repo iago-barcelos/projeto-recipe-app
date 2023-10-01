@@ -27,9 +27,9 @@ function FavoriteRecipes() {
     ));
     setShownRecipes(newFavoriteRecipes);
     setFavoriteRecipes(newFavoriteRecipes);
-    saveLocalStorage('favoriteRecipes', newFavoriteRecipes);
+    // saveLocalStorage('favoriteRecipes', newFavoriteRecipes);
   };
-
+  console.log(favoriteRecipes);
   const handleFilterClick = (type: string) => {
     const newShownRecipes = favoriteRecipes.filter((recipe) => (
       recipe.type === type
