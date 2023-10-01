@@ -16,7 +16,7 @@ function DoneRecipes() {
 
   return (
     <div>
-      <Header pageTitle="Receitas Feitas" />
+      <Header pageTitle="Done Recipes" />
 
       <button data-testid="filter-by-all-btn">All</button>
       <button data-testid="filter-by-meal-btn">Meals</button>

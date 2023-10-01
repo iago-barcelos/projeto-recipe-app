@@ -3,7 +3,6 @@ import {
   DrinksRecipeDetailsType,
   MealRecipeDetailsType,
   FormatedRecipe,
-  InProgressType,
   FavoriteRecipesType,
 } from '../types';
 
@@ -13,24 +12,6 @@ export const saveUserInLocalStorage = (key: string, user: UserInfoType) => {
 };
 
 export const saveInProgressInLocalStorage = (type: string, recipe: FormatedRecipe) => {
-  const thisKeyExists = localStorage.getItem('inProgress');
-  if (thisKeyExists && type === 'meals') {
-    const savedInLocalStorage: InProgressType = JSON.parse(thisKeyExists);
-    const mealInProgress = recipe.map((mealRecipe) => ({
-      ...savedInLocalStorage.meals, [mealRecipe.id]: [...mealRecipe.ingredients],
-    }))[0];
-    localStorage
-      .setItem('inProgress', JSON
-        .stringify({ drinks: savedInLocalStorage.drinks, meals: mealInProgress }));
-  } else if (thisKeyExists && type === 'drinks') {
-    const savedInLocalStorage: InProgressType = JSON.parse(thisKeyExists);
-    const drinkInProgress = recipe.map((drinkRecipe) => ({
-      ...savedInLocalStorage.drinks, [drinkRecipe.id]: [...drinkRecipe.ingredients],
-    }))[0];
-    localStorage
-      .setItem('inProgress', JSON
-        .stringify({ drinks: drinkInProgress, meals: savedInLocalStorage.meals }));
-  }
   if (type === 'meals') {
     const mealInProgress = recipe
       .map((mealRecipe) => ({ [mealRecipe.id]: [...mealRecipe.ingredients] }))[0];

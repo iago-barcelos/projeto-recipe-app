@@ -77,10 +77,13 @@ function RecipeDetail() {
 
   const checkLocalInProgress = () => {
     const recipesInProgress = getLocalStorage('inProgress') as InProgressType;
-    const { meals, drinks } = recipesInProgress;
-    const mealId = Object.keys(meals)[0];
-    const drinkId = Object.keys(drinks)[0];
-    return mealOrDrink ? mealId === id : drinkId === id;
+    if (recipesInProgress) {
+      const { meals, drinks } = recipesInProgress;
+      const mealId = Object.keys(meals)[0];
+      const drinkId = Object.keys(drinks)[0];
+      return mealOrDrink ? mealId === id : drinkId === id;
+    }
+    return false;
   };
   const isInProgress = checkLocalInProgress();
 
