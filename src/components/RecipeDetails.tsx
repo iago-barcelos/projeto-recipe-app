@@ -22,7 +22,17 @@ function RecipeDetail() {
   const currentURL = window.location.pathname;
   const currentURLhref = window.location.href;
   const [message, setMessage] = useState('');
-  const [isFavorite, setIsFavorite] = useState(false);
+
+  // callback que checa no localStorage se esse id está nos favoritos, se estiver, retorna true e se não estiver retorna false
+  const [isFavorite, setIsFavorite] = useState(() => {
+    const checkLocalStorage = localStorage.getItem('favoriteRecipes');
+    if (checkLocalStorage) {
+      const recipes = JSON.parse(checkLocalStorage);
+      const favorite = recipes.some((recipe: FavoriteRecipesType) => recipe.id === id);
+      return favorite;
+    }
+    return false;
+  });
 
   // recebe os dados da Api via useRecipeDetails e depois trata, usando useFormatRecipes
 
@@ -65,8 +75,8 @@ function RecipeDetail() {
   // verifica se a receita já está favoritada. Se não estiver, o botão fica com coração branco, se estiver, o coração fica preto
 
   const handleFavorite = () => {
-    const searchFavorite: FavoriteRecipesType[] = getLocalStorage('favoriteRecipes');
     saveLocalStorage('favoriteRecipes', favoriteRecipe);
+    setIsFavorite((prev: boolean) => !prev);
   };
 
   const handleShare = async () => {
