@@ -1,103 +1,163 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  convertToDoneRecipe,
-  convertToFavorite,
-  getFetch,
-  saveDoneRecipesLocalStorage,
-  saveLocalStorage,
-} from '../utils/functions';
-import { DrinksRecipeDetailsType, MealRecipeDetailsType } from '../types';
-import useFormatRecipes from '../hooks/useFormatRecipes';
+import { getFetch, getLocalStorage } from '../utils/functions';
+import { InProgressType } from '../types';
+
+type ProgressStateType = {
+  [key: string] : {
+    [key: string]: boolean[];
+  }
+};
+
+const RECIPE_TYPES = {
+  meal: 'meal',
+  cocktail: 'cocktail',
+};
 
 function RecipeInProgress() {
-  const [mealRecipeData, setMealRecipeData] = useState<MealRecipeDetailsType>();
-  const [drinkRecipeData, setDrinkRecipeData] = useState<DrinksRecipeDetailsType>();
-  const [checkBox, setCheckBox] = useState<(boolean | never)[]>([]);
-
   const { id } = useParams();
-
   const isMeal = window.location.pathname.includes('meals');
-  const { formatedRecipe } = useFormatRecipes(isMeal, mealRecipeData, drinkRecipeData);
+
+  const [recipeData, setRecipeData] = useState<InProgressType | null>(null);
+  const [checkBox, setCheckBox] = useState<(boolean | never)[]>(() => {
+    const loadLocalStorage = localStorage.getItem('inProgressRecipes');
+    if (loadLocalStorage !== null) {
+      const parse: ProgressStateType = JSON.parse(loadLocalStorage);
+      const check = parse[isMeal ? 'meals' : 'drinks'][id as string];
+      return check;
+    }
+    return [];
+  });
+  const [inProgressRecipes, setInProgressRecipes,
+  ] = useState<ProgressStateType>(getLocalStorage('inProgressRecipes'));
+
+  useEffect(() => {
+    localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
+  }, [inProgressRecipes]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const API = isMeal ? 'meal' : 'cocktail';
-      const URL = `https://www.the${API}db.com/api/json/v1/1/lookup.php?i=`;
-      if (isMeal) {
-        const result = await getFetch(URL, id);
-        setMealRecipeData(result);
-      } else {
-        const result = await getFetch(URL, id);
-        setDrinkRecipeData(result);
+      try {
+        if (typeof id === 'string') {
+          const API = isMeal ? RECIPE_TYPES.meal : RECIPE_TYPES.cocktail;
+          const endPoint = `https://www.the${API}db.com/api/json/v1/1/lookup.php?i=${id}`;
+          const response = await getFetch(endPoint);
+
+          const key = API === RECIPE_TYPES.meal ? 'meals' : 'drinks';
+          const recipe = response ? response[key][0] : null;
+
+          setRecipeData({ [key]: recipe });
+        }
+      } catch (error) {
+        console.error('Erro ao buscar os dados da API:', error);
+        setRecipeData({});
       }
     };
     fetchData();
   }, [id, isMeal]);
 
-  const favoriteRecipe = convertToFavorite(formatedRecipe, isMeal);
-  const doneRecipe = convertToDoneRecipe(favoriteRecipe);
+  // const handleLocal = () => {
+  //   const loadLocalStorage = localStorage.getItem('inProgressRecipes');
+  //   if (loadLocalStorage !== null) {
+  //     const parse: ProgressStateType = JSON.parse(loadLocalStorage);
+  //     const check = parse[isMeal ? 'meals' : 'drinks'][id as string];
+  //     return check;
+  //   }
+  //   return [];
+  // };
+
+  // handleLocal();
 
   const handleCheckBoxChange = (index: number) => {
-    const clickCheckBox = [...checkBox];
-    clickCheckBox[index] = !clickCheckBox[index];
-    setCheckBox(clickCheckBox);
+    const updatedCheckBox = [...checkBox];
+    updatedCheckBox[index] = !updatedCheckBox[index];
+    setCheckBox(updatedCheckBox);
+
+    const recipeKey = isMeal ? 'meals' : 'drinks';
+    const idString = id ? id.toString() : '';
+
+    setInProgressRecipes((prevProgress) => {
+      const newProgress = { ...prevProgress };
+      newProgress[recipeKey] = {
+        ...newProgress[recipeKey],
+        [idString]: updatedCheckBox,
+      };
+      console.log(newProgress);
+      return newProgress;
+    });
   };
 
+  if (!recipeData) {
+    return <p>Carregando ...</p>;
+  }
+
+  if (recipeData.error) {
+    return <p>Ocorreu um erro ao buscar os dados da receita</p>;
+  }
+
+  const recipe = recipeData[isMeal ? 'meals' : 'drinks'];
+  const ingredientList = Object.entries(recipe)
+    ?.filter(([ingredientKey, ingredientValue]) => (
+      ingredientKey.includes('strIngredient')
+      && ingredientValue !== ''
+      && ingredientValue !== null
+    ));
+
   return (
-    <>
-      {formatedRecipe.map((recipe, i) => (
-        <div key={ i }>
-          <img data-testid="recipe-photo" src={ recipe.img } alt="" />
+    <div>
+      <img
+        data-testid="recipe-photo"
+        src={ recipe?.strMealThumb ? recipe?.strMealThumb : recipe?.strDrinkThumb }
+        alt=""
+      />
 
-          <h1 data-testid="recipe-title">{recipe.name}</h1>
+      <h1
+        data-testid="recipe-title"
+      >
+        {recipe?.strMeal || recipe?.strDrink || ''}
+      </h1>
 
-          <p data-testid="recipe-category">{recipe?.category || ''}</p>
+      <p
+        data-testid="recipe-category"
+      >
+        {recipe?.strCategory || ''}
+      </p>
 
-          <div>
-            <ul>
-              {recipe.ingredients.map((ingredientValue, index) => (
-                <li key={ index }>
-                  <label
-                    data-testid={ `${index}-ingredient-step` }
-                    style={ {
-                      textDecoration: checkBox[index]
-                        ? 'line-through solid rgb(0, 0, 0)'
-                        : 'none',
-                    } }
-                  >
-                    <input
-                      type="checkbox"
-                      checked={ checkBox[index] }
-                      onChange={ () => handleCheckBoxChange(index) }
-                    />
-                    {ingredientValue}
-                  </label>
-                </li>
-              ))}
-            </ul>
+      <div>
+        <ul>
+          { ingredientList?.map(([ingredientKey, ingredientValue], index) => (
+            <li key={ index }>
+              <label
+                data-testid={ `${index}-ingredient-step` }
+                style={
+                  {
+                    textDecoration: checkBox[index]
+                      ? 'line-through solid rgb(0, 0, 0)'
+                      : 'none' }
+                }
+              >
+                <input
+                  type="checkbox"
+                  checked={ checkBox[index] }
+                  onChange={ () => handleCheckBoxChange(index) }
+                />
+                { ingredientValue }
+              </label>
+            </li>
+          ))}
+        </ul>
 
-            <p data-testid="instructions">{recipe.instructions || ''}</p>
+        <p data-testid="instructions">
+          {recipe?.strInstructions || ''}
+        </p>
 
-            <button
-              data-testid="finish-recipe-btn"
-              onClick={ () => saveDoneRecipesLocalStorage(doneRecipe) }
-            >
-              Finalizar
-            </button>
-          </div>
+        <button data-testid="finish-recipe-btn">Finalizar</button>
+      </div>
 
-          <button data-testid="share-btn">Compartilhar</button>
+      <button data-testid="share-btn">Compartilhar</button>
 
-          <button
-            data-testid="favorite-btn"
-            onClick={ () => saveLocalStorage('favoriteRecipes', favoriteRecipe) }
-          >
-            Favoritar
-          </button>
-        </div>
-      ))}
-    </>
+      <button data-testid="favorite-btn">Favoritar</button>
+    </div>
   );
 }
 

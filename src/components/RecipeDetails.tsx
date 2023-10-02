@@ -59,13 +59,6 @@ function RecipeDetail() {
   const doneRecipe: DoneRecipeType[] = getLocalStorage('doneRecipes');
   const thisRecipeIsDone = doneRecipe?.some((recipe) => recipe.id === id);
 
-  // salva a receita com a função saveInProgressInLocalStorage quando clicar no botão 'Start Recipe' e envia o usuário para a pagina /in-progress
-  const handleInProgress = () => {
-    const type = mealOrDrink ? 'meals' : 'drinks';
-    saveInProgressInLocalStorage(type, formatedRecipe);
-    navigate(`${currentURL}/in-progress`);
-  };
-
   // converte a receita formatada para favoriteRecipesType, cria função que salva no localStorage e leva para /in-progress
 
   const favoriteRecipe: FavoriteRecipesType = convertToFavorite(
@@ -86,6 +79,16 @@ function RecipeDetail() {
     return false;
   };
   const isInProgress = checkLocalInProgress();
+
+  // salva a receita com a função saveInProgressInLocalStorage quando clicar no botão 'Start Recipe' e envia o usuário para a pagina /in-progress
+  const handleInProgress = () => {
+    if (!isInProgress) {
+      const type = mealOrDrink ? 'meals' : 'drinks';
+      saveInProgressInLocalStorage(type, formatedRecipe);
+      navigate(`${currentURL}/in-progress`);
+    }
+    navigate(`${currentURL}/in-progress`);
+  };
 
   // verifica se a receita já está favoritada. Se não estiver, o botão fica com coração branco, se estiver, o coração fica preto
 
