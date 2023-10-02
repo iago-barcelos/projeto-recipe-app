@@ -2,29 +2,32 @@ import React, { useState } from 'react';
 import Header from '../components/Header';
 import unFav from '../images/blackHeartIcon.svg';
 import faShare from '../images/shareIcon.svg';
+import { getLocalStorage, saveLocalStorage } from '../utils/functions';
+import { FavoriteRecipesType } from '../types';
 
 function FavoriteRecipes() {
-  const INITIAL_FAVORITE_RECIPES = JSON.parse(
-    localStorage.getItem('favoriteRecipes'),
-  ) || [];
+  const INITIAL_FAVORITE_RECIPES = getLocalStorage('favoriteRecipes') || [];
   const [message, setMessage] = useState('');
-  const [favoriteRecipes, setFavoriteRecipes] = useState(INITIAL_FAVORITE_RECIPES);
-  const [shownRecipes, setShownRecipes] = useState(INITIAL_FAVORITE_RECIPES);
+  const [favoriteRecipes, setFavoriteRecipes] = useState<FavoriteRecipesType[]>(
+    INITIAL_FAVORITE_RECIPES,
+  );
+  const [shownRecipes, setShownRecipes] = useState<FavoriteRecipesType[]>(
+    INITIAL_FAVORITE_RECIPES,
+  );
 
-  const handleShare = async (type: string, id: number) => {
+  const handleShare = async (type: string, id: string) => {
     const copyText = `http://localhost:3000/${type}s/${id}`;
-    console.log(copyText);
     await navigator.clipboard.writeText(copyText);
     setMessage('Link copied!');
   };
 
-  const handleUnfav = (id: number) => {
-    const newFavoriteRecipes = favoriteRecipes.filter((recipe) => (
-      recipe.id !== id
+  const handleUnfav = (id: string, recipe: FavoriteRecipesType) => {
+    const newFavoriteRecipes = favoriteRecipes.filter((favRecipe) => (
+      favRecipe.id !== id
     ));
     setShownRecipes(newFavoriteRecipes);
     setFavoriteRecipes(newFavoriteRecipes);
-    localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteRecipes));
+    saveLocalStorage('favoriteRecipes', recipe);
   };
 
   const handleFilterClick = (type: string) => {
@@ -59,7 +62,7 @@ function FavoriteRecipes() {
       </div>
 
       <div>
-        {shownRecipes.map((recipe, index) => (
+        {shownRecipes?.map((recipe, index) => (
           <div key={ index }>
             { /* Foto da Receita */ }
             <a href={ `http://localhost:3000/${recipe.type}s/${recipe.id}` }>
@@ -103,7 +106,7 @@ function FavoriteRecipes() {
 
             { /* Favoritar */ }
             <button
-              onClick={ () => handleUnfav(recipe.id) }
+              onClick={ () => handleUnfav(recipe.id, recipe) }
             >
               <img
                 src={ unFav }

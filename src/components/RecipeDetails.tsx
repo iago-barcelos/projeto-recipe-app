@@ -1,39 +1,52 @@
-import { Link, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import useRecipeDetails from '../hooks/useRecipeDetails';
 import unFav from '../images/blackHeartIcon.svg';
+import fav from '../images/whiteHeartIcon.svg';
 import faShare from '../images/shareIcon.svg';
 import {
-  MealRecipeDetailsType,
-  DrinksRecipeDetailsType,
-  FormatedRecipe,
   DoneRecipeType,
+  FavoriteRecipesType,
   InProgressType,
 } from '../types';
-import { formatDrinkRecipe, formatMealRecipe, getLocalStorage } from '../utils/functions';
+import {
+  convertToFavorite,
+  getLocalStorage,
+  saveInProgressInLocalStorage,
+  saveLocalStorage,
+} from '../utils/functions';
 import useFetch from '../hooks/useFetch';
+import useCounter from '../hooks/useCounter';
+import useFormatRecipes from '../hooks/useFormatRecipes';
 
 function RecipeDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { counter, handleNextCount, handlePreviousCount } = useCounter();
   const mealOrDrink = window.location.pathname.includes('meals');
   const currentURL = window.location.pathname;
   const currentURLhref = window.location.href;
   const [message, setMessage] = useState('');
 
-  // recebe os dados da Api via recipeDetail e depois trata, usando as funções formatMealRecipe e formatDrinkRecipe no useEffect
+  // callback que checa no localStorage se esse id está nos favoritos, se estiver, retorna true e se não estiver retorna false
+  const [isFavorite, setIsFavorite] = useState(() => {
+    const checkLocalStorage = localStorage.getItem('favoriteRecipes');
+    if (checkLocalStorage) {
+      const recipes = JSON.parse(checkLocalStorage);
+      const favorite = recipes.some((recipe: FavoriteRecipesType) => recipe.id === id);
+      return favorite;
+    }
+    return false;
+  });
+
+  // recebe os dados da Api via useRecipeDetails e depois trata, usando useFormatRecipes
 
   const { mealRecipeDetail, drinkRecipeDetail } = useRecipeDetails(id as string);
-  const [formatedRecipe, setFormatedRecipe] = useState<FormatedRecipe>([]);
-
-  useEffect(() => {
-    if (mealOrDrink && mealRecipeDetail) {
-      const recipe = formatMealRecipe(mealRecipeDetail as MealRecipeDetailsType);
-      setFormatedRecipe(recipe);
-    } else if (!mealOrDrink && drinkRecipeDetail) {
-      const recipe = formatDrinkRecipe(drinkRecipeDetail as DrinksRecipeDetailsType);
-      setFormatedRecipe(recipe);
-    }
-  }, [mealRecipeDetail, drinkRecipeDetail, mealOrDrink]);
+  const { formatedRecipe } = useFormatRecipes(
+    mealOrDrink,
+    mealRecipeDetail,
+    drinkRecipeDetail,
+  );
 
   // faz fetch na API para pegar as bebidas e comidas recomendadas e depois lista as 6 primeiras para o carrossel
 
@@ -41,30 +54,47 @@ function RecipeDetail() {
   const drinksCarousel = recommendedDrinks.slice(0, 6);
   const mealsCarousel = recommendedMeals.slice(0, 6);
 
-  // cria estado de contagem para o indice do carrossel
-  const [counter, setCounter] = useState(0);
-
-  const handleNextCount = () => {
-    setCounter((count) => (count < 4 ? count + 2 : count - 4));
-  };
-
-  const handlePreviousCount = () => {
-    setCounter((count) => (count > 0 ? count - 2 : count + 4));
-  };
-
   // verifica no localStorage se a receita já foi feita. Caso tenha sido, o botão 'Start Recipe" não deve estar visivel
-  // verifica se a receita está em progresso no localStorage, se estiver, muda o texto para "Continue Recipe"
-  const doneRecipe = getLocalStorage('doneRecipes') as DoneRecipeType;
+
+  const doneRecipe: DoneRecipeType[] = getLocalStorage('doneRecipes');
   const thisRecipeIsDone = doneRecipe?.some((recipe) => recipe.id === id);
 
-  const recipesInProgress = getLocalStorage('inProgress') as InProgressType;
-  const isMealInProgress = recipesInProgress?.meals?.idMeal === id;
-  const isDrinkInProgress = recipesInProgress?.drinks?.idDrink === id;
+  // salva a receita com a função saveInProgressInLocalStorage quando clicar no botão 'Start Recipe' e envia o usuário para a pagina /in-progress
+  const handleInProgress = () => {
+    const type = mealOrDrink ? 'meals' : 'drinks';
+    saveInProgressInLocalStorage(type, formatedRecipe);
+    navigate(`${currentURL}/in-progress`);
+  };
 
-  console.log(isMealInProgress);
+  // converte a receita formatada para favoriteRecipesType, cria função que salva no localStorage e leva para /in-progress
+
+  const favoriteRecipe: FavoriteRecipesType = convertToFavorite(
+    formatedRecipe,
+    mealOrDrink,
+  );
+
+  // verifica se a receita está em progresso no localStorage, se estiver, muda o texto do botão para "Continue Recipe"
+
+  const checkLocalInProgress = () => {
+    const recipesInProgress = getLocalStorage('inProgress') as InProgressType;
+    if (recipesInProgress) {
+      const { meals, drinks } = recipesInProgress;
+      const mealId = Object.keys(meals)[0];
+      const drinkId = Object.keys(drinks)[0];
+      return mealOrDrink ? mealId === id : drinkId === id;
+    }
+    return false;
+  };
+  const isInProgress = checkLocalInProgress();
+
+  // verifica se a receita já está favoritada. Se não estiver, o botão fica com coração branco, se estiver, o coração fica preto
+
+  const handleFavorite = () => {
+    saveLocalStorage('favoriteRecipes', favoriteRecipe);
+    setIsFavorite((prev: boolean) => !prev);
+  };
 
   const handleShare = async () => {
-    console.log(currentURLhref);
     await navigator.clipboard.writeText(currentURLhref);
     setMessage('Link copied!');
   };
@@ -72,16 +102,12 @@ function RecipeDetail() {
   return (
     <>
       <h1>Recipe Detail</h1>
-      <h2>
-        ID da receita
-        {' '}
-        {id as string}
-      </h2>
+
       {formatedRecipe?.map((recipe) => (
         <div key={ recipe.id }>
           <h1 data-testid="recipe-title">{recipe.name}</h1>
           <h3 data-testid="recipe-category">{recipe.category}</h3>
-          {recipe.alcoholic && (
+          {recipe.alcoholic !== '' && (
             <h3 data-testid="recipe-category">{recipe.alcoholic}</h3>
           )}
           {/* Compartilhar */}
@@ -94,9 +120,9 @@ function RecipeDetail() {
           </button>
 
           {/* Favoritar */}
-          <button>
+          <button onClick={ handleFavorite }>
             <img
-              src={ unFav }
+              src={ isFavorite ? unFav : fav }
               alt="Favorite"
               data-testid="favorite-btn"
             />
@@ -179,20 +205,17 @@ function RecipeDetail() {
           ))}
         </section>
       )}
-      <Link to={ `${currentURL}/in-progress` }>
-        <button
-          style={ {
-            position: 'fixed',
-            bottom: '0px',
-            display: thisRecipeIsDone ? 'none' : 'block',
-          } }
-          data-testid="start-recipe-btn"
-        >
-          {isMealInProgress || isDrinkInProgress
-            ? 'Continue Recipe'
-            : 'Start Recipe'}
-        </button>
-      </Link>
+      <button
+        style={ {
+          position: 'fixed',
+          bottom: '0px',
+          display: thisRecipeIsDone ? 'none' : 'block',
+        } }
+        data-testid="start-recipe-btn"
+        onClick={ handleInProgress }
+      >
+        {isInProgress ? 'Continue Recipe' : 'StartRecipe'}
+      </button>
       {message !== '' && <span>{message}</span>}
     </>
   );

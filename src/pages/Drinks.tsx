@@ -13,21 +13,24 @@ function Drinks() {
   const { searchResults, drinksByCategories } = recipeContext;
   const navigate = useNavigate();
 
-  const drinks = initialResults?.drinks || [];
+  const drinks = searchResults?.drinks || [];
+  const checkInitialDrinks = initialResults?.drinks || [];
   const drinksByCat = drinksByCategories?.drinks || [];
 
   useEffect(() => {
     if (drinks.length === 1) {
       const id = drinks[0].idDrink;
+      console.log(id);
       navigate(`/drinks/${id}`);
     }
   }, [searchResults]);
+
   return (
     <div>
       <Header pageTitle="Drinks" />
       <SearchBar page="drinks" />
       {drinks.length === 0 && drinksByCat.length === 0 && (
-        <Recipes drinks={ drinks } />
+        <Recipes drinks={ checkInitialDrinks } />
       )}
       {drinksByCat.length > 0 && (
         <Recipes byCategories={ drinksByCategories } />

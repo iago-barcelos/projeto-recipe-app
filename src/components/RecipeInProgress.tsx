@@ -1,49 +1,42 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchById } from '../utils/functions';
-import { InProgressType } from '../types';
+import {
+  convertToDoneRecipe,
+  convertToFavorite,
+  getFetch,
+  saveDoneRecipesLocalStorage,
+  saveLocalStorage,
+} from '../utils/functions';
+import { DrinksRecipeDetailsType, MealRecipeDetailsType } from '../types';
+import useFormatRecipes from '../hooks/useFormatRecipes';
 
 function RecipeInProgress() {
-  const [recipeData, setRecipeData] = useState<InProgressType | null>(null);
+  const [mealRecipeData, setMealRecipeData] = useState<MealRecipeDetailsType>();
+  const [drinkRecipeData, setDrinkRecipeData] = useState<DrinksRecipeDetailsType>();
   const [checkBox, setCheckBox] = useState<(boolean | never)[]>([]);
 
   const { id } = useParams();
 
   const isMeal = window.location.pathname.includes('meals');
+  const { formatedRecipe } = useFormatRecipes(isMeal, mealRecipeData, drinkRecipeData);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        if (typeof id === 'string') {
-          const API = isMeal ? 'meal' : 'cocktail';
-          const response = await fetchById(API, id);
-
-          const key = API === 'meal' ? 'meals' : 'drinks';
-          const recipe = response ? response[key][0] : null;
-
-          setRecipeData({ [key]: recipe });
-        }
-      } catch (error) {
-        console.error('Erro ao buscar os dados da API:', error);
-        setRecipeData({});
+      const API = isMeal ? 'meal' : 'cocktail';
+      const URL = `https://www.the${API}db.com/api/json/v1/1/lookup.php?i=`;
+      if (isMeal) {
+        const result = await getFetch(URL, id);
+        setMealRecipeData(result);
+      } else {
+        const result = await getFetch(URL, id);
+        setDrinkRecipeData(result);
       }
     };
     fetchData();
   }, [id, isMeal]);
 
-  if (!recipeData) {
-    return <p>Carregando ...</p>;
-  }
-
-  if (recipeData.error) {
-    return <p>Ocorreu um erro ao buscar os dados da receita</p>;
-  }
-
-  const recipe = recipeData[isMeal ? 'meals' : 'drinks'];
-
-  const ingredientList = Object.entries(recipe)
-    .filter((tupla) => (tupla[0]
-      .includes('strIngredient')) && (tupla[1] !== '' && tupla[1] !== null));
+  const favoriteRecipe = convertToFavorite(formatedRecipe, isMeal);
+  const doneRecipe = convertToDoneRecipe(favoriteRecipe);
 
   const handleCheckBoxChange = (index: number) => {
     const clickCheckBox = [...checkBox];
@@ -52,60 +45,59 @@ function RecipeInProgress() {
   };
 
   return (
-    <div>
-      <img
-        data-testid="recipe-photo"
-        src={ recipe?.strMealThumb ? recipe?.strMealThumb : recipe?.strDrinkThumb }
-        alt=""
-      />
+    <>
+      {formatedRecipe.map((recipe, i) => (
+        <div key={ i }>
+          <img data-testid="recipe-photo" src={ recipe.img } alt="" />
 
-      <h1
-        data-testid="recipe-title"
-      >
-        {recipe?.strMeal || recipe?.strDrink || ''}
-      </h1>
+          <h1 data-testid="recipe-title">{recipe.name}</h1>
 
-      <p
-        data-testid="recipe-category"
-      >
-        {recipe?.strCategory || ''}
-      </p>
+          <p data-testid="recipe-category">{recipe?.category || ''}</p>
 
-      <div>
-        <ul>
-          {ingredientList.map(([ingredientKey, ingredientValue], index) => (
-            <li key={ index }>
-              <label
-                data-testid={ `${index}-ingredient-step` }
-                style={
-                  {
-                    textDecoration: checkBox[index]
-                      ? 'line-through solid rgb(0, 0, 0)'
-                      : 'none' }
-                }
-              >
-                <input
-                  type="checkbox"
-                  checked={ checkBox[index] }
-                  onChange={ () => handleCheckBoxChange(index) }
-                />
-                { ingredientValue }
-              </label>
-            </li>
-          ))}
-        </ul>
+          <div>
+            <ul>
+              {recipe.ingredients.map((ingredientValue, index) => (
+                <li key={ index }>
+                  <label
+                    data-testid={ `${index}-ingredient-step` }
+                    style={ {
+                      textDecoration: checkBox[index]
+                        ? 'line-through solid rgb(0, 0, 0)'
+                        : 'none',
+                    } }
+                  >
+                    <input
+                      type="checkbox"
+                      checked={ checkBox[index] }
+                      onChange={ () => handleCheckBoxChange(index) }
+                    />
+                    {ingredientValue}
+                  </label>
+                </li>
+              ))}
+            </ul>
 
-        <p data-testid="instructions">
-          {recipe?.strInstructions || ''}
-        </p>
+            <p data-testid="instructions">{recipe.instructions || ''}</p>
 
-        <button data-testid="finish-recipe-btn">Finalizar</button>
-      </div>
+            <button
+              data-testid="finish-recipe-btn"
+              onClick={ () => saveDoneRecipesLocalStorage(doneRecipe) }
+            >
+              Finalizar
+            </button>
+          </div>
 
-      <button data-testid="share-btn">Compartilhar</button>
+          <button data-testid="share-btn">Compartilhar</button>
 
-      <button data-testid="favorite-btn">Favoritar</button>
-    </div>
+          <button
+            data-testid="favorite-btn"
+            onClick={ () => saveLocalStorage('favoriteRecipes', favoriteRecipe) }
+          >
+            Favoritar
+          </button>
+        </div>
+      ))}
+    </>
   );
 }
 

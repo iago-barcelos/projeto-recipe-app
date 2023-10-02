@@ -51,7 +51,7 @@ function FilterBar({ page }: FilterBarProps) {
         {page}
       </button>
       {page === 'meals' ? (
-        mealCategories.map((category, i) => (
+        mealCategories?.map((category, i) => (
           <button
             key={ i }
             data-testid={ `${category.strCategory.includes('/')
@@ -71,7 +71,7 @@ function FilterBar({ page }: FilterBarProps) {
           </button>
         ))
       ) : (
-        drinkCategories.map((category, i) => (
+        drinkCategories?.map((category, i) => (
           <button
             key={ i }
             data-testid={ `${category.strCategory.includes('/')

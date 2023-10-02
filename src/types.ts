@@ -162,6 +162,7 @@ export type DrinksRecipeDetailsType = {
 export type FormatedRecipe = {
   id: string;
   name: string;
+  nacionality: string,
   alcoholic?: string;
   img: string;
   category: string;
@@ -184,19 +185,33 @@ export type RecipeData = {
 };
 
 export type InProgressType = {
-  [key: string] : RecipeData;
+  meals: {
+    [key: string] : string[];
+  },
+  drinks: {
+    [key: string] : string[];
+  }
+
 };
 
-export type DoneRecipeType = [
-  {
-    id: string,
-    type: string,
-    nationality: string,
-    category: string,
-    alcoholicOrNot: string,
-    name: string,
-    image: string,
-    doneDate: string,
-    tags: string[],
-  },
-];
+export type DoneRecipeType = {
+  id: string,
+  type: string,
+  nationality: string,
+  category: string,
+  alcoholicOrNot: string,
+  name: string,
+  image: string,
+  doneDate: string,
+  tags: string[],
+};
+
+export type FavoriteRecipesType = {
+  id: string,
+  type: string,
+  nationality: string,
+  category: string,
+  alcoholicOrNot: string,
+  name: string,
+  image: string
+};

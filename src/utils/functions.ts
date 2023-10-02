@@ -1,16 +1,75 @@
 import {
-  CocktailType,
-  MealType,
   UserInfoType,
   DrinksRecipeDetailsType,
   MealRecipeDetailsType,
+  FormatedRecipe,
+  FavoriteRecipesType,
+  DoneRecipeType,
 } from '../types';
+
+export const saveUserInLocalStorage = (key: string, user: UserInfoType) => {
+  const saveUser = localStorage.setItem(key, JSON.stringify(user));
+  return saveUser;
+};
+
+export const saveInProgressInLocalStorage = (type: string, recipe: FormatedRecipe) => {
+  if (type === 'meals') {
+    const mealInProgress = recipe
+      .map((mealRecipe) => ({ [mealRecipe.id]: [...mealRecipe.ingredients] }))[0];
+    localStorage
+      .setItem('inProgress', JSON.stringify({ drinks: [], meals: mealInProgress }));
+  } else {
+    const drinksInProgress = recipe
+      .map((drinkRecipe) => ({ [drinkRecipe.id]: [...drinkRecipe.ingredients] }))[0];
+    localStorage
+      .setItem('inProgress', JSON.stringify({ drinks: drinksInProgress, meals: [] }));
+  }
+};
+
+export const saveDoneRecipesLocalStorage = (recipe: DoneRecipeType) => {
+  const thisKeyExists = localStorage.getItem('doneRecipes');
+  if (thisKeyExists) {
+    const loadDoneRecipes: DoneRecipeType[] = JSON.parse(thisKeyExists);
+    const newDoneRecipes = [...loadDoneRecipes, recipe];
+    localStorage.setItem('doneRecipes', JSON.stringify(newDoneRecipes));
+  }
+
+  localStorage.setItem('doneRecipes', JSON.stringify([recipe]));
+};
 
 export const saveLocalStorage = (
   key: string,
-  item: UserInfoType | MealType | CocktailType,
+  item: FavoriteRecipesType,
 ) => {
-  const saveItens = localStorage.setItem(key, JSON.stringify(item));
+  // checa no localStorage se a key existe
+
+  const thisKeyExists = localStorage.getItem(key);
+  if (thisKeyExists && thisKeyExists !== 'user') {
+    // se existir e não for igual a 'user" faz o parse e verifica se o id da receita já está incluso no localStorage
+
+    const savedRecipesArray = JSON.parse(thisKeyExists as string);
+    const thisRecipeExists = savedRecipesArray.some(
+      (recipe: FavoriteRecipesType) => recipe
+        .id === (item as FavoriteRecipesType).id,
+    );
+    if (thisRecipeExists) {
+      // se o id já estiver incluso, retira do localStorage
+
+      const deleteFromLocalStorage = savedRecipesArray.filter(
+        (recipe: FavoriteRecipesType) => recipe.id !== (item as FavoriteRecipesType).id,
+      );
+      return localStorage.setItem(key, JSON.stringify(deleteFromLocalStorage));
+    }
+
+    // caso o id da receita não esteja salvo, adiciona no array de receitas salvas e salva tudo no localStorage
+
+    savedRecipesArray.push(item);
+    return localStorage.setItem(key, JSON.stringify(savedRecipesArray));
+  }
+
+  // caso a key não exista no localStorage, cria uma e salva o item dentro de um array
+
+  const saveItens = localStorage.setItem(key, JSON.stringify([item]));
   return saveItens;
 };
 
@@ -62,6 +121,7 @@ export const formatDrinkRecipe = (drinkRecipe: DrinksRecipeDetailsType) => {
   const mapedDrinkRecipe = drinkRecipe?.drinks.map((details) => ({
     id: details.idDrink,
     name: details.strDrink,
+    nacionality: '',
     alcoholic: details.strAlcoholic,
     img: details.strDrinkThumb,
     category: details.strCategory,
@@ -100,6 +160,8 @@ export const formatMealRecipe = (mealRecipe: MealRecipeDetailsType) => {
   const mapedMealRecipes = mealRecipe?.meals.map((details) => ({
     id: details.idMeal,
     name: details.strMeal,
+    nacionality: details.strArea,
+    alcoholic: '',
     img: details.strMealThumb,
     category: details.strCategory,
     instructions: details.strInstructions,
@@ -111,20 +173,29 @@ export const formatMealRecipe = (mealRecipe: MealRecipeDetailsType) => {
   return mapedMealRecipes;
 };
 
-export const fetchById = async (API: string, id: string) => {
-  try {
-    const response = await fetch(
-      `https://www.the${API}db.com/api/json/v1/1/lookup.php?i=${id}`,
-    );
-    if (!response.ok) {
-      throw new Error('Erro ao buscar os dados da API');
+// converte formatedRecipe em favoriteRecipe
+
+export const convertToFavorite = (recipes: FormatedRecipe, type: boolean) => {
+  const favoriteRecipe = recipes.map((recipe) => (
+    {
+      id: recipe.id,
+      type: type ? 'meal' : 'drink',
+      nationality: recipe.nacionality || '',
+      category: recipe.category,
+      alcoholicOrNot: recipe.alcoholic || '',
+      name: recipe.name,
+      image: recipe.img,
     }
-    const data = await response.json();
-    return data;
-  } catch {
-    console.error('Erro ao buscar os dados da API:', Error);
-  }
+  ));
+  return favoriteRecipe[0];
 };
 
-// const data = await fetchById('cocktail', '17222');
-// console.log('data');
+export const convertToDoneRecipe = (recipe: FavoriteRecipesType) => {
+  const date = new Date();
+  const day = date.getDate();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+  const myDate = `${day}/${month + 1}/${year}`;
+  const doneRecipe = { ...recipe, doneDate: myDate, tags: [''] };
+  return doneRecipe;
+};
