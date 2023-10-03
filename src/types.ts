@@ -170,6 +170,7 @@ export type FormatedRecipe = {
   ingredients: string[];
   measure: string[];
   video?: string;
+  tags: string | null;
 }[];
 
 export type RecipeData = {
@@ -207,7 +208,7 @@ export type DoneRecipeType = {
   name: string,
   image: string,
   doneDate: string,
-  tags: string[],
+  tags: string[] | undefined,
 };
 
 export type FavoriteRecipesType = {
@@ -218,4 +219,5 @@ export type FavoriteRecipesType = {
   alcoholicOrNot: string,
   name: string,
   image: string
+  tags?: string | null,
 };
