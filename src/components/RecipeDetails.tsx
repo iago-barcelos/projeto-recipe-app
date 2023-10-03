@@ -51,8 +51,8 @@ function RecipeDetail() {
   // faz fetch na API para pegar as bebidas e comidas recomendadas e depois lista as 6 primeiras para o carrossel
 
   const { recommendedDrinks, recommendedMeals } = useFetch('api/json/v1/1/search.php?s=');
-  const drinksCarousel = recommendedDrinks.slice(0, 6);
-  const mealsCarousel = recommendedMeals.slice(0, 6);
+  const drinksCarousel = recommendedDrinks && recommendedDrinks.slice(0, 6);
+  const mealsCarousel = recommendedMeals && recommendedMeals.slice(0, 6);
 
   // verifica no localStorage se a receita já foi feita. Caso tenha sido, o botão 'Start Recipe" não deve estar visivel
 
@@ -150,7 +150,7 @@ function RecipeDetail() {
           <section>
             <h4>Ingredients:</h4>
             <ol>
-              {recipe.ingredients.map((ingredient, i) => (
+              {recipe?.ingredients?.map((ingredient, i) => (
                 <li data-testid={ `${i}-ingredient-name-and-measure` } key={ i }>
                   {ingredient}
                 </li>
@@ -158,7 +158,7 @@ function RecipeDetail() {
             </ol>
             <h4>Measures:</h4>
             <ol>
-              {recipe.measure.map((measure, i) => (
+              {recipe?.measure?.map((measure, i) => (
                 <li data-testid={ `${i}-ingredient-name-and-measure` } key={ i }>
                   {measure}
                 </li>
@@ -182,7 +182,7 @@ function RecipeDetail() {
         <section>
           <button onClick={ handlePreviousCount }>Previous</button>
           <button onClick={ handleNextCount }>Next</button>
-          {drinksCarousel.map((drink, i) => (
+          {drinksCarousel?.map((drink, i) => (
             <div
               key={ i }
               data-testid={ `${i}-recommendation-card` }
@@ -203,7 +203,7 @@ function RecipeDetail() {
         <section>
           <button onClick={ handlePreviousCount }>Previous</button>
           <button onClick={ handleNextCount }>Next</button>
-          {mealsCarousel.map((meal, i) => (
+          {mealsCarousel?.map((meal, i) => (
             <div
               key={ i }
               data-testid={ `${i}-recommendation-card` }
