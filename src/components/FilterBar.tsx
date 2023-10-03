@@ -54,40 +54,40 @@ function FilterBar({ page }: FilterBarProps) {
         mealCategories?.map((category, i) => (
           <button
             key={ i }
-            data-testid={ `${category.strCategory.includes('/')
+            data-testid={ `${category.strCategory?.includes('/')
               ? 'Other/Unknown'
               : category.strCategory
             }-category-filter` }
-            onClick={ () => handleFilterButtonClick(category.strCategory) }
+            onClick={ () => handleFilterButtonClick(category?.strCategory) }
           >
             <img
-              src={ `../src/images/FilterBarIcons/${category.strCategory.includes('/')
+              src={ `../src/images/FilterBarIcons/${category?.strCategory?.includes('/')
                 ? 'Other'
-                : category.strCategory
+                : category?.strCategory
               }.svg` }
-              alt={ category.strCategory }
+              alt={ category?.strCategory }
             />
-            {category.strCategory}
+            {category?.strCategory}
           </button>
         ))
       ) : (
         drinkCategories?.map((category, i) => (
           <button
             key={ i }
-            data-testid={ `${category.strCategory.includes('/')
+            data-testid={ `${category?.strCategory?.includes('/')
               ? 'Other/Unknown'
-              : category.strCategory
+              : category?.strCategory
             }-category-filter` }
-            onClick={ () => handleFilterButtonClick(category.strCategory) }
+            onClick={ () => handleFilterButtonClick(category?.strCategory) }
           >
             <img
-              src={ `../src/images/FilterBarIcons/${category.strCategory.includes('/')
+              src={ `../src/images/FilterBarIcons/${category?.strCategory?.includes('/')
                 ? 'Other'
-                : category.strCategory
+                : category?.strCategory
               }.svg` }
-              alt={ category.strCategory }
+              alt={ category?.strCategory }
             />
-            {category.strCategory}
+            {category?.strCategory}
           </button>
         ))
       )}
