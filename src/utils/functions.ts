@@ -20,7 +20,7 @@ export const saveInProgressInLocalStorage = (type: string, id: string) => {
         .stringify({ ...loadLocal, [type]: { [id]: [] } }));
   } else {
     localStorage
-      .setItem('inProgress', JSON.stringify({ [type]: { [id]: [] } }));
+      .setItem('inProgressRecipes', JSON.stringify({ [type]: { [id]: [] } }));
   }
 };
 
