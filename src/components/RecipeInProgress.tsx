@@ -21,12 +21,12 @@ function RecipeInProgress() {
       const loadLocal = JSON.parse(isInLocal);
       setIngredients(loadLocal[isMeal ? 'meals' : 'drinks'][id as string]);
     } else {
-      const initialInProgres = {
+      const initialInProgress = {
         [isMeal ? 'meals' : 'drinks']: {
           [id as string]: [],
         },
       };
-      localStorage.setItem('inProgressRecipes', JSON.stringify(initialInProgres));
+      localStorage.setItem('inProgressRecipes', JSON.stringify(initialInProgress));
     }
   }, []);
 

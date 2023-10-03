@@ -69,12 +69,18 @@ function RecipeDetail() {
   // verifica se a receita está em progresso no localStorage, se estiver, muda o texto do botão para "Continue Recipe"
 
   const checkLocalInProgress = () => {
-    const recipesInProgress = getLocalStorage('inProgress') as InProgressType;
+    const recipesInProgress = getLocalStorage('inProgressRecipes') as InProgressType;
     if (recipesInProgress) {
       const { meals, drinks } = recipesInProgress;
-      const mealId = Object.keys(meals)[0];
-      const drinkId = Object.keys(drinks)[0];
-      return mealOrDrink ? mealId === id : drinkId === id;
+      if (meals) {
+        const mealId = Object.keys(meals)[0] ? Object.keys(meals)[0] : '';
+        return mealId === id;
+      }
+      if (drinks) {
+        const drinkId = Object.keys(drinks)[0] ? Object.keys(drinks)[0] : '';
+        return drinkId === id;
+      }
+      return false;
     }
     return false;
   };
