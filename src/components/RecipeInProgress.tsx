@@ -43,6 +43,7 @@ function RecipeInProgress() {
   });
   const [recipeData, setRecipeData] = useState<FormatedRecipe>([]);
   const [ingredients, setIngredients] = useState<string[]>([]);
+  const [allBoxesChecked, setAllBoxesChecked] = useState(false);
   const favoriteRecipe = convertToFavorite(recipeData, isMeal);
   const doneRecipe = convertToDoneRecipe(favoriteRecipe);
 
@@ -84,7 +85,15 @@ function RecipeInProgress() {
       }
     };
     fetchData();
-  }, [id, isMeal]);
+
+    const checkAllCheckBoxes = () => {
+      const allChecked = recipeData[0]?.ingredients?.every((ingredientValue) => {
+        return ingredients.includes(ingredientValue);
+      });
+      setAllBoxesChecked(allChecked);
+    };
+    checkAllCheckBoxes();
+  }, [id, isMeal, ingredients, recipeData]);
 
   const manipulateInProgress = (checkIngredient: string) => {
     const isInLocal = localStorage.getItem('inProgressRecipes');
@@ -172,6 +181,7 @@ function RecipeInProgress() {
         <button
           data-testid="finish-recipe-btn"
           onClick={ handleEndRecipe }
+          disabled={ !allBoxesChecked }
         >
           Finalizar
         </button>
