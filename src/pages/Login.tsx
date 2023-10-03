@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserInfoType } from '../types';
 import { saveUserInLocalStorage } from '../utils/functions';
+import * as S from '../styles/style';
 
 function Login() {
   const initialUserInfo = {
@@ -39,11 +40,11 @@ function Login() {
   };
 
   return (
-    <>
-      <header>
-        <h1>Login</h1>
-      </header>
-      <form onSubmit={ handleLoginSubmit }>
+    <S.Main>
+      <S.Header>
+        <h1>MyRecipe App</h1>
+      </S.Header>
+      <S.Form onSubmit={ handleLoginSubmit }>
         <label htmlFor="email">E-mail</label>
         <input
           data-testid="email-input"
@@ -68,8 +69,8 @@ function Login() {
         >
           Entrar
         </button>
-      </form>
-    </>
+      </S.Form>
+    </S.Main>
   );
 }
 

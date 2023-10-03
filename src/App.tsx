@@ -11,10 +11,12 @@ import FavoriteRecipes from './pages/FavoriteRecipes';
 import RecipeDetail from './components/RecipeDetails';
 import RecipeAppProvider from './context/RecipeAppProvider';
 import RecipeInProgress from './components/RecipeInProgress';
+import { GlobalStyle } from './styles/GlobalStyle';
 
 function App() {
   return (
     <RecipeAppProvider>
+      <GlobalStyle />
       <Routes>
         <Route path="/" element={ <Login /> } />
         <Route path="/meals" element={ <HomeMeal /> } />

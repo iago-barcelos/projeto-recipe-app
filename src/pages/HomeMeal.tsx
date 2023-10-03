@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import Recipes from '../components/Recipes';
 import RecipeAppContext from '../context/RecipeAppContext';
 import useFetch from '../hooks/useFetch';
+import * as S from '../styles/style';
 
 function HomeMeal() {
   const recipeContext = useContext(RecipeAppContext);
@@ -27,7 +28,7 @@ function HomeMeal() {
   const mealsCat = mealsByCategories?.meals || [];
   const checkInitialMeals = initialResults?.meals || [];
   return (
-    <div>
+    <S.HomeMealMain>
       <Header pageTitle="Meals" />
       <SearchBar page="meals" />
       {meals.length === 0 && mealsCat.length === 0 && (
@@ -40,7 +41,7 @@ function HomeMeal() {
         <Recipes meals={ meals } />
       )}
       <Footer />
-    </div>
+    </S.HomeMealMain>
   );
 }
 

@@ -183,7 +183,7 @@ function RecipeInProgress() {
           onClick={ handleEndRecipe }
           disabled={ !allBoxesChecked }
         >
-          Finalizar
+          Finish Recipe
         </button>
       </div>
 
