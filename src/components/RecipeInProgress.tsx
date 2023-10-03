@@ -45,7 +45,7 @@ function RecipeInProgress() {
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [allBoxesChecked, setAllBoxesChecked] = useState(false);
   const favoriteRecipe = convertToFavorite(recipeData, isMeal);
-  const doneRecipe = convertToDoneRecipe(favoriteRecipe);
+  const doneRecipe = convertToDoneRecipe(isMeal, recipeData);
 
   useEffect(() => {
     const isInLocal = localStorage.getItem('inProgressRecipes');

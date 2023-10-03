@@ -29,14 +29,14 @@ function DoneRecipes() {
             alt={ recipe.name }
             data-testid={ `${index}-horizontal-image` }
           />
-          <h2 data-testid={ `${index}-horizontal-name` }>{recipe.name}</h2>
+          <h2 data-testid={ `${index}-horizontal-name` }>{recipe?.name}</h2>
           <p
             data-testid={ `${index}-horizontal-top-text` }
           >
             {`${recipe.nationality} - ${recipe.category}`}
           </p>
-          <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
-          {recipe.tags.slice(0, 2)?.map((tag, tagIndex) => (
+          <p data-testid={ `${index}-horizontal-done-date` }>{recipe?.doneDate}</p>
+          {recipe?.tags?.slice(0, 2)?.map((tag, tagIndex) => (
             <span key={ tagIndex } data-testid={ `${index}-${tag}-horizontal-tag` }>
               {tag}
             </span>

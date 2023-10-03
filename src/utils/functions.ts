@@ -126,6 +126,7 @@ export const formatDrinkRecipe = (drinkRecipe: DrinksRecipeDetailsType) => {
     instructions: details.strInstructions,
     ingredients: formatedDrinkIngrList,
     measure: formatedDrinkMeasureList,
+    tags: details.strTags,
   }));
 
   return mapedDrinkRecipe;
@@ -166,6 +167,7 @@ export const formatMealRecipe = (mealRecipe: MealRecipeDetailsType) => {
     ingredients: formatedMealIngrList,
     measure: formatedMealMeasureList,
     video: details.strYoutube,
+    tags: details.strTags,
   }));
 
   return mapedMealRecipes;
@@ -188,12 +190,29 @@ export const convertToFavorite = (recipes: FormatedRecipe, type: boolean) => {
   return favoriteRecipe[0];
 };
 
-export const convertToDoneRecipe = (recipe: FavoriteRecipesType) => {
+export const convertToDoneRecipe = (type: boolean, recipe: FormatedRecipe) => {
+  const formatedRecipe = recipe && recipe[0];
   const date = new Date();
-  const day = date.getDate();
-  const month = date.getMonth();
   const year = date.getFullYear();
-  const myDate = `${day}/${month + 1}/${year}`;
-  const doneRecipe = { ...recipe, doneDate: myDate, tags: [''] };
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // +1 porque os meses são indexados a partir de 0
+  const day = String(date.getDate()).padStart(2, '0');
+  const hour = String(date.getHours() + 3).padStart(2, '0');
+  const minute = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  const milisseconds = String(date.getMilliseconds()).padStart(3, '0');
+  const myDate = `${year}-${month}-${day}T${hour}:${minute}:${seconds}.${milisseconds}Z`;
+  const tags = recipe && formatedRecipe?.tags;
+  const tagArr = tags?.split(',');
+  const doneRecipe = {
+    id: formatedRecipe?.id,
+    type: type ? 'meal' : 'drink',
+    nationality: formatedRecipe?.nacionality || '',
+    category: formatedRecipe?.category,
+    alcoholicOrNot: formatedRecipe?.alcoholic || '',
+    name: formatedRecipe?.name,
+    image: formatedRecipe?.img,
+    doneDate: myDate,
+    tags: tagArr || [],
+  };
   return doneRecipe;
 };
