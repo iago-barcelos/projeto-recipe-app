@@ -4,6 +4,7 @@ import { DoneRecipeType } from '../types';
 
 function DoneRecipes() {
   const [doneRecipes, setDoneRecipes] = useState<DoneRecipeType[]>([]);
+  const [copiedMessage, setCopiedMessage] = useState('');
 
   useEffect(() => {
     const savedDoneRecipes = localStorage.getItem('doneRecipes');
@@ -13,6 +14,27 @@ function DoneRecipes() {
       setDoneRecipes(parsedDoneRecipes);
     }
   }, []);
+
+  const copyToClipboard = async (text: string) => {
+    await navigator.clipboard.writeText(text);
+  };
+
+  const handleShareClick = (recipeId: string) => {
+    const savedDoneRecipes = localStorage.getItem('doneRecipes');
+    if (savedDoneRecipes) {
+      const parsedDoneRecipes: DoneRecipeType[] = JSON.parse(savedDoneRecipes);
+      const recipeDone = parsedDoneRecipes.find((recipe) => recipe.id === recipeId);
+      if (recipeDone) {
+        const recipeURL = `${
+          window.location.origin
+        }/${
+          recipeDone.type === 'meal' ? 'meals' : 'drinks'}/${recipeId
+        }`;
+        copyToClipboard(recipeURL);
+        setCopiedMessage('Link copied!');
+      }
+    }
+  };
 
   return (
     <div>
@@ -41,12 +63,17 @@ function DoneRecipes() {
               {tag}
             </span>
           ))}
-          <button>
+          <button
+            onClick={ () => handleShareClick(recipe.id) }
+          >
             <img
               data-testid={ `${index}-horizontal-share-btn` }
               src="src/images/shareIcon.svg"
               alt="Compartilhar"
             />
+            <span>
+              { copiedMessage }
+            </span>
           </button>
         </div>
       ))}
