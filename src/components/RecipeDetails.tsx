@@ -84,7 +84,7 @@ function RecipeDetail() {
   const handleInProgress = () => {
     if (!isInProgress) {
       const type = mealOrDrink ? 'meals' : 'drinks';
-      saveInProgressInLocalStorage(type, formatedRecipe);
+      saveInProgressInLocalStorage(type, id as string);
       navigate(`${currentURL}/in-progress`);
     }
     navigate(`${currentURL}/in-progress`);

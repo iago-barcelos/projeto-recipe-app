@@ -1,13 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getFetch, getLocalStorage } from '../utils/functions';
-import { InProgressType } from '../types';
-
-type ProgressStateType = {
-  [key: string] : {
-    [key: string]: boolean[];
-  }
-};
+import { getFetch } from '../utils/functions';
+import { InProgressType, InProgressTypeTwo } from '../types';
 
 const RECIPE_TYPES = {
   meal: 'meal',
@@ -19,21 +13,22 @@ function RecipeInProgress() {
   const isMeal = window.location.pathname.includes('meals');
 
   const [recipeData, setRecipeData] = useState<InProgressType | null>(null);
-  const [checkBox, setCheckBox] = useState<(boolean | never)[]>(() => {
-    const loadLocalStorage = localStorage.getItem('inProgressRecipes');
-    if (loadLocalStorage !== null) {
-      const parse: ProgressStateType = JSON.parse(loadLocalStorage);
-      const check = parse[isMeal ? 'meals' : 'drinks'][id as string];
-      return check;
-    }
-    return [];
-  });
-  const [inProgressRecipes, setInProgressRecipes,
-  ] = useState<ProgressStateType>(getLocalStorage('inProgressRecipes'));
+  const [ingredients, setIngredients] = useState<string[]>([]);
 
   useEffect(() => {
-    localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
-  }, [inProgressRecipes]);
+    const isInLocal = localStorage.getItem('inProgressRecipes');
+    if (isInLocal) {
+      const loadLocal = JSON.parse(isInLocal);
+      setIngredients(loadLocal[isMeal ? 'meals' : 'drinks'][id as string]);
+    } else {
+      const initialInProgres = {
+        [isMeal ? 'meals' : 'drinks']: {
+          [id as string]: [],
+        },
+      };
+      localStorage.setItem('inProgressRecipes', JSON.stringify(initialInProgres));
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,35 +51,26 @@ function RecipeInProgress() {
     fetchData();
   }, [id, isMeal]);
 
-  // const handleLocal = () => {
-  //   const loadLocalStorage = localStorage.getItem('inProgressRecipes');
-  //   if (loadLocalStorage !== null) {
-  //     const parse: ProgressStateType = JSON.parse(loadLocalStorage);
-  //     const check = parse[isMeal ? 'meals' : 'drinks'][id as string];
-  //     return check;
-  //   }
-  //   return [];
-  // };
-
-  // handleLocal();
-
-  const handleCheckBoxChange = (index: number) => {
-    const updatedCheckBox = [...checkBox];
-    updatedCheckBox[index] = !updatedCheckBox[index];
-    setCheckBox(updatedCheckBox);
-
-    const recipeKey = isMeal ? 'meals' : 'drinks';
-    const idString = id ? id.toString() : '';
-
-    setInProgressRecipes((prevProgress) => {
-      const newProgress = { ...prevProgress };
-      newProgress[recipeKey] = {
-        ...newProgress[recipeKey],
-        [idString]: updatedCheckBox,
-      };
-      console.log(newProgress);
-      return newProgress;
-    });
+  const manipulateInProgress = (checkIngredient: string) => {
+    const isInLocal = localStorage.getItem('inProgressRecipes');
+    const load: InProgressTypeTwo = JSON.parse(isInLocal as string);
+    if (ingredients.includes(checkIngredient)) {
+      const filteredItens = ingredients
+        .filter((ingredient) => ingredient !== checkIngredient);
+      setIngredients(filteredItens);
+      localStorage.setItem('inProgressRecipes', JSON.stringify({ ...load,
+        [isMeal ? 'meals' : 'drinks']: {
+          [id as string]: filteredItens,
+        },
+      }));
+    } else {
+      setIngredients([...ingredients, checkIngredient]);
+      localStorage.setItem('inProgressRecipes', JSON.stringify({ ...load,
+        [isMeal ? 'meals' : 'drinks']: {
+          [id as string]: [...ingredients, checkIngredient],
+        },
+      }));
+    }
   };
 
   if (!recipeData) {
@@ -131,15 +117,15 @@ function RecipeInProgress() {
                 data-testid={ `${index}-ingredient-step` }
                 style={
                   {
-                    textDecoration: checkBox[index]
+                    textDecoration: ingredients.includes(ingredientValue as string)
                       ? 'line-through solid rgb(0, 0, 0)'
                       : 'none' }
                 }
               >
                 <input
                   type="checkbox"
-                  checked={ checkBox[index] }
-                  onChange={ () => handleCheckBoxChange(index) }
+                  checked={ ingredients.includes(ingredientValue as string) }
+                  onChange={ () => manipulateInProgress(ingredientValue as string) }
                 />
                 { ingredientValue }
               </label>
