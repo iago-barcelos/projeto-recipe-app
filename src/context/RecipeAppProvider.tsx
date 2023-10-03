@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import RecipeAppContext from './RecipeAppContext';
 import useRecipeCategories from '../hooks/useRecipeCategories';
 import useRecipeSearch from '../hooks/useRecipeSearch';
