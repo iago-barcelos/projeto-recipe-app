@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useRecipeDetails from '../hooks/useRecipeDetails';
 import unFav from '../images/blackHeartIcon.svg';
 import fav from '../images/whiteHeartIcon.svg';
@@ -106,6 +106,9 @@ function RecipeDetail() {
   const handleShare = async () => {
     await navigator.clipboard.writeText(currentURLhref);
     setMessage('Link copied!');
+    setTimeout(() => {
+      setMessage('');
+    }, 1500);
   };
 
   return (
@@ -126,6 +129,7 @@ function RecipeDetail() {
               alt="Share"
               data-testid="share-btn"
             />
+            <span>{message}</span>
           </button>
 
           {/* Favoritar */}

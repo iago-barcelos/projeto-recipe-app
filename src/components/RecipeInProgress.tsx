@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getFetch } from '../utils/functions';
+import { getFetch, saveDoneRecipesLocalStorage } from '../utils/functions';
 import { InProgressType, InProgressTypeTwo } from '../types';
 
 const RECIPE_TYPES = {
@@ -11,7 +11,9 @@ const RECIPE_TYPES = {
 function RecipeInProgress() {
   const { id } = useParams();
   const isMeal = window.location.pathname.includes('meals');
+  const currentURLhref = window.location.href;
 
+  const [message, setMessage] = useState('Compartilhar');
   const [recipeData, setRecipeData] = useState<InProgressType | null>(null);
   const [ingredients, setIngredients] = useState<string[]>([]);
 
@@ -89,58 +91,68 @@ function RecipeInProgress() {
       && ingredientValue !== null
     ));
 
+  const handleShare = async () => {
+    await navigator.clipboard.writeText(currentURLhref);
+    setMessage('Link copied!');
+    setTimeout(() => {
+      setMessage('Compartilhar');
+    }, 1500);
+  };
+
   return (
     <div>
       <img
         data-testid="recipe-photo"
-        src={ recipe?.strMealThumb ? recipe?.strMealThumb : recipe?.strDrinkThumb }
+        src={
+          recipe?.strMealThumb ? recipe?.strMealThumb : recipe?.strDrinkThumb
+        }
         alt=""
       />
 
-      <h1
-        data-testid="recipe-title"
-      >
+      <h1 data-testid="recipe-title">
         {recipe?.strMeal || recipe?.strDrink || ''}
       </h1>
 
-      <p
-        data-testid="recipe-category"
-      >
-        {recipe?.strCategory || ''}
-      </p>
+      <p data-testid="recipe-category">{recipe?.strCategory || ''}</p>
 
       <div>
         <ul>
-          { ingredientList?.map(([ingredientKey, ingredientValue], index) => (
+          {ingredientList?.map(([ingredientKey, ingredientValue], index) => (
             <li key={ index }>
               <label
                 data-testid={ `${index}-ingredient-step` }
-                style={
-                  {
-                    textDecoration: ingredients.includes(ingredientValue as string)
-                      ? 'line-through solid rgb(0, 0, 0)'
-                      : 'none' }
-                }
+                style={ {
+                  textDecoration: ingredients.includes(
+                    ingredientValue as string,
+                  )
+                    ? 'line-through solid rgb(0, 0, 0)'
+                    : 'none',
+                } }
               >
                 <input
                   type="checkbox"
                   checked={ ingredients.includes(ingredientValue as string) }
                   onChange={ () => manipulateInProgress(ingredientValue as string) }
                 />
-                { ingredientValue }
+                {ingredientValue}
               </label>
             </li>
           ))}
         </ul>
 
-        <p data-testid="instructions">
-          {recipe?.strInstructions || ''}
-        </p>
+        <p data-testid="instructions">{recipe?.strInstructions || ''}</p>
 
-        <button data-testid="finish-recipe-btn">Finalizar</button>
+        <button
+          data-testid="finish-recipe-btn"
+
+        >
+          Finalizar
+        </button>
       </div>
 
-      <button data-testid="share-btn">Compartilhar</button>
+      <button data-testid="share-btn" onClick={ handleShare }>
+        {message}
+      </button>
 
       <button data-testid="favorite-btn">Favoritar</button>
     </div>
