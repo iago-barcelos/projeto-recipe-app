@@ -1,7 +1,23 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { getFetch, saveDoneRecipesLocalStorage } from '../utils/functions';
-import { InProgressType, InProgressTypeTwo } from '../types';
+import { useParams, useNavigate } from 'react-router-dom';
+import unFav from '../images/whiteHeartIcon.svg';
+import fav from '../images/blackHeartIcon.svg';
+import {
+  convertToDoneRecipe,
+  convertToFavorite,
+  formatDrinkRecipe,
+  formatMealRecipe,
+  getFetch,
+  saveDoneRecipesLocalStorage,
+  saveLocalStorage,
+} from '../utils/functions';
+import {
+  DrinksRecipeDetailsType,
+  FavoriteRecipesType,
+  FormatedRecipe,
+  InProgressTypeTwo,
+  MealRecipeDetailsType,
+} from '../types';
 
 const RECIPE_TYPES = {
   meal: 'meal',
@@ -10,12 +26,25 @@ const RECIPE_TYPES = {
 
 function RecipeInProgress() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const isMeal = window.location.pathname.includes('meals');
   const currentURLhref = window.location.href;
+  const formatedURL = currentURLhref.replace(/\/in-progress/i, '');
 
   const [message, setMessage] = useState('Compartilhar');
-  const [recipeData, setRecipeData] = useState<InProgressType | null>(null);
+  const [isFavorite, setIsFavorite] = useState(() => {
+    const checkLocalStorage = localStorage.getItem('favoriteRecipes');
+    if (checkLocalStorage) {
+      const recipes = JSON.parse(checkLocalStorage);
+      const favorite = recipes.some((recipe: FavoriteRecipesType) => recipe.id === id);
+      return favorite;
+    }
+    return false;
+  });
+  const [recipeData, setRecipeData] = useState<FormatedRecipe>([]);
   const [ingredients, setIngredients] = useState<string[]>([]);
+  const favoriteRecipe = convertToFavorite(recipeData, isMeal);
+  const doneRecipe = convertToDoneRecipe(favoriteRecipe);
 
   useEffect(() => {
     const isInLocal = localStorage.getItem('inProgressRecipes');
@@ -39,15 +68,19 @@ function RecipeInProgress() {
           const API = isMeal ? RECIPE_TYPES.meal : RECIPE_TYPES.cocktail;
           const endPoint = `https://www.the${API}db.com/api/json/v1/1/lookup.php?i=${id}`;
           const response = await getFetch(endPoint);
-
-          const key = API === RECIPE_TYPES.meal ? 'meals' : 'drinks';
-          const recipe = response ? response[key][0] : null;
-
-          setRecipeData({ [key]: recipe });
+          if (isMeal) {
+            const formatedRecipe: FormatedRecipe = formatMealRecipe(
+              response as MealRecipeDetailsType,
+            );
+            setRecipeData(formatedRecipe);
+          }
+          const formatedRecipe: FormatedRecipe = formatDrinkRecipe(
+            response as DrinksRecipeDetailsType,
+          );
+          setRecipeData(formatedRecipe);
         }
       } catch (error) {
         console.error('Erro ao buscar os dados da API:', error);
-        setRecipeData({});
       }
     };
     fetchData();
@@ -75,28 +108,22 @@ function RecipeInProgress() {
     }
   };
 
-  if (!recipeData) {
-    return <p>Carregando ...</p>;
-  }
-
-  if (recipeData.error) {
-    return <p>Ocorreu um erro ao buscar os dados da receita</p>;
-  }
-
-  const recipe = recipeData[isMeal ? 'meals' : 'drinks'];
-  const ingredientList = Object.entries(recipe)
-    ?.filter(([ingredientKey, ingredientValue]) => (
-      ingredientKey.includes('strIngredient')
-      && ingredientValue !== ''
-      && ingredientValue !== null
-    ));
-
   const handleShare = async () => {
-    await navigator.clipboard.writeText(currentURLhref);
+    await navigator.clipboard.writeText(formatedURL);
     setMessage('Link copied!');
     setTimeout(() => {
       setMessage('Compartilhar');
     }, 1500);
+  };
+
+  const handleFavorite = () => {
+    saveLocalStorage('favoriteRecipes', favoriteRecipe);
+    setIsFavorite((prev: boolean) => !prev);
+  };
+
+  const handleEndRecipe = () => {
+    saveDoneRecipesLocalStorage(doneRecipe);
+    navigate('/done-recipes');
   };
 
   return (
@@ -104,20 +131,20 @@ function RecipeInProgress() {
       <img
         data-testid="recipe-photo"
         src={
-          recipe?.strMealThumb ? recipe?.strMealThumb : recipe?.strDrinkThumb
+          recipeData[0]?.img
         }
         alt=""
       />
 
       <h1 data-testid="recipe-title">
-        {recipe?.strMeal || recipe?.strDrink || ''}
+        {recipeData[0]?.name}
       </h1>
 
-      <p data-testid="recipe-category">{recipe?.strCategory || ''}</p>
+      <p data-testid="recipe-category">{recipeData[0]?.category}</p>
 
       <div>
         <ul>
-          {ingredientList?.map(([ingredientKey, ingredientValue], index) => (
+          {recipeData[0]?.ingredients?.map((ingredientValue, index) => (
             <li key={ index }>
               <label
                 data-testid={ `${index}-ingredient-step` }
@@ -140,11 +167,11 @@ function RecipeInProgress() {
           ))}
         </ul>
 
-        <p data-testid="instructions">{recipe?.strInstructions || ''}</p>
+        <p data-testid="instructions">{recipeData[0]?.instructions}</p>
 
         <button
           data-testid="finish-recipe-btn"
-
+          onClick={ handleEndRecipe }
         >
           Finalizar
         </button>
@@ -154,7 +181,14 @@ function RecipeInProgress() {
         {message}
       </button>
 
-      <button data-testid="favorite-btn">Favoritar</button>
+      <button onClick={ handleFavorite }>
+        <img
+          src={ !isFavorite ? unFav : fav }
+          alt="Favorite"
+          data-testid="favorite-btn"
+        />
+
+      </button>
     </div>
   );
 }
