@@ -12,17 +12,15 @@ export const saveUserInLocalStorage = (key: string, user: UserInfoType) => {
   return saveUser;
 };
 
-export const saveInProgressInLocalStorage = (type: string, recipe: FormatedRecipe) => {
-  if (type === 'meals') {
-    const mealInProgress = recipe
-      .map((mealRecipe) => ({ [mealRecipe.id]: [...mealRecipe.ingredients] }))[0];
+export const saveInProgressInLocalStorage = (type: string, id: string) => {
+  if (localStorage.getItem('inProgressRecipes')) {
+    const loadLocal = JSON.parse(localStorage.getItem('inProgressRecipes') as string);
     localStorage
-      .setItem('inProgress', JSON.stringify({ drinks: [], meals: mealInProgress }));
+      .setItem('inProgressRecipes', JSON
+        .stringify({ ...loadLocal, [type]: { [id]: [] } }));
   } else {
-    const drinksInProgress = recipe
-      .map((drinkRecipe) => ({ [drinkRecipe.id]: [...drinkRecipe.ingredients] }))[0];
     localStorage
-      .setItem('inProgress', JSON.stringify({ drinks: drinksInProgress, meals: [] }));
+      .setItem('inProgress', JSON.stringify({ [type]: { [id]: [] } }));
   }
 };
 
