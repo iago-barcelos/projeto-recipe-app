@@ -13,7 +13,6 @@ import { renderWithRouterAndContext } from './helpers/renderWith';
 import { mockDrinksData, mockMealsData } from './helpers/mockData';
 import RecipeAppContext from '../context/RecipeAppContext';
 import { mockContext } from './helpers/contextMock';
-import RecipeDetails from '../components/RecipeDetails';
 
 const loginBtnTestId = 'login-submit-btn';
 const validEmail = 'email@valido.com';
@@ -23,6 +22,7 @@ const searchIconTestId = 'search-top-btn';
 const searchBtnTestId = 'exec-search-btn';
 const nameSearchRadioTestId = 'name-search-radio';
 const searchInputTestId = 'search-input';
+const doneDate = '23/06/2020';
 
 beforeEach(() => {
   vi.spyOn(global, 'fetch');
@@ -259,7 +259,7 @@ describe('Testes referentes a Done Recipes', () => {
       alcoholicOrNot: '',
       name: 'Spicy Arrabiata Penne',
       image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
-      doneDate: '23/06/2020',
+      doneDate,
       tags: ['Pasta', 'Curry'],
     };
     const mockAquamarineCocktail = {
@@ -267,27 +267,27 @@ describe('Testes referentes a Done Recipes', () => {
       type: 'drink',
       nationality: '',
       category: 'Cocktail',
-      alcoholicOrNot:  'Alcoholic',
+      alcoholicOrNot: 'Alcoholic',
       name: 'Aquamarine',
       image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
-      doneDate: '23/06/2020',
+      doneDate,
       tags: [],
-    }
-    localStorage.setItem('doneRecipes',JSON.stringify([mockArrabiataMeal, mockAquamarineCocktail]));
+    };
+    localStorage.setItem('doneRecipes', JSON.stringify([mockArrabiataMeal, mockAquamarineCocktail]));
     renderWithRouterAndContext(<DoneRecipes />);
 
-    const allFilterBtn = screen.getByTestId("filter-by-all-btn");
-    const mealFilterBtn = screen.getByTestId("filter-by-meal-btn");
-    const drinkFilterBtn = screen.getByTestId("filter-by-drink-btn");
+    const allFilterBtn = screen.getByTestId('filter-by-all-btn');
+    const mealFilterBtn = screen.getByTestId('filter-by-meal-btn');
+    const drinkFilterBtn = screen.getByTestId('filter-by-drink-btn');
 
     expect(allFilterBtn).toBeInTheDocument();
     expect(mealFilterBtn).toBeInTheDocument();
-    
+
     await userEvent.click(allFilterBtn);
     await userEvent.click(mealFilterBtn);
     await userEvent.click(drinkFilterBtn);
   });
-  
+
   test('Testa se o shareBtn está na tela e aparece o texto de link copiado ao ser clicado', async () => {
     const mockArrabiataMeal = {
       id: '52771',
@@ -297,20 +297,20 @@ describe('Testes referentes a Done Recipes', () => {
       alcoholicOrNot: '',
       name: 'Spicy Arrabiata Penne',
       image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
-      doneDate: '23/06/2020',
+      doneDate,
       tags: ['Pasta', 'Curry'],
-    }
-    localStorage.setItem('doneRecipes',JSON.stringify([mockArrabiataMeal]));
+    };
+    localStorage.setItem('doneRecipes', JSON.stringify([mockArrabiataMeal]));
     renderWithRouterAndContext(<DoneRecipes />);
 
     const shareBtn = await screen.getByTestId('0-horizontal-share-btn');
     expect(shareBtn).toBeInTheDocument();
 
     await userEvent.click(shareBtn);
-    
-    const linkCopiedText = await screen.findByText(/link copied/i);
 
-    expect(localStorage.getItem('doneRecipes')).toBe(JSON.stringify([mockArrabiataMeal]))
+    await screen.findByText(/link copied/i);
+
+    expect(localStorage.getItem('doneRecipes')).toBe(JSON.stringify([mockArrabiataMeal]));
   });
 });
 

@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Header from '../components/Header';
 import { DoneRecipeType } from '../types';
 import faShare from '../images/shareIcon.svg';
 
 function DoneRecipes() {
-  const INITIAL_DONE_RECIPES: DoneRecipeType[] = JSON.parse(localStorage.getItem('doneRecipes') as string) || [];
+  const INITIAL_DONE_RECIPES: DoneRecipeType[] = JSON.parse(
+    localStorage.getItem('doneRecipes') as string,
+  ) || [];
   const [message, setMessage] = useState('');
   const [doneRecipes, setDoneRecipes] = useState(INITIAL_DONE_RECIPES || undefined);
   const [shownRecipes, setShownRecipes] = useState(INITIAL_DONE_RECIPES);
