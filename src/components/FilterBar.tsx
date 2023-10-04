@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import RecipeAppContext from '../context/RecipeAppContext';
+import * as S from '../styles/style';
 
 type FilterBarProps = {
   page: string;
@@ -32,8 +33,8 @@ function FilterBar({ page }: FilterBarProps) {
   };
 
   return (
-    <>
-      <button
+    <S.FilterBar>
+      <S.CategoryBtn
         data-testid="All-category-filter"
         onClick={
           page === 'meals'
@@ -49,10 +50,10 @@ function FilterBar({ page }: FilterBarProps) {
         All
         {' '}
         {page}
-      </button>
+      </S.CategoryBtn>
       {page === 'meals' ? (
         mealCategories?.map((category, i) => (
-          <button
+          <S.CategoryBtn
             key={ i }
             data-testid={ `${category.strCategory?.includes('/')
               ? 'Other/Unknown'
@@ -68,11 +69,11 @@ function FilterBar({ page }: FilterBarProps) {
               alt={ category?.strCategory }
             />
             {category?.strCategory}
-          </button>
+          </S.CategoryBtn>
         ))
       ) : (
         drinkCategories?.map((category, i) => (
-          <button
+          <S.CategoryBtn
             key={ i }
             data-testid={ `${category?.strCategory?.includes('/')
               ? 'Other/Unknown'
@@ -88,10 +89,10 @@ function FilterBar({ page }: FilterBarProps) {
               alt={ category?.strCategory }
             />
             {category?.strCategory}
-          </button>
+          </S.CategoryBtn>
         ))
       )}
-    </>
+    </S.FilterBar>
   );
 }
 

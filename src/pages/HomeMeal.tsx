@@ -29,10 +29,10 @@ function HomeMeal() {
   const checkInitialMeals = initialResults?.meals || [];
   return (
     <S.HomeMealMain>
-      <nav>
+      <S.Nav>
         <Header pageTitle="Meals" />
         <SearchBar page="meals" />
-      </nav>
+      </S.Nav>
       <S.RecipeContainer>
         {meals.length === 0 && mealsCat.length === 0 && (
           <Recipes meals={ checkInitialMeals } />

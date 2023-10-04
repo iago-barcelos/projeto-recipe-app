@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { CocktailType, MealType } from '../types';
+import * as S from '../styles/style';
 
 type RecipeCardProps = {
   drinks?: CocktailType[],
@@ -25,7 +26,7 @@ function Recipes({
         && shownDrinksResults.length === 0
         && shownMealsResults.map(({ idMeal, strMealThumb, strMeal }, index) => (
           <Link key={ idMeal } to={ `/meals/${idMeal}` }>
-            <div
+            <S.RecipeCard
               data-testid={ `${index}-recipe-card` }
               role="button"
               tabIndex={ 0 }
@@ -38,14 +39,14 @@ function Recipes({
               <span data-testid={ `${index}-card-name` } key={ index }>
                 {strMeal}
               </span>
-            </div>
+            </S.RecipeCard>
           </Link>
         ))}
       {shownDrinksResults.length > 0
         && shownMealsResults.length === 0
         && shownDrinksResults.map(({ idDrink, strDrink, strDrinkThumb }, index) => (
           <Link key={ idDrink } to={ `/drinks/${idDrink}` }>
-            <div
+            <S.RecipeCard
               data-testid={ `${index}-recipe-card` }
               role="button"
               tabIndex={ 0 }
@@ -58,7 +59,7 @@ function Recipes({
               <span data-testid={ `${index}-card-name` } key={ index }>
                 {strDrink}
               </span>
-            </div>
+            </S.RecipeCard>
           </Link>
         ))}
 

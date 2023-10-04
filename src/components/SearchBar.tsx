@@ -19,7 +19,7 @@ function SearchBar({ page }: SearchBarProps) {
   const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
 
   return (
-    <>
+    <section>
       <S.SearchBar>
         <S.SearchInputContainer>
           <button
@@ -84,7 +84,7 @@ function SearchBar({ page }: SearchBarProps) {
         </S.SearchRadioBtnContainer>
       </S.SearchBar>
       <FilterBar page={ page } />
-    </>
+    </section>
   );
 }
 

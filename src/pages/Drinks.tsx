@@ -6,6 +6,7 @@ import Recipes from '../components/Recipes';
 import SearchBar from '../components/SearchBar';
 import RecipeAppContext from '../context/RecipeAppContext';
 import useFetch from '../hooks/useFetch';
+import * as S from '../styles/style';
 
 function Drinks() {
   const recipeContext = useContext(RecipeAppContext);
@@ -26,18 +27,23 @@ function Drinks() {
   }, [searchResults]);
 
   return (
-    <div>
-      <Header pageTitle="Drinks" />
-      <SearchBar page="drinks" />
-      {drinks.length === 0 && drinksByCat.length === 0 && (
-        <Recipes drinks={ checkInitialDrinks } />
-      )}
-      {drinksByCat.length > 0 && (
-        <Recipes byCategories={ drinksByCategories } />
-      )}
-      {drinks.length > 0 && <Recipes drinks={ drinks } />}
+    <S.Drinks>
+      <S.Nav>
+        <Header pageTitle="Drinks" />
+        <SearchBar page="drinks" />
+      </S.Nav>
+      <S.RecipeContainer>
+        {drinks.length === 0 && drinksByCat.length === 0 && (
+          <Recipes drinks={ checkInitialDrinks } />
+        )}
+        {drinksByCat.length > 0 && (
+          <Recipes byCategories={ drinksByCategories } />
+        )}
+        {drinks.length > 0 && <Recipes drinks={ drinks } />}
+      </S.RecipeContainer>
       <Footer />
-    </div>
+    </S.Drinks>
+
   );
 }
 
