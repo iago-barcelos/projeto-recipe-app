@@ -180,8 +180,8 @@ function RecipeDetail() {
       ))}
       {mealOrDrink && (
         <section>
-          <button onClick={ handlePreviousCount }>Previous</button>
-          <button onClick={ handleNextCount }>Next</button>
+          <button onClick={ () => handlePreviousCount(2) }>Previous</button>
+          <button onClick={ () => handleNextCount(2) }>Next</button>
           {drinksCarousel?.map((drink, i) => (
             <div
               key={ i }
@@ -201,8 +201,8 @@ function RecipeDetail() {
       )}
       {!mealOrDrink && (
         <section>
-          <button onClick={ handlePreviousCount }>Previous</button>
-          <button onClick={ handleNextCount }>Next</button>
+          <button onClick={ () => handlePreviousCount(2) }>Previous</button>
+          <button onClick={ () => handleNextCount(2) }>Next</button>
           {mealsCarousel?.map((meal, i) => (
             <div
               key={ i }

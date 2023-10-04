@@ -16,33 +16,9 @@ function SearchBar({ page }: SearchBarProps) {
     handleSearch,
   } = recipeContext;
 
-  const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
-
   return (
     <section>
-      <S.SearchBar>
-        <S.SearchInputContainer>
-          <button
-            type="button"
-            onClick={ () => setIsSearchVisible(!isSearchVisible) }
-          >
-            <img
-              src={ searchIcon }
-              alt="Search Icon"
-              data-testid="search-top-btn"
-            />
-          </button>
-          {isSearchVisible && (
-            <input
-              type="text"
-              placeholder="Digite sua busca aqui..."
-              data-testid="search-input"
-              name="searchValue"
-              value={ searchValue }
-              onChange={ handleChange }
-            />
-          )}
-        </S.SearchInputContainer>
+      <S.SearchBar style={ page === 'drinks' ? { color: '#fff' } : { color: '#000' } }>
         <S.SearchRadioBtnContainer>
           <label>
             <input
@@ -74,6 +50,16 @@ function SearchBar({ page }: SearchBarProps) {
             />
             First letter
           </label>
+        </S.SearchRadioBtnContainer>
+        <S.SearchInputContainer>
+          <input
+            type="text"
+            placeholder="Digite sua busca aqui..."
+            data-testid="search-input"
+            name="searchValue"
+            value={ searchValue }
+            onChange={ handleChange }
+          />
           <S.Button
             type="button"
             data-testid="exec-search-btn"
@@ -81,7 +67,7 @@ function SearchBar({ page }: SearchBarProps) {
           >
             Search
           </S.Button>
-        </S.SearchRadioBtnContainer>
+        </S.SearchInputContainer>
       </S.SearchBar>
       <FilterBar page={ page } />
     </section>

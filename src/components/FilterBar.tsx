@@ -36,6 +36,7 @@ function FilterBar({ page }: FilterBarProps) {
     <S.FilterBar>
       <S.CategoryBtn
         data-testid="All-category-filter"
+        style={ page === 'drinks' ? { color: '#fff' } : { color: '#000' } }
         onClick={
           page === 'meals'
             ? () => setMealsByCategories({ meals: [] })
@@ -55,6 +56,7 @@ function FilterBar({ page }: FilterBarProps) {
         mealCategories?.map((category, i) => (
           <S.CategoryBtn
             key={ i }
+            style={ { color: '#000' } }
             data-testid={ `${category.strCategory?.includes('/')
               ? 'Other/Unknown'
               : category.strCategory
@@ -75,6 +77,7 @@ function FilterBar({ page }: FilterBarProps) {
         drinkCategories?.map((category, i) => (
           <S.CategoryBtn
             key={ i }
+            style={ { color: '#fff' } }
             data-testid={ `${category?.strCategory?.includes('/')
               ? 'Other/Unknown'
               : category?.strCategory

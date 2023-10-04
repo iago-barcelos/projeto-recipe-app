@@ -22,6 +22,7 @@ export const Header = styled.header`
   width: 52%;
   padding: 1rem;
   height: 60px;
+  
 
   @media (max-width: 1176px) {
     width: 55%
@@ -112,22 +113,11 @@ export const RecipeContainer = styled.section`
   justify-content: center; 
   align-items: center;
 
-  & div {
-    margin: 8px;
-    text-align: center;
-  }
-
   & a {
     text-decoration: none;
     color: #000;
     font-size: 20px;
-  }
-
-  & img {
-    width: 130px;
-    height: 130px;
-    border-radius: 5px;  
-  }  
+  } 
 `;
 
 export const RecipeCard = styled.div`
@@ -135,6 +125,21 @@ export const RecipeCard = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #fff;
+  border-radius: 5px;
+  font-family: 'Oooh Baby', cursive;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 8px;
+  text-align: center;
+  box-shadow: 1px 1px 1px 1px #000;
+
+  & img {
+    width: 130px;
+    height: 130px;
+    border-radius: 5px 5px 0 0;  
+    border-bottom: 1px solid #000;
+  }  
 `;
 
 export const SearchBar = styled.section`
@@ -143,7 +148,7 @@ export const SearchBar = styled.section`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100px;  
+  height: 80px;
   color: #000;  
   border-radius: 5px;
 `;
@@ -151,24 +156,15 @@ export const SearchBar = styled.section`
 export const SearchInputContainer = styled.section`
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
   width: 100%;
-
-  & button {
-    background-color: transparent;
-    border: none;
-    transition: 0.3s ease;
-    width: 100px;
-
-    &:hover {
-      transform: scale(1.2);
-    }
-  }
-
+  padding: 8px;  
+ 
   & input {
+    width: 230px;
     border-radius: 5px;
     border: none;
-    padding-left: 8px;
+    padding-left: 8px;   
   }
 `;
 
@@ -179,6 +175,15 @@ export const SearchRadioBtnContainer = styled.section`
   align-items: center;
   padding: 10px;
   width: 100%;
+
+  & input {
+    margin-right: 10px;
+  }
+
+  & label {
+    font-size: 18px;
+    margin-left: 2px;    
+  }
 `;
 
 export const Drinks = styled.main`
