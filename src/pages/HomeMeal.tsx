@@ -29,17 +29,21 @@ function HomeMeal() {
   const checkInitialMeals = initialResults?.meals || [];
   return (
     <S.HomeMealMain>
-      <Header pageTitle="Meals" />
-      <SearchBar page="meals" />
-      {meals.length === 0 && mealsCat.length === 0 && (
-        <Recipes meals={ checkInitialMeals } />
-      )}
-      {mealsCat.length > 0 && (
-        <Recipes byCategories={ mealsByCategories } />
-      )}
-      {meals.length > 0 && (
-        <Recipes meals={ meals } />
-      )}
+      <nav>
+        <Header pageTitle="Meals" />
+        <SearchBar page="meals" />
+      </nav>
+      <S.RecipeContainer>
+        {meals.length === 0 && mealsCat.length === 0 && (
+          <Recipes meals={ checkInitialMeals } />
+        )}
+        {mealsCat.length > 0 && (
+          <Recipes byCategories={ mealsByCategories } />
+        )}
+        {meals.length > 0 && (
+          <Recipes meals={ meals } />
+        )}
+      </S.RecipeContainer>
       <Footer />
     </S.HomeMealMain>
   );

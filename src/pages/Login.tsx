@@ -63,12 +63,12 @@ function Login() {
           value={ userInfo.password }
           onChange={ handleChange }
         />
-        <button
+        <S.Button
           data-testid="login-submit-btn"
           disabled={ !isEmailValid() || !isPasswordValid() }
         >
           Entrar
-        </button>
+        </S.Button>
       </S.Form>
     </S.Main>
   );
