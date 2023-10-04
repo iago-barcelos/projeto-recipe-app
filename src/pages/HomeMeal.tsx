@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
@@ -6,10 +6,11 @@ import Footer from '../components/Footer';
 import Recipes from '../components/Recipes';
 import RecipeAppContext from '../context/RecipeAppContext';
 import useFetch from '../hooks/useFetch';
-import * as S from '../styles/style';
+import * as S from '../styles/meals&DrinksStyle';
 
 function HomeMeal() {
   const recipeContext = useContext(RecipeAppContext);
+  const [showSearchBar, setShowSearchBar] = useState(false);
   const navigate = useNavigate();
   const { initialResults } = useFetch('api/json/v1/1/search.php?s=');
   const {
@@ -27,11 +28,27 @@ function HomeMeal() {
   const meals = searchResults?.meals || [];
   const mealsCat = mealsByCategories?.meals || [];
   const checkInitialMeals = initialResults?.meals || [];
+
+  const handleMenu = () => {
+    setShowSearchBar((prev) => !prev);
+  };
   return (
     <S.HomeMealMain>
       <S.Nav>
-        <Header pageTitle="Meals" />
-        <SearchBar page="meals" />
+        <S.MainNav>
+          <Header pageTitle="Meals" />
+          <S.MenuContainer>
+            <button
+              id="burgerMenu"
+              className="material-icons"
+              onClick={ handleMenu }
+              style={ showSearchBar ? { color: '#fff' } : { color: '#f57f02' } }
+            >
+              menu
+            </button>
+          </S.MenuContainer>
+        </S.MainNav>
+        {showSearchBar && <SearchBar page="meals" />}
       </S.Nav>
       <S.RecipeContainer>
         {meals.length === 0 && mealsCat.length === 0 && (

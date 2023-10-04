@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserInfoType } from '../types';
 import { saveUserInLocalStorage } from '../utils/functions';
-import * as S from '../styles/style';
+import * as S from '../styles/loginStyle';
 
 function Login() {
   const initialUserInfo = {
@@ -41,9 +41,9 @@ function Login() {
 
   return (
     <S.Main>
-      <S.Header>
+      <S.LoginHeader>
         <h1>MyRecipe App</h1>
-      </S.Header>
+      </S.LoginHeader>
       <S.Form onSubmit={ handleLoginSubmit }>
         <label htmlFor="email">E-mail</label>
         <input

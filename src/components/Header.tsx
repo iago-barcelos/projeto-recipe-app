@@ -1,6 +1,5 @@
-import { useNavigate, Link } from 'react-router-dom';
-import profileIcon from '../images/profileIcon.svg';
-import * as S from '../styles/style';
+import { useNavigate } from 'react-router-dom';
+import * as S from '../styles/meals&DrinksStyle';
 
 type HeaderProps = {
   pageTitle: string,
@@ -11,21 +10,16 @@ function Header({ pageTitle }: HeaderProps) {
 
   return (
     <S.Header>
+      <button
+        data-testid="profile-top-btn"
+        onClick={ () => navigate('/profile') }
+        className="material-icons"
+      >
+        person
+      </button>
       <h1 data-testid="page-title">
         {pageTitle}
       </h1>
-      <button
-        onClick={ () => navigate('/profile') }
-      >
-        <img
-          data-testid="profile-top-btn"
-          src={ profileIcon }
-          alt="Profile Icon"
-        />
-      </button>
-      <Link to="/meals">Meals</Link>
-      <Link to="/drinks">Drinks</Link>
-      <Link to="/done-recipes">Done Recipes</Link>
     </S.Header>
   );
 }

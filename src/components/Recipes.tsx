@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { CocktailType, MealType } from '../types';
-import * as S from '../styles/style';
+import * as S from '../styles/meals&DrinksStyle';
 
 type RecipeCardProps = {
   drinks?: CocktailType[],
