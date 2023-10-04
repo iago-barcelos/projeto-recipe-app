@@ -2,47 +2,40 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import mealIcon from '../images/mealIcon.svg';
 import drinkIcon from '../images/drinkIcon.svg';
+import * as S from '../styles/footerStyle';
 
 function Footer() {
-  const footerStyle: React.CSSProperties = {
-    position: 'fixed',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    height: '50px',
-  };
-
-  const linkStyle: React.CSSProperties = {
-    textDecoration: 'none',
-  };
-
-  const iconStyle: React.CSSProperties = {
-    width: '30px',
-    height: '30px',
-  };
-
   return (
-    <footer data-testid="footer" style={ footerStyle }>
-      <Link to="/meals" style={ linkStyle }>
-        <img
+    <S.Footer data-testid="footer">
+      <Link to="/meals">
+        {/* <img
           src={ mealIcon }
           alt="Meals Icon"
           data-testid="meals-bottom-btn"
-          style={ iconStyle }
-        />
+
+        /> */}
+        <span
+          className="material-icons"
+          data-testid="meals-bottom-btn"
+        >
+          restaurant_menu
+        </span>
       </Link>
-      <Link to="/drinks" style={ linkStyle }>
-        <img
+      <Link to="/drinks">
+        {/* <img
           src={ drinkIcon }
           alt="Drinks Icon"
           data-testid="drinks-bottom-btn"
-          style={ iconStyle }
-        />
+
+        /> */}
+        <span
+          className="material-icons"
+          data-testid="drinks-bottom-btn"
+        >
+          local_bar
+        </span>
       </Link>
-    </footer>
+    </S.Footer>
   );
 }
 

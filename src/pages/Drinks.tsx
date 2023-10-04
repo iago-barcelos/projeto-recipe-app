@@ -34,17 +34,19 @@ function Drinks() {
   return (
     <S.Drinks>
       <S.Nav>
-        <Header pageTitle="Drinks" />
-        <S.MenuContainer>
-          <button
-            id="burgerMenu"
-            className="material-icons"
-            onClick={ handleMenu }
-            style={ showSearchBar ? { color: '#fff' } : { color: '#f57f02' } }
-          >
-            menu
-          </button>
-        </S.MenuContainer>
+        <S.MainNav>
+          <Header pageTitle="Drinks" />
+          <S.MenuContainer>
+            <button
+              id="burgerMenu"
+              className="material-icons"
+              onClick={ handleMenu }
+              style={ showSearchBar ? { color: '#fff' } : { color: '#f57f02' } }
+            >
+              menu
+            </button>
+          </S.MenuContainer>
+        </S.MainNav>
         {showSearchBar && <SearchBar page="drinks" />}
       </S.Nav>
       <S.RecipeContainer>

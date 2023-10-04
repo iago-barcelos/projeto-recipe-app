@@ -36,7 +36,7 @@ export const Header = styled.header`
   }
 
   @media (max-width: 438px) {
-    width: 66%
+    width: 68%
   }
 
   & h1 {
