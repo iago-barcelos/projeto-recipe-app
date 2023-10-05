@@ -19,6 +19,9 @@ function HomeMeal() {
   } = recipeContext;
 
   useEffect(() => {
+    if (meals.length > 0) {
+      setShowSearchBar((prev) => !prev);
+    }
     if (meals.length === 1) {
       const id = meals[0].idMeal;
       navigate(`/meals/${id}`);

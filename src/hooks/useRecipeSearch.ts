@@ -45,6 +45,7 @@ const useRecipeSearch = () => {
       return;
     }
     setSearchResult({ ...searchResults, [page]: results[page] });
+    setFormData(FORM_INITIAL_STATE);
   };
 
   const handleSearch = async (page: string) => {

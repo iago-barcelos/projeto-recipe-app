@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import searchIcon from '../images/searchIcon.svg';
 import RecipeAppContext from '../context/RecipeAppContext';
 import FilterBar from './FilterBar';
 import * as S from '../styles/meals&DrinksStyle';

@@ -114,7 +114,8 @@ export const RecipeContainer = styled.section`
     border: none;
     background-color: transparent;    
     font-size: 60px;
-    color: #000;    
+    color: #F57F02;
+     
   } 
 
   & #homeContent {
@@ -139,9 +140,7 @@ export const RecipeCard = styled.div`
   justify-content: flex-start;
   align-items: center;
   background-color: #fff;
-  border-radius: 5px;
-  
-  
+  border-radius: 5px;  
   margin: 8px;
   text-align: center;
   word-wrap: break-word;
@@ -240,11 +239,11 @@ export const CategoryBtn = styled.button`
   align-items: center;
   justify-content: center;
   margin: 5px 20px;
-  background-color: transparent;
+  background-color: transparent;   
   border: none;
 
   & img {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
   }
 `;

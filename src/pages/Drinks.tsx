@@ -20,6 +20,9 @@ function Drinks() {
   const drinksByCat = drinksByCategories?.drinks || [];
 
   useEffect(() => {
+    if (drinks.length > 0) {
+      setShowSearchBar((prev) => !prev);
+    }
     if (drinks.length === 1) {
       const id = drinks[0].idDrink;
       console.log(id);
