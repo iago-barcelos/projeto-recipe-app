@@ -8,10 +8,6 @@ export const Button = styled.button`
   width: 100px;
   height: 28px;
   transition: 0.3s ease;
-
-  &:hover {
-    transform: scale(1.1);
-  }
 `;
 
 export const Header = styled.header`
@@ -21,8 +17,7 @@ export const Header = styled.header`
   align-items: center;
   width: 52%;
   padding: 1rem;
-  height: 60px;
-  
+  height: 60px;  
 
   @media (max-width: 1176px) {
     width: 55%
@@ -96,12 +91,7 @@ export const MenuContainer = styled.div`
   & #burgerMenu {       
     font-size: 40px;
     border: none;
-    background-color: transparent;
-
-    &:hover {
-      cursor: pointer;
-      color: #fff;
-    }    
+    background-color: transparent;   
   }
 `;
 
@@ -110,36 +100,72 @@ export const RecipeContainer = styled.section`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
+  height: 95vh;
   justify-content: center; 
-  align-items: center;
+  align-items: center;  
 
   & a {
     text-decoration: none;
     color: #000;
     font-size: 20px;
   } 
+
+  & button {
+    border: none;
+    background-color: transparent;    
+    font-size: 60px;
+    color: #000;    
+  } 
+
+  & #homeContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  & #cardContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  } 
 `;
 
 export const RecipeCard = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   background-color: #fff;
   border-radius: 5px;
-  font-family: 'Oooh Baby', cursive;
-  font-size: 22px;
-  font-weight: bold;
+  
+  
   margin: 8px;
   text-align: center;
+  word-wrap: break-word;
   box-shadow: 1px 1px 1px 1px #000;
+  width: 130px;
+  min-height: 190px;
 
   & img {
     width: 130px;
     height: 130px;
     border-radius: 5px 5px 0 0;  
     border-bottom: 1px solid #000;
-  }  
+  }
+
+  & #titleContainer {
+    display: flex;
+    flex-direction: column;         
+    justify-content: center;
+    min-height: 60px;
+    align-items: center;
+    font-size: 22px;
+    font-weight: bold;
+    font-family: 'Oooh Baby', cursive;   
+  }
 `;
 
 export const SearchBar = styled.section`
@@ -151,6 +177,7 @@ export const SearchBar = styled.section`
   height: 80px;
   color: #000;  
   border-radius: 5px;
+  margin-top: -10px;
 `;
 
 export const SearchInputContainer = styled.section`
@@ -164,7 +191,7 @@ export const SearchInputContainer = styled.section`
     width: 230px;
     border-radius: 5px;
     border: none;
-    padding-left: 8px;   
+    padding-left: 8px;     
   }
 `;
 
@@ -215,12 +242,6 @@ export const CategoryBtn = styled.button`
   margin: 5px 20px;
   background-color: transparent;
   border: none;
-  transition: 0.3s ease;
-
-  &:hover {
-    transform: scale(1.1);
-    cursor: pointer;
-  }
 
   & img {
     width: 45px;
