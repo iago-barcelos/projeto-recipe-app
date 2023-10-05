@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import RecipeAppContext from '../context/RecipeAppContext';
-import * as S from '../styles/meals&DrinksStyle';
+import * as S from '../styles/meals&Drinks';
 
 type FilterBarProps = {
   page: string;

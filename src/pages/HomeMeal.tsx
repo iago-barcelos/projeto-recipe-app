@@ -6,10 +6,11 @@ import Footer from '../components/Footer';
 import Recipes from '../components/Recipes';
 import RecipeAppContext from '../context/RecipeAppContext';
 import useFetch from '../hooks/useFetch';
-import * as S from '../styles/meals&DrinksStyle';
+import * as S from '../styles/meals&Drinks';
 
 function HomeMeal() {
   const recipeContext = useContext(RecipeAppContext);
+  const isMeal = window.location.pathname.includes('meals');
   const [showSearchBar, setShowSearchBar] = useState(false);
   const navigate = useNavigate();
   const { initialResults } = useFetch('api/json/v1/1/search.php?s=');
@@ -19,7 +20,7 @@ function HomeMeal() {
   } = recipeContext;
 
   useEffect(() => {
-    if (meals.length > 0) {
+    if (meals.length > 0 || !isMeal) {
       setShowSearchBar((prev) => !prev);
     }
     if (meals.length === 1) {

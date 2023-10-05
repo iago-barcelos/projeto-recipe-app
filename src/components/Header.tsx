@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import * as S from '../styles/meals&DrinksStyle';
+import * as S from '../styles/meals&Drinks';
 
 type HeaderProps = {
   pageTitle: string,

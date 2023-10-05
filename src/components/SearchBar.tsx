@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import RecipeAppContext from '../context/RecipeAppContext';
 import FilterBar from './FilterBar';
-import * as S from '../styles/meals&DrinksStyle';
+import * as S from '../styles/meals&Drinks';
 
 type SearchBarProps = {
   page: string,

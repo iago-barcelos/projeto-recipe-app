@@ -6,11 +6,12 @@ import Recipes from '../components/Recipes';
 import SearchBar from '../components/SearchBar';
 import RecipeAppContext from '../context/RecipeAppContext';
 import useFetch from '../hooks/useFetch';
-import * as S from '../styles/meals&DrinksStyle';
+import * as S from '../styles/meals&Drinks';
 
 function Drinks() {
   const recipeContext = useContext(RecipeAppContext);
   const [showSearchBar, setShowSearchBar] = useState(false);
+  const isMeal = window.location.pathname.includes('meals');
   const { initialResults } = useFetch('api/json/v1/1/search.php?s=');
   const { searchResults, drinksByCategories } = recipeContext;
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function Drinks() {
   const drinksByCat = drinksByCategories?.drinks || [];
 
   useEffect(() => {
-    if (drinks.length > 0) {
+    if (drinks.length > 0 || isMeal) {
       setShowSearchBar((prev) => !prev);
     }
     if (drinks.length === 1) {
