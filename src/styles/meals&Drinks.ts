@@ -121,7 +121,7 @@ export const RecipeContainer = styled.section`
   & #homeContent {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center;    
     align-items: center;
   }
 
