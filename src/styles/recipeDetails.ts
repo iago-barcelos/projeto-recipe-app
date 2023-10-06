@@ -8,6 +8,7 @@ export const Button = styled.button`
   width: 100px;
   height: 28px;
   transition: 0.3s ease;
+  margin-bottom: 3rem;
 `;
 
 export const RecipeDetailsMain = styled.main`
@@ -125,7 +126,7 @@ export const RecommendedContent = styled.section`
   }
 
   & #cardsContainer button {
-    transform: translateY(-75%);
+    transform: translateY(-4.5rem);
     background-color: transparent;
     border: none;
     color: #F57F02;
@@ -143,7 +144,7 @@ export const RecommendedCard = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 5px 5px 50px 5px;  
+  margin: 5px 5px 6rem 5px;  
 
   & img {
     width: 130px;
