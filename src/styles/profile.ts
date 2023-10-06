@@ -16,12 +16,14 @@ export const ProfileMain = styled.main`
   justify-content: center;
   align-items: center;
   width: 100%;
+  height: 100vh;
   color: #000;
   background-color: #F7EFE4;
 
   & header {
     justify-content: center;
     margin-bottom: 10%;
+    margin-top: -30%;
 
     & button {
       display: none;
