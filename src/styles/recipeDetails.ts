@@ -1,5 +1,15 @@
 import styled from 'styled-components';
 
+export const Button = styled.button`
+  background-color: #F57F02;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  width: 100px;
+  height: 28px;
+  transition: 0.3s ease;
+`;
+
 export const RecipeDetailsMain = styled.main`
   display: flex;
   flex-direction: column;

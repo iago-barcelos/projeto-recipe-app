@@ -231,17 +231,17 @@ function RecipeDetail() {
           </div>
         </S.RecommendedContent>
       )}
-      <button
+      <S.Button
         style={ {
           position: 'fixed',
-          bottom: '0px',
+          bottom: '10px',
           display: thisRecipeIsDone ? 'none' : 'block',
         } }
         data-testid="start-recipe-btn"
         onClick={ handleInProgress }
       >
         {isInProgress ? 'Continue Recipe' : 'StartRecipe'}
-      </button>
+      </S.Button>
       {message !== '' && <span>{message}</span>}
     </S.RecipeDetailsMain>
   );

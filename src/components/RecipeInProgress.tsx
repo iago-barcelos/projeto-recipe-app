@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import unFav from '../images/whiteHeartIcon.svg';
 import fav from '../images/blackHeartIcon.svg';
+import shareIcon from '../images/shareIcon.svg';
 import {
   convertToDoneRecipe,
   convertToFavorite,
@@ -18,6 +19,7 @@ import {
   InProgressTypeTwo,
   MealRecipeDetailsType,
 } from '../types';
+import * as S from '../styles/inProgress';
 
 const RECIPE_TYPES = {
   meal: 'meal',
@@ -31,7 +33,7 @@ function RecipeInProgress() {
   const currentURLhref = window.location.href;
   const formatedURL = currentURLhref.replace(/\/in-progress/i, '');
 
-  const [message, setMessage] = useState('Compartilhar');
+  const [message, setMessage] = useState('');
   const [isFavorite, setIsFavorite] = useState(() => {
     const checkLocalStorage = localStorage.getItem('favoriteRecipes');
     if (checkLocalStorage) {
@@ -121,7 +123,7 @@ function RecipeInProgress() {
     await navigator.clipboard.writeText(formatedURL);
     setMessage('Link copied!');
     setTimeout(() => {
-      setMessage('Compartilhar');
+      setMessage('');
     }, 1500);
   };
 
@@ -136,14 +138,34 @@ function RecipeInProgress() {
   };
 
   return (
-    <div>
+    <S.InProgressMain>
+      <h1>In Progress...</h1>
       <img
+        id="recipePhoto"
         data-testid="recipe-photo"
         src={
           recipeData[0]?.img
         }
         alt=""
       />
+      <S.BtnContainer>
+        <button id="shareBtn" data-testid="share-btn" onClick={ handleShare }>
+          <img src={ shareIcon } alt="Share icon" />
+          {message}
+        </button>
+
+        <button
+          id="favorite"
+          onClick={ handleFavorite }
+        >
+          <img
+            src={ !isFavorite ? unFav : fav }
+            alt="Favorite"
+            data-testid="favorite-btn"
+          />
+        </button>
+
+      </S.BtnContainer>
 
       <h1 data-testid="recipe-title">
         {recipeData[0]?.name}
@@ -176,30 +198,21 @@ function RecipeInProgress() {
           ))}
         </ul>
 
-        <p data-testid="instructions">{recipeData[0]?.instructions}</p>
+        <div id="preparation">
+          <h3>Preparation:</h3>
+          <li data-testid="instructions">{recipeData[0]?.instructions}</li>
+        </div>
 
-        <button
+        <S.Button
           data-testid="finish-recipe-btn"
           onClick={ handleEndRecipe }
           disabled={ !allBoxesChecked }
         >
           Finish Recipe
-        </button>
+        </S.Button>
       </div>
 
-      <button data-testid="share-btn" onClick={ handleShare }>
-        {message}
-      </button>
-
-      <button onClick={ handleFavorite }>
-        <img
-          src={ !isFavorite ? unFav : fav }
-          alt="Favorite"
-          data-testid="favorite-btn"
-        />
-
-      </button>
-    </div>
+    </S.InProgressMain>
   );
 }
 
