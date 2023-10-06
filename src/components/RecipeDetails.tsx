@@ -110,6 +110,13 @@ function RecipeDetail() {
           {recipe.alcoholic !== '' && (
             <h3 data-testid="recipe-category">{recipe.alcoholic}</h3>
           )}
+          <img
+            id="recipePhoto"
+            data-testid="recipe-photo"
+            key={ recipe.id }
+            src={ recipe.img }
+            alt=""
+          />
           <div id="btnContainer">
             <button onClick={ () => handleShare() }>
               <img
@@ -127,13 +134,6 @@ function RecipeDetail() {
               />
             </button>
           </div>
-          <img
-            id="recipePhoto"
-            data-testid="recipe-photo"
-            key={ recipe.id }
-            src={ recipe.img }
-            alt=""
-          />
           <S.IngredientsAndMeasures>
             <div id="ingredients">
               <h4>Ingredients:</h4>
