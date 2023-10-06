@@ -43,7 +43,7 @@ export const BtnContainer = styled.div`
   }
 `;
 
-export const DoneRecipeContainer = styled.section`
+export const DoneRecipeContainer = styled.section` 
   font-size: 22px; 
   padding-bottom: 5rem;
 
@@ -67,10 +67,15 @@ export const DoneRecipeContainer = styled.section`
   & button {
     background-color: transparent;
     border: none;
-    margin-left: 20px;
+    margin-left: 30px;    
   }
 
   & button img {
     border: none;
+  }
+
+  & span {
+    font-family: 'Satisfy', cursive;
+    font-size: 26px;
   }
 `;
