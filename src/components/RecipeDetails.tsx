@@ -19,6 +19,7 @@ import useFetch from '../hooks/useFetch';
 import useCounter from '../hooks/useCounter';
 import useFormatRecipes from '../hooks/useFormatRecipes';
 import * as S from '../styles/recipeDetails';
+import Footer from './Footer';
 
 function RecipeDetail() {
   const { id } = useParams();
@@ -38,7 +39,6 @@ function RecipeDetail() {
     return false;
   });
 
-  // recebe os dados da Api via useRecipeDetails e depois trata, usando useFormatRecipes
   const { mealRecipeDetail, drinkRecipeDetail } = useRecipeDetails(id as string);
   const { formatedRecipe } = useFormatRecipes(
     mealOrDrink,
@@ -59,7 +59,6 @@ function RecipeDetail() {
     mealOrDrink,
   );
 
-  // verifica se a receita está em progresso no localStorage, se estiver, muda o texto do botão para "Continue Recipe"
   const checkLocalInProgress = () => {
     const recipesInProgress = getLocalStorage('inProgressRecipes') as InProgressType;
     if (recipesInProgress) {
@@ -243,6 +242,7 @@ function RecipeDetail() {
         {isInProgress ? 'Continue Recipe' : 'StartRecipe'}
       </S.Button>
       {message !== '' && <span>{message}</span>}
+      <Footer />
     </S.RecipeDetailsMain>
   );
 }

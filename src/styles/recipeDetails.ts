@@ -143,7 +143,7 @@ export const RecommendedCard = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 5px 5px 25px 5px;  
+  margin: 5px 5px 50px 5px;  
 
   & img {
     width: 130px;
