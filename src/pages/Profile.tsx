@@ -51,6 +51,16 @@ function Profile() {
               src={ imageURL === '' ? '../src/images/profileIcon.svg' : imageURL }
               alt="Profile"
             />
+          </div>
+          <div>
+            {editImage && (
+              <input
+                placeholder="Image URL"
+                type="text"
+                value={ inputValue }
+                onChange={ handleChange }
+              />
+            )}
             <S.Button
               id="editImg"
               onClick={ handleEditImage }
@@ -62,16 +72,6 @@ function Profile() {
             >
               {btnText}
             </S.Button>
-          </div>
-          <div>
-            {editImage && (
-              <input
-                placeholder="Image URL"
-                type="text"
-                value={ inputValue }
-                onChange={ handleChange }
-              />
-            )}
           </div>
           <p data-testid="profile-email">{`E-mail: ${userEmail}`}</p>
         </S.ProfileInfo>

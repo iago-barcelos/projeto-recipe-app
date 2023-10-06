@@ -20,6 +20,7 @@ import {
   MealRecipeDetailsType,
 } from '../types';
 import * as S from '../styles/inProgress';
+import Footer from './Footer';
 
 const RECIPE_TYPES = {
   meal: 'meal',
@@ -202,16 +203,17 @@ function RecipeInProgress() {
           <h3>Preparation:</h3>
           <li data-testid="instructions">{recipeData[0]?.instructions}</li>
         </div>
-
-        <S.Button
-          data-testid="finish-recipe-btn"
-          onClick={ handleEndRecipe }
-          disabled={ !allBoxesChecked }
-        >
-          Finish Recipe
-        </S.Button>
+        <div id="finishRecipeBtn">
+          <S.Button
+            data-testid="finish-recipe-btn"
+            onClick={ handleEndRecipe }
+            disabled={ !allBoxesChecked }
+          >
+            Finish Recipe
+          </S.Button>
+        </div>
       </div>
-
+      <Footer />
     </S.InProgressMain>
   );
 }

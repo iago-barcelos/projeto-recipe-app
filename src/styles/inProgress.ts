@@ -21,11 +21,13 @@ export const InProgressMain = styled.main`
   justify-content: center;
   align-items: center;
   color: #000;
+  background-color: #F7EFE4;
 
   & h1 {
     font-family: 'Oooh Baby', cursive;
     font-weight: bolder;
     font-size: 30px;
+    margin: 10px 0 25px;
   }
 
   & #recipePhoto {
@@ -47,7 +49,9 @@ export const InProgressMain = styled.main`
   }
 
   & #preparation {
-    margin-top: 50px;    
+    margin: 50px 0 20px;
+    width: 100%;
+    padding: 10px;
   }
 
   & #preparation h3 {
@@ -55,13 +59,22 @@ export const InProgressMain = styled.main`
     font-family: 'Oooh Baby', cursive;
     font-weight: bold;  
     font-size: 30px; 
+    margin-bottom: 15px;
   }
 
   & #preparation p {
     word-spacing: 5px;
     font-family: 'Oooh Baby', cursive;
-    font-size: 25px;
-    
+    font-size: 25px;      
+  }
+
+  #finishRecipeBtn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 4rem;
   }
 `;
 
@@ -70,6 +83,7 @@ export const BtnContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-bottom: 15px;
 
 
   & #favorite {

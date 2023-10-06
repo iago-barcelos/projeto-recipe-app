@@ -17,6 +17,7 @@ export const ProfileMain = styled.main`
   align-items: center;
   width: 100%;
   color: #000;
+  background-color: #F7EFE4;
 
   & header {
     justify-content: center;
@@ -49,9 +50,10 @@ export const ProfileInfo = styled.section`
   & #imgContainer {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: flex-end;
-    width: 180px;
+    max-width: 180px;
+    max-height: 180px;
     margin-bottom: 20px;
   }
 
@@ -65,7 +67,8 @@ export const ProfileInfo = styled.section`
   }
 
   & #imgContainer img {
-    height: 80px;
+    max-width: 180px;
+    max-height: 180px;
     border: 1px solid #000;
     padding: 2px;
   }
