@@ -46,6 +46,7 @@ export const DoneRecipeContainer = styled.section`
 
   & img {
     border: 1px solid #000;
+    margin-bottom: 10px;
   }
 
   & a {
