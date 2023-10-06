@@ -4,6 +4,7 @@ import unFav from '../images/blackHeartIcon.svg';
 import faShare from '../images/shareIcon.svg';
 import { getLocalStorage, saveLocalStorage } from '../utils/functions';
 import { FavoriteRecipesType } from '../types';
+import Footer from '../components/Footer';
 
 function FavoriteRecipes() {
   const INITIAL_FAVORITE_RECIPES = getLocalStorage('favoriteRecipes') || [];
@@ -118,6 +119,7 @@ function FavoriteRecipes() {
         ))}
         {message !== '' && <span>{message}</span>}
       </div>
+      <Footer />
     </div>
   );
 }
