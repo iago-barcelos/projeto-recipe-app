@@ -115,7 +115,7 @@ export const RecipeContainer = styled.section`
     background-color: transparent;    
     font-size: 60px;
     color: #F57F02;
-     
+    margin-bottom: 3rem;     
   } 
 
   & #homeContent {
