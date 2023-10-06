@@ -16,10 +16,12 @@ export const DoneRecipesMain = styled.main`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100vh;
   color: #000;
+  background-color: #F7EFE4;
 
   & header {
-    margin: 20px;
+    margin: 20px 0;
     justify-content: center;
     align-items: center;
 
@@ -42,7 +44,8 @@ export const BtnContainer = styled.div`
 `;
 
 export const DoneRecipeContainer = styled.section`
-  font-size: 22px;
+  font-size: 22px; 
+  padding-bottom: 5rem;
 
   & img {
     border: 1px solid #000;
